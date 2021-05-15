@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 
 Route::get('/migrate', function(){
-    Artisan::call('migrate');
+    Artisan::call('migrate',[
+        '--force' => true
+     ]);
     echo "migrated";
 });
 Route::get('{path}', [PageController::class, 'index'])->where('path', '.*')->middleware('referrer');
