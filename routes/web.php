@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,4 +15,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 
+Route::get('/migrate', function(){
+    Artisan::call('migrate');
+    echo "migrated";
+});
 Route::get('{path}', [PageController::class, 'index'])->where('path', '.*')->middleware('referrer');
