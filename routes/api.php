@@ -104,6 +104,7 @@ Route::prefix('user')
         Route::post('security/2fa/disable', [TwoFactorAuthController::class, 'disable']);
         // affiliate
         Route::get('affiliate/stats', [AffiliateController::class, 'stats']);
+        Route::get('affiliate/tree/{userId}', [AffiliateController::class, 'tree']);
         Route::get('affiliate/commissions', [AffiliateController::class, 'commissions']);
         Route::get('affiliate/{commission}/redeem', [AffiliateController::class, 'redeem']);
         // account transactions

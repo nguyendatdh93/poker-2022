@@ -73,5 +73,6 @@
     "/js/components.js": "/js/components.js",
     "/js/vendor/vuetify.js": "/js/vendor/vuetify.js",
     "/js/mixins.js": "/js/mixins.js",
-    "/js/vendor/vue-recaptcha.js": "/js/vendor/vue-recaptcha.js"
+    "/js/vendor/vue-recaptcha.js": "/js/vendor/vue-recaptcha.js",
+    "/js/user-affiliate-tree.js": "/js/user-affiliate-tree.js"
 }

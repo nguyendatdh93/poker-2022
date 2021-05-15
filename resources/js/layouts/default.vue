@@ -81,6 +81,14 @@
               <v-list-item-title>{{ $t('History') }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+            <v-list-item :to="{ name: 'user.affiliate'  }" link exact>
+            <v-list-item-action>
+              <v-icon>mdi-link</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{ $t('Affiliate program') }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item v-if="leaderboardPageEnabled" :to="{ name: 'leaderboard' }" link exact>
             <v-list-item-action>
               <v-icon>mdi-star</v-icon>

@@ -83,4 +83,59 @@ class AffiliateController extends Controller
             'message' => __('Commission is successfully approved.')
         ]);
     }
+    public function tree(Request $request)
+    {
+        //  (SQL: select `users`.`id` as `id`, `users`.`name` as `name`, `tier1`.`id` as `tier1_id`, `tier1`.`name` as `tier1_name`, `tier2`.`id` as `tier2_id`, `tier2`.`name` as `tier2_name`, `tier3`.`id` as `tier3_id`, `tier3`.`name` as `tier3_name` from `users` inner join `users` as `tier1` on `tier1`.`referrfrer_id` = `users`.`id` left join `users` as `tier2` on `tier2`.`referrer_id` = `tier1`.`id` left join `users` as `tier3` on `tier3`.`referrer_id` = `tier2`.`id` where `users`.`referrer_id` is null order by `users`.`id` asc);
+        $userId = $request->userId;
+        $registrations = User::select(
+            'users.id AS id',
+            'users.name AS name',
+            'tier1.id AS tier1_id',
+            'tier1.name AS tier1_name',
+            'tier2.id AS tier2_id',
+            'tier2.name AS tier2_name',
+            'tier3.id AS tier3_id',
+            'tier3.name AS tier3_name'
+            )
+            ->where('users.id',$userId)
+            ->join('users AS tier1', 'tier1.referrer_id', '=', 'users.id')
+            ->leftJoin('users AS tier2', 'tier2.referrer_id', '=', 'tier1.id')
+            ->leftJoin('users AS tier3', 'tier3.referrer_id', '=', 'tier2.id')
+            ->orderBy('users.id')
+            ->get()
+            ->map
+            ->setAppends([])
+            ->reduce(function ($carry, $item) {
+                if (!array_key_exists($item['id'], $carry)) {
+                    $carry[$item['id']] = ['id' => $item['id'], 'name' => $item['name'], 'children' => []];
+                }
+
+                if ($item['tier1_id'] && !array_key_exists($item['tier1_id'], $carry[$item['id']]['children'])) {
+                    $carry[$item['id']]['children'][$item['tier1_id']] = ['id' => $item['tier1_id'], 'name' => $item['tier1_name'], 'children' => []];
+                }
+
+                if ($item['tier2_id'] && !array_key_exists($item['tier2_id'], $carry[$item['id']]['children'][$item['tier1_id']]['children'])) {
+                    $carry[$item['id']]['children'][$item['tier1_id']]['children'][$item['tier2_id']] = ['id' => $item['tier2_id'], 'name' => $item['tier2_name'], 'children' => []];
+                }
+
+                if ($item['tier3_id'] && !array_key_exists($item['tier3_id'], $carry[$item['id']]['children'][$item['tier1_id']]['children'][$item['tier2_id']]['children'])) {
+                    $carry[$item['id']]['children'][$item['tier1_id']]['children'][$item['tier2_id']]['children'][$item['tier3_id']] = ['id' => $item['tier3_id'], 'name' => $item['tier3_name']];
+                }
+
+                return $carry;
+            }, []);
+
+        $removeKeys = function (&$array) use (&$removeKeys) {
+            array_walk($array, function (&$item) use ($removeKeys) {
+                if (isset($item['children'])) {
+                    $removeKeys($item['children']);
+                    $item['children'] = array_values($item['children']);
+                }
+            });
+        };
+
+        $removeKeys($registrations);
+
+        return array_values($registrations);
+    }
 }

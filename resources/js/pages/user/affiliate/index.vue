@@ -24,7 +24,8 @@ export default {
       return [
         { route: 'user.affiliate.info', name: this.$t('Info') },
         { route: 'user.affiliate.commissions', name: this.$t('Commissions') },
-        { route: 'user.affiliate.stats', name: this.$t('Stats') }
+        { route: 'user.affiliate.stats', name: this.$t('Stats') },
+        { route: 'user.affiliate.tree', name: this.$t('Users Tree') }
       ]
     }
   }

@@ -61,7 +61,8 @@ export default [
     children: [
       { path: 'info', name: 'user.affiliate.info', component: page('user/affiliate/info') },
       { path: 'commissions', name: 'user.affiliate.commissions', component: page('user/affiliate/commissions') },
-      { path: 'stats', name: 'user.affiliate.stats', component: page('user/affiliate/stats') }
+      { path: 'stats', name: 'user.affiliate.stats', component: page('user/affiliate/stats') },
+      { path: 'tree', name: 'user.affiliate.tree', component: page('user/affiliate/tree') }
     ]
   },
 
