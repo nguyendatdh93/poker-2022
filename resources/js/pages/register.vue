@@ -40,7 +40,17 @@
                 outlined
                 @keydown="clearFormErrors($event,'email')"
               />
-
+              <v-text-field
+                v-model="form.referral_code"
+                label="Referral Code"
+                type="text"
+                name="referral_code"
+                :rules="[validationRequired]"
+                :error="form.errors.has('referral_code')"
+                :error-messages="form.errors.get('referral_code')"
+                outlined
+                @keydown="clearFormErrors($event,'referral_code')"
+              />
               <v-text-field
                 v-model="form.password"
                 :label="$t('Password')"
@@ -149,6 +159,7 @@ export default {
         email: null,
         password: null,
         password_confirmation: null,
+        referral_code:this.hasCookie??null,
         recaptcha: null
       })
     }
@@ -163,12 +174,19 @@ export default {
     },
     recaptchaPublicKey () {
       return config('services.recaptcha.public_key')
+    },
+    hasCookie(){
+      return config('referral_code')
     }
   },
-
+ created () {
+    this.form.referral_code = this.hasCookie
+  },
   methods: {
     async register () {
       // Register the user
+      console.log(this.hasCookie,"refffffff");
+
       const { data } = await this.form.post('/api/auth/register')
         .catch(() => {
           if (this.recaptchaPublicKey) {
@@ -177,7 +195,6 @@ export default {
           }
           return {}
         })
-
       // in case of any error data will be undefined
       if (data) {
         // Store the user

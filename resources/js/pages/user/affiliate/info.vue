@@ -154,7 +154,7 @@ export default {
       'user'
     ]),
     affiliateUrl () {
-      return this.user ? baseUrl() + '/?ref=' + this.user.id : ''
+      return this.user ? baseUrl() + '/?ref=' + this.user.referral_code : ''
     },
     affiliateUrlEncoded () {
       return encodeURI(this.affiliateUrl)

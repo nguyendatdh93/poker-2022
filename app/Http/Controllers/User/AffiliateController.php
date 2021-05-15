@@ -8,6 +8,8 @@ use App\Models\AffiliateCommission;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\GenericAccountTransaction;
+use App\Services\AccountService;
 
 class AffiliateController extends Controller
 {
@@ -61,6 +63,24 @@ class AffiliateController extends Controller
             'registrations' => $registrations,
             'commissions_by_type' => $commissionsByType,
             'commissions_by_tier' => $commissionsByTier
+        ]);
+    }
+    public function redeem(AffiliateCommission $commission)
+    {
+        if ($commission->is_redeemed) {
+            return response()->json([
+                'success' => FALSE,
+                'message' => __('This affiliate commission is already redeemed.')
+            ]);
+        }
+
+        $commission->update(['status' => AffiliateCommission::STATUS_REDEEMED]);
+        $accountService = new AccountService($commission->account);
+        $accountService->createGenericTransaction(GenericAccountTransaction::TYPE_AFFILIATE_COMMISSION, $commission->amount);
+
+        return response()->json([
+            'success' => TRUE,
+            'message' => __('Commission is successfully approved.')
         ]);
     }
 }

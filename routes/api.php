@@ -105,6 +105,7 @@ Route::prefix('user')
         // affiliate
         Route::get('affiliate/stats', [AffiliateController::class, 'stats']);
         Route::get('affiliate/commissions', [AffiliateController::class, 'commissions']);
+        Route::get('affiliate/{commission}/redeem', [AffiliateController::class, 'redeem']);
         // account transactions
         Route::get('account/transactions', [AccountController::class, 'transactions']);
         Route::get('account/faucet', [FaucetController::class, 'show']);

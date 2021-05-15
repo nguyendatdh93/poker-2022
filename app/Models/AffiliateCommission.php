@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Scopes\PeriodScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class AffiliateCommission extends Model
 {
@@ -19,6 +20,8 @@ class AffiliateCommission extends Model
     const STATUS_PENDING = 0;
     const STATUS_APPROVED = 1;
     const STATUS_REJECTED = 2;
+    const STATUS_REDEEMED = 3;
+    const STATUS_EXPIRED = 4;
 
     /**
      * The accessors to append to the model's array form.
@@ -29,7 +32,9 @@ class AffiliateCommission extends Model
         'title',
         'status_title',
         'is_pending',
-        'created_ago'
+        'created_ago',
+        'is_redeemed',
+        'expires_in'
     ];
 
     /**
@@ -132,6 +137,12 @@ class AffiliateCommission extends Model
         } elseif ($this->status == self::STATUS_REJECTED) {
             return __('Rejected');
         }
+        elseif ($this->status == self::STATUS_REDEEMED) {
+            return __('Redeemed');
+        }
+        elseif ($this->status == self::STATUS_EXPIRED) {
+            return __('Expired');
+        }
     }
 
     /**
@@ -141,7 +152,20 @@ class AffiliateCommission extends Model
     {
         return $this->status == self::STATUS_PENDING;
     }
+    public function getIsRedeemedAttribute()
+    {
+        return $this->status == self::STATUS_REDEEMED;
+    }
+    public function getExpiresInAttribute()
+    {
+        $format = 'Y-m-d H:i:s';
+        // $timeZone = "Asia/Kolkata";
+        $createdAt = Carbon::createFromFormat($format, $this->created_at);
+        $twoDaysLater = $createdAt->addDays(2);
+        $diff = $twoDaysLater->diffInHours($createdAt);
 
+        return $diff." hours left";
+    }
     /**
      * Custom getter for created_ago attribute
      */

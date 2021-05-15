@@ -9,6 +9,7 @@ use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cookie;
 
 class PageController extends Controller
 {
@@ -25,13 +26,13 @@ class PageController extends Controller
             'user' => $request->user() ? UserService::user($request->user()) : NULL,
             'games' => [
                 'count' => Game::completed()->count(),
-                'last_win' => Game::with('account:id,user_id','account.user:id,name,avatar')
+                'last_win' => Game::with('account:id,user_id', 'account.user:id,name,avatar')
                     ->completed()
                     ->profitable()
                     ->orderBy('id', 'desc')
                     ->limit(1)
                     ->first()
-            ]
+            ],
         ];
 
         // load only locales that are present
@@ -79,6 +80,7 @@ class PageController extends Controller
             }
 
             $variables['config'][$package->id] = $packageConfig;
+            $variables['config']['referral_code'] = Cookie::has('ref') ? Cookie::get('ref') : NULL;
         }
 
         return view('index', $variables);
@@ -122,7 +124,7 @@ class PageController extends Controller
      * @param $array
      * @return array
      */
-    protected function mapConfigVariables ($key, $array)
+    protected function mapConfigVariables($key, $array)
     {
         $result = [];
 

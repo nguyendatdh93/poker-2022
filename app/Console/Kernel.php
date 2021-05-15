@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\ApproveAffiliateCommissions;
+use App\Console\Commands\CheckRedeemTimeExpiry;
 use App\Console\Commands\CreateGames;
 use App\Console\Commands\DeleteEmptyGameRooms;
 use App\Console\Commands\DeleteUnusedProvablyFairGames;
@@ -22,7 +23,8 @@ class Kernel extends ConsoleKernel
 
     protected $scheduledCommands = [
         DeleteEmptyGameRooms::class => 'daily',
-        DeleteUnusedProvablyFairGames::class => 'daily'
+        DeleteUnusedProvablyFairGames::class => 'daily',
+        CheckRedeemTimeExpiry::class => 'daily'
     ];
 
     /**
@@ -38,13 +40,13 @@ class Kernel extends ConsoleKernel
         $schedule->command(CreateGames::class)->$frequencyMethod();
 
         // affiliate commissions
-        if (config('settings.affiliate.auto_approval_frequency') == 'daily') {
-            $schedule->command(ApproveAffiliateCommissions::class)->dailyAt('00:00');
-        } elseif (config('settings.affiliate.auto_approval_frequency') == 'weekly') {
-            $schedule->command(ApproveAffiliateCommissions::class)->weeklyOn(1, '00:00');
-        } elseif (config('settings.affiliate.auto_approval_frequency') == 'monthly') {
-            $schedule->command(ApproveAffiliateCommissions::class)->monthlyOn(1, '00:00');
-        }
+        // if (config('settings.affiliate.auto_approval_frequency') == 'daily') {
+        //     $schedule->command(ApproveAffiliateCommissions::class)->dailyAt('00:00');
+        // } elseif (config('settings.affiliate.auto_approval_frequency') == 'weekly') {
+        //     $schedule->command(ApproveAffiliateCommissions::class)->weeklyOn(1, '00:00');
+        // } elseif (config('settings.affiliate.auto_approval_frequency') == 'monthly') {
+        //     $schedule->command(ApproveAffiliateCommissions::class)->monthlyOn(1, '00:00');
+        // }
 
         collect($this->scheduledCommands)->each(function ($frequency, $command) use ($schedule) {
             $schedule->command($command)->$frequency();

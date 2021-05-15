@@ -52,6 +52,7 @@ class RegisterController extends Controller
             'email'     => 'required|email|max:255|unique:users',
             'password'  => 'required|min:6|confirmed',
             'password_confirmation' => 'required',
+            'referral_code' => 'required|exists:users,referral_code',
         ];
 
         if (config('services.recaptcha.secret_key')) {
@@ -69,20 +70,18 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $referrerId = Cookie::has('ref') ? intval(Cookie::get('ref')) : NULL;
+        // $referrerId = Cookie::has('ref') ? intval(Cookie::get('ref')) : NULL;
+        $referrerId = $data['referral_code'];
+        $referrer = User::where('referral_code', $referrerId)->active()->first();
+        // get the referrer user
 
-        // if referrer is passed
-        if ($referrerId) {
-            // get the referrer user
-            $referrer = User::where('id', $referrerId)->active()->first();
+        Log::info(sprintf('Referrer ID %d, user %s', $referrerId, ($referrer ? 'exists' : 'does NOT exist')));
 
-            Log::info(sprintf('Referrer ID %d, user %s', $referrerId, ($referrer ? 'exists' : 'does NOT exist')));
-
-            // check that it's found and login IP address is different from current IP (if referrals registrations from the same IP are not allowed)
-            if (!$referrer || (!config('settings.affiliate.allow_same_ip') && $referrer->last_login_from == request()->ip())) {
-                $referrerId = NULL;
-            }
+        // check that it's found and login IP address is different from current IP (if referrals registrations from the same IP are not allowed)
+        if ((!config('settings.affiliate.allow_same_ip') && $referrer->last_login_from == request()->ip())) {
+            $referrerId = NULL;
         }
+
 
         return UserService::create([
             'referrer_id'   => $referrerId,
