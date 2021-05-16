@@ -160,9 +160,10 @@ class AffiliateCommission extends Model
     {
         $format = 'Y-m-d H:i:s';
         // $timeZone = "Asia/Kolkata";
+        $now = Carbon::now();
         $createdAt = Carbon::createFromFormat($format, $this->created_at);
-        $twoDaysLater = $createdAt->addDays(2);
-        $diff = $twoDaysLater->diffInHours($createdAt);
+        $twoDaysLater = $this->created_at->addDays(2);
+        $diff = $twoDaysLater->diffInHours($now);
 
         return $diff." hours left";
     }

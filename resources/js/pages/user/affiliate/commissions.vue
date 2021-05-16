@@ -11,6 +11,7 @@
             'affiliate-commission-type',
             'affiliate-commission-status',
           ]"
+          ref="childComponentRef"
         >
           <template v-slot:item.status="{ item }">
             <span :class="getStatusClass(item)">{{ item.status_title }}</span>
@@ -81,6 +82,8 @@ export default {
         return "green--text";
       } else if (item.status === 4) {
         return "error--text";
+      }else if (item.status === 0) {
+         return "warning--text";
       }
     },
     async redeemProfit(id) {
@@ -88,7 +91,7 @@ export default {
       this.$store.dispatch("message/" + (data.success ? "success" : "error"), {
         text: data.message,
       });
-      this.$router.go(this.$router.currentRoute);
+      this.$refs.childComponentRef.fetchData();
     },
   },
 };

@@ -71,11 +71,11 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         // $referrerId = Cookie::has('ref') ? intval(Cookie::get('ref')) : NULL;
-        $referrerId = $data['referral_code'];
-        $referrer = User::where('referral_code', $referrerId)->active()->first();
+        $referral_code = $data['referral_code'];
+        $referrer = User::where('referral_code', $referral_code)->active()->first();
         // get the referrer user
 
-        Log::info(sprintf('Referrer ID %d, user %s', $referrerId, ($referrer ? 'exists' : 'does NOT exist')));
+        Log::info(sprintf('Referrer ID %d, user %s', $referrer->id, ($referrer ? 'exists' : 'does NOT exist')));
 
         // check that it's found and login IP address is different from current IP (if referrals registrations from the same IP are not allowed)
         if ((!config('settings.affiliate.allow_same_ip') && $referrer->last_login_from == request()->ip())) {
@@ -84,7 +84,7 @@ class RegisterController extends Controller
 
 
         return UserService::create([
-            'referrer_id'   => $referrerId,
+            'referrer_id'   => $referrer->id,
             'name'          => $data['name'],
             'email'         => $data['email'],
             'password'      => $data['password']

@@ -19,8 +19,8 @@ class RememberReferrerUser
 
         // Check if referrer user ID is provided and it's not stored in cookie yet
         if ($request->is('/') &&  $request->query('ref') ) {
-            // Add a cookie with 1 year duration
-            $response->cookie('ref', $request->query('ref'), 525600);
+            // Add a cookie with 5 min expiry
+            $response->cookie('ref', $request->query('ref'), 5);
         }
 
         return $response;

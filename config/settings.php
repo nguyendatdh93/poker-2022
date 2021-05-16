@@ -54,7 +54,7 @@ return [
      * Affiliate program (3 tiers)
      */
     'affiliate' => [
-        'allow_same_ip' => env('AFFILIATE_ALLOW_SAME_IP', false),
+        'allow_same_ip' => env('AFFILIATE_ALLOW_SAME_IP', true),
 
         'auto_approval_frequency' => env('AFFILIATE_AUTO_APPROVAL_FREQUENCY', 'weekly'),
 

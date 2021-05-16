@@ -80,7 +80,8 @@ class AffiliateController extends Controller
 
         return response()->json([
             'success' => TRUE,
-            'message' => __('Commission is successfully approved.')
+            'message' => __('Commission is successfully approved.'),
+            'data' => $commission->toArray()
         ]);
     }
     public function tree(Request $request)
