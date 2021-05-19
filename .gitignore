@@ -1,5 +1,6 @@
 vendor/
-storage/framework/cache/*
-storage/logs/*
+storage/framework/cache/
+storage/logs/
+storage/sessions/
 node_modules/
 .env
