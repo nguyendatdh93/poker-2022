@@ -41,4 +41,22 @@ return [
         8 => 51, // HAND_STRAIGHT_FLUSH, 50:1
         9 => 101, // HAND_ROYAL_FLUSH, 100:1
     ]))),
+    'parameters' => [
+        [
+            'id' => 'bet',
+            'type' => 'input',
+            'name' => 'Bet',
+            'description' => 'Bet amount in every game',
+            'validation' => sprintf('required|integer|min:%d|max:%d', env('GAME_MULTIPLAYER_HOLDEM_MIN_BET', 1), env('GAME_MULTIPLAYER_HOLDEM_MAX_BET', 50)),
+            'default' => env('GAME_MULTIPLAYER_HOLDEM_MIN_BET', 1)
+        ],
+        [
+            'id' => 'players_count',
+            'type' => 'input',
+            'name' => 'Players count',
+            'description' => 'Number of players required to join the game room (including you)',
+            'validation' => 'required|integer|min:2|max:9',
+            'default' => 2
+        ],
+    ]
 ];

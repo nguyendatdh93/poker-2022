@@ -95,6 +95,7 @@ Route::prefix('user')
         // user profile
         Route::get('', [UserController::class, 'show'])->name('user');
         Route::post('update', [UserController::class, 'update']);
+        Route::get('available-users/{userId}', [UserController::class, 'newUserJoiningAvailability']);
         // password
         Route::patch('security/password/update', [PasswordController::class, 'update']);
         // two-factor auth

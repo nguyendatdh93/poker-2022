@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Carbon;
 
 class RegisterController extends Controller
 {
@@ -74,7 +75,11 @@ class RegisterController extends Controller
         $referral_code = $data['referral_code'];
         $referrer = User::where('referral_code', $referral_code)->active()->first();
         // get the referrer user
-
+        // dd($this->remainingUserForCurrentCycle($referrer));
+        $canUserRegister = $this->remainingUserForCurrentCycle($referrer);
+        if ($canUserRegister['success']==FALSE) {
+            throw new \Exception('We are not accepting any new user from this refferal code');
+        }
         Log::info(sprintf('Referrer ID %d, user %s', $referrer->id, ($referrer ? 'exists' : 'does NOT exist')));
 
         // check that it's found and login IP address is different from current IP (if referrals registrations from the same IP are not allowed)
@@ -89,5 +94,38 @@ class RegisterController extends Controller
             'email'         => $data['email'],
             'password'      => $data['password']
         ]);
+    }
+    public function remainingUserForCurrentCycle($user)
+    {
+        // print_r($user);
+        $format = 'Y-m-d H:i:s';
+        // $timeZone = "Asia/Kolkata";
+        $allReferredUsers = User::where('referrer_id', $user->id)->count();
+        $now = Carbon::now();
+        $createdAt = Carbon::createFromFormat($format, $user->created_at);
+        $diff = $createdAt->diffInMonths($now);
+        if ($diff < 2 && 10 - $allReferredUsers >= 0) {
+            return  [
+                'availableReferral' => 10 - $allReferredUsers,
+                'success' => TRUE
+            ];
+        }
+        if ($diff > 2 && $diff < 6 && 20 - $allReferredUsers >= 0) {
+            return  [
+                'availableReferral' => 20 - $allReferredUsers,
+                'success' => TRUE
+            ];
+        }
+        if ($diff >= 6 && 30 - $allReferredUsers >= 0) {
+            return  [
+                'availableReferral' => 30 - $allReferredUsers,
+                'success' => TRUE
+            ];
+        } else {
+            return  [
+                'error' => "Reached Referral Code user limit",
+                'success' => false
+            ];
+        }
     }
 }

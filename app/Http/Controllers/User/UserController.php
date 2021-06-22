@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 
 class UserController extends Controller
 {
@@ -82,11 +83,61 @@ class UserController extends Controller
 
         $stats = $isAdminOrCurrentUser
             ? $getUserStats()
-            : Cache::remember('user.' . $user->id . '.profile', 15*60, $getUserStats);
+            : Cache::remember('user.' . $user->id . '.profile', 15 * 60, $getUserStats);
 
         return response()->json([
             'user' => $user->only('id', 'name', 'avatar_url', 'created_ago'),
             'stats' => $stats
         ]);
+    }
+    public function newUserJoiningAvailability(Request $request)
+    {
+        $format = 'Y-m-d H:i:s';
+
+        // $timeZone = "Asia/Kolkata";
+        $now = Carbon::now();
+        $user = User::find($request->userId)->toArray();
+        // dd($user['created_at']);
+        $createdAt = Carbon::createFromFormat($format, $user['created_at']);
+        $afterTwoMonth = Carbon::createFromFormat($format, $user['created_at'])->addMonths(2);
+        $afterSixMonth = Carbon::createFromFormat($format, $user['created_at'])->addMonths(6);
+        return  response()->json([
+            'twoMonth' => $afterTwoMonth,
+            'sixMonth' => $afterSixMonth,
+            'success' => TRUE
+        ]);
+    }
+
+    public function remainingUserForCurrentCycle(User $user)
+    {
+        $format = 'Y-m-d H:i:s';
+        // $timeZone = "Asia/Kolkata";
+        $allReferredUsers = User::where('referrer_id', $user->id)->count();
+        $now = Carbon::now();
+        $createdAt = Carbon::createFromFormat($format, $this->created_at);
+        $diff = $createdAt->diffInMonths($now);
+        if ($diff < 2) {
+            return  response()->json([
+                'availableReferral' => 10 - $allReferredUsers,
+                'success' => TRUE
+            ]);
+        }
+        if ($diff > 2 && $diff < 6) {
+            return  response()->json([
+                'availableReferral' => 20 - $allReferredUsers,
+                'success' => TRUE
+            ]);
+        }
+        if ($diff >= 6 && 30 - $allReferredUsers <= 0) {
+            return  response()->json([
+                'availableReferral' => 30 - $allReferredUsers,
+                'success' => TRUE
+            ]);
+        } else {
+            return  response()->json([
+                'error' => "Reached Referral Code user limit",
+                'success' => false
+            ]);
+        }
     }
 }
