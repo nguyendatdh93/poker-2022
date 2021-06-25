@@ -25,7 +25,7 @@
         >
           <template v-slot:title>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              {{ opponent.name }}
+              {{ isFirstJoiner(i) ? 'Dealer' : opponent.name }}
               <v-progress-circular
                 v-show="isOpponentTurn(opponent)"
                 :rotate="360"
@@ -49,7 +49,13 @@
           :result-class="resultClass(player)"
           :bet="player.bet"
           :win="player.win"
-        />
+        >
+          <template v-slot:title>
+            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
+              {{ room.dealer && user.id == room.dealer.user_id ? 'Dealer' : user.name }}
+            </div>
+          </template>
+        </hand>
       </div>
     <!-- <hand
       :cards="dealer.cards"
@@ -442,6 +448,13 @@ export default {
           }
         }, animationDelay += 500)
       }
+    },
+    isFirstJoiner(i) {
+      if (_.isEmpty(this.room.dealer)) {
+        return false;
+      }
+
+      return this.room.dealer.user_id == i;
     },
     isOpponentTurn (opponent) {
       return this.time && opponent.action_start && opponent.action_end && opponent.action_start <= this.time && this.time <= opponent.action_end
