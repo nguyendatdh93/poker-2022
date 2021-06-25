@@ -31,7 +31,9 @@ class GameRoomController extends Controller
             })
             ->first();
 
-        $room->dealer = GameRoomPlayer::where('game_room_id', $room->id)->orderBy('created_at', 'asc')->first();
+        if ($room->id ?? false) {
+            $room->dealer = GameRoomPlayer::where('game_room_id', $room->id)->orderBy('created_at', 'asc')->first();
+        }
 
         // find the game model for the given room and user
         $game = $room

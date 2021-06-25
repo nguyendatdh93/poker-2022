@@ -52,7 +52,7 @@
         >
           <template v-slot:title>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              {{ user.id == room.dealer.user_id ? 'Dealer' : user.name }}
+              {{ room.dealer && user.id == room.dealer.user_id ? 'Dealer' : user.name }}
             </div>
           </template>
         </hand>
@@ -450,6 +450,10 @@ export default {
       }
     },
     isFirstJoiner(i) {
+      if (_.isEmpty(this.room.dealer)) {
+        return false;
+      }
+
       return this.room.dealer.user_id == i;
     },
     isOpponentTurn (opponent) {
