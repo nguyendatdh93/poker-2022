@@ -450,7 +450,7 @@ export default {
       }
     },
     isFirstJoiner(i) {
-      if (_.isEmpty(this.room.dealer)) {
+      if (!this.room.dealer) {
         return false;
       }
 

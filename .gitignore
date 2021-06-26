@@ -4,3 +4,4 @@ storage/logs/
 storage/sessions/
 node_modules/
 .env
+/.env
