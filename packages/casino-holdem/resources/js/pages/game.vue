@@ -157,7 +157,6 @@ export default {
         { name: 'fold', disabled: true, loading: false }, // $t('Fold')
         { name: 'call', disabled: true, loading: false } // $t('Call')
       ],
-      loading: false,
       playing: false,
 
       initialBet: 0,
@@ -548,6 +547,7 @@ export default {
     },
     onRoomChange (room) {
       this.room = room
+      this.play(this.bet);
     },
     onPlayers (players) {
       // loop through player hands
@@ -562,7 +562,8 @@ export default {
               this.player,
               this.game
                 ? { ...get(this.game, 'gameable.player_hand') }
-                : { cards: [null, null], result: players.length === this.playersCount ? this.$t('Click Play') : this.$t('Waiting') }
+                : { cards: [], result: players.length === this.playersCount ? this.$t('Click Play') : this.$t('Waiting')
+              }
             )
 
             if (this.playing) {
