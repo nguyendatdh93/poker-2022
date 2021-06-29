@@ -32,7 +32,15 @@ class GameRoomController extends Controller
             ->first();
 
         if ($room->id ?? false) {
-            $room->dealer = GameRoomPlayer::where('game_room_id', $room->id)->orderBy('created_at', 'asc')->first();
+            $players = GameRoomPlayer::where('game_room_id', $room->id)->orderBy('created_at', 'asc')->get();
+            if ($players->count() > 2) {
+                $room->dealer =$players->first();
+                $room->small_blind = $players->skip(1)->take(1)->first();
+                $room->big_blind = $players->skip(2)->take(1)->first();
+            } else {
+                $room->small_blind = $players->first();
+                $room->big_blind = $players->skip(1)->take(1)->first();
+            }
         }
 
         // find the game model for the given room and user

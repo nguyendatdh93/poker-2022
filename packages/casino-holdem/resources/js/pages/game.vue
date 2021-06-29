@@ -26,6 +26,8 @@
           <template v-slot:title>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
               {{ isFirstJoiner(i) ? 'Dealer' : opponent.name }}
+              {{ room.big_blind && room.small_blind.user_id == i ? room.parameters.bet * 1 + '$' : ''}}
+              {{ room.big_blind && room.big_blind.user_id == i ? room.parameters.bet * 2 + '$' : ''}}
               <v-progress-circular
                 v-show="isOpponentTurn(opponent)"
                 :rotate="360"
@@ -53,6 +55,8 @@
           <template v-slot:title>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
               {{ room.dealer && user.id == room.dealer.user_id ? 'Dealer' : user.name }}
+              {{ room.small_blind && room.small_blind.user_id == user.id ? room.parameters.bet * 1 + '$' : ''}}
+              {{ room.big_blind && room.big_blind.user_id == user.id ? room.parameters.bet * 2 + '$' : ''}}
             </div>
           </template>
         </hand>
