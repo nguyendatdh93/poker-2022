@@ -114,6 +114,9 @@ Route::prefix('user')
         Route::post('account/faucet', [FaucetController::class, 'update']);
         // games
         Route::post('games/create', [GameController::class, 'create'])->name('user.games.create');
+
+        // account
+        Route::post('accounts/{account}/debit', [AccountController::class, 'debit']);
     });
 
 // PUSHER AUTHENTICATION
