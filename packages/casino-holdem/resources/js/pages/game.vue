@@ -26,8 +26,6 @@
           <template v-slot:title>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
               {{ isFirstJoiner(i) ? 'Dealer' : opponent.name }}
-              {{ room.big_blind && room.small_blind.user_id == i ? room.parameters.bet * 1 + '$' : ''}}
-              {{ room.big_blind && room.big_blind.user_id == i ? room.parameters.bet * 2 + '$' : ''}}
               <v-progress-circular
                 v-show="isOpponentTurn(opponent)"
                 :rotate="360"
@@ -38,6 +36,18 @@
               >
                 {{ opponent.action_end - time }}
               </v-progress-circular>
+            </div>
+          </template>
+          <template v-slot:bottom>
+            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
+              <p v-if="room.big_blind && room.small_blind.user_id == i">
+                <span class="coin">{{ room.parameters.bet * 1 }}</span>
+                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
+              </p>
+              <p v-if="room.big_blind && room.big_blind.user_id == i">
+                <span class="coin">{{ room.parameters.bet * 2 }}</span>
+                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
+              </p>
             </div>
           </template>
         </hand>
@@ -55,8 +65,18 @@
           <template v-slot:title>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
               {{ room.dealer && user.id == room.dealer.user_id ? 'Dealer' : user.name }}
-              {{ room.small_blind && room.small_blind.user_id == user.id ? room.parameters.bet * 1 + '$' : ''}}
-              {{ room.big_blind && room.big_blind.user_id == user.id ? room.parameters.bet * 2 + '$' : ''}}
+            </div>
+          </template>
+          <template v-slot:bottom>
+            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
+              <p v-if="room.small_blind && room.small_blind.user_id == user.id">
+                <span class="coin">{{ room.parameters.bet * 1 }}</span>
+                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
+              </p>
+              <p v-if="room.big_blind && room.big_blind.user_id == user.id">
+                <span class="coin">{{ room.parameters.bet * 2 }}</span>
+                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
+              </p>
             </div>
           </template>
         </hand>
@@ -689,5 +709,14 @@ export default {
 <style lang="scss" scoped>
   .bonus-bet-input {
     max-width: 160px;
+  }
+
+  .coin {
+    margin-top: 5px;
+    font-weight: bold;
+  }
+
+  .coin-icon {
+    color: red;
   }
 </style>
