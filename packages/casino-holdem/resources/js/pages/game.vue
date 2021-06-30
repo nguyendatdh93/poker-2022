@@ -298,13 +298,19 @@ export default {
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
       setProvablyFairGame: 'provably-fair/set'
     }),
+    isBigBlind() {
+        return this.room.big_blind && this.room.big_blind.user_id == this.user.id;
+    },
+    isSmallBlind() {
+      return this.room.small_blind && this.room.small_blind.user_id == this.user.id;
+    },
     play (bet) {
       this.loading = true
       this.playing = true
 
       this.anteBet = bet
 
-      this.action('play', { bet, bonus_bet: this.bonusBet }).then(() => { this.loading = false })
+      this.action('play', { bet, bonus_bet: this.bonusBet, is_big_blind:  this.isBigBlind(), is_small_blind: this.isSmallBlind() }).then(() => { this.loading = false })
     },
     // handle game actions (deal, hit, stand etc)
     async action (name, params = {}) {

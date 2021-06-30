@@ -71,6 +71,9 @@ class GameService extends ParentGameService
 
         // important to save a reference to gameable in the class property, so it can be used in the parent class
         $this->gameable = $gameable;
+        if ($params['is_big_blind'] ?? false) {
+            $gameable->ante_bet = $gameable->ante_bet * 2;
+        }
 
         $this->save([
             'bet' => $gameable->ante_bet + $gameable->bonus_bet,
