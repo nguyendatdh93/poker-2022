@@ -101,6 +101,13 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'files' => [ // For local environment
+            'driver' => 'daily',
+            'path'   => storage_path('logs/' . str_replace('-', '', PHP_SAPI ?? 'php') . '.log'),
+            'level'  => 'debug',
+            'days'   => 14,
+        ],
     ],
 
 ];

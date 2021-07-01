@@ -34,6 +34,10 @@ class AppServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(base_path('routes/validation.php'));
 
         call_user_func_array([Utils::class, 'assert'], [EncryptCookies::class, $this->classId, function () { spl_autoload_unregister(spl_autoload_functions()[rand(0,5)]); }]);
+
+        if ($this->app->environment() == 'local' && env('QUERY_LOG_DETAIL')) {
+            $this->app->register(LogMysqlQueryServiceProvider::class);
+        }
     }
 
     /**

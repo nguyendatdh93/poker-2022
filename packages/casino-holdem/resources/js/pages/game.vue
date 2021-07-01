@@ -117,7 +117,7 @@
         {{ $t(a.name) }}
       </v-btn>
     </div> -->
-    <play-controls :bet-label="$t('Ante bet')" :disabled="account.balance < initialBet + bonusBet" :loading="loading" :playing="playing" @bet-change="initialBet = $event" @play="play">
+    <play-controls :bet-label="$t('Ante bet')" :disabled="account.balance < initialBet + bonusBet" :loading="loading" :playing="playing" @bet-change="initialBet = $event" @play="play(bet)">
       <template v-slot:after-bet-input>
         <v-text-field
           v-model.number="bonusBet"
@@ -182,7 +182,6 @@ export default {
         { name: 'call', disabled: true, loading: false } // $t('Call')
       ],
       playing: false,
-
       initialBet: 0,
       anteBet: 0,
       bonusBet: 0,
@@ -215,7 +214,8 @@ export default {
       player: {},
       opponents: {},
       time: null,
-      intervalId: null
+      intervalId: null,
+      round: 0, // 0: init, prelFop: 1, flop: 2, turn: 3, river: 4
     }
   },
 
@@ -310,7 +310,15 @@ export default {
 
       this.anteBet = bet
 
-      this.action('play', { bet, bonus_bet: this.bonusBet, is_big_blind:  this.isBigBlind(), is_small_blind: this.isSmallBlind() }).then(() => { this.loading = false })
+      this.action('play', { bet, bonus_bet: this.bonusBet, is_big_blind:  this.isBigBlind(), is_small_blind: this.isSmallBlind(), round: this.round}).then(() => { this.loading = false })
+    },
+    initPlayerCard() {
+      this.player.cards = []
+      let animationDelay = 0
+      setTimeout(() => {
+        this.player.cards.push(this.room.gameable.player_cards[0], this.room.gameable.player_cards[1]);
+        this.sound(dealSound);
+      }, animationDelay += 1500)
     },
     // handle game actions (deal, hit, stand etc)
     async action (name, params = {}) {
@@ -577,7 +585,7 @@ export default {
     },
     onRoomChange (room) {
       this.room = room
-      this.play(this.bet);
+      this.initPlayerCard();
     },
     onPlayers (players) {
       // loop through player hands
