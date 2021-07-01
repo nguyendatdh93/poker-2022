@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Games\CardDeck;
+use App\Helpers\Games\Poker;
 use App\Helpers\PackageManager;
 use App\Http\Requests\CreateGameRoom;
 use App\Http\Requests\GetGameRooms;
@@ -11,6 +13,7 @@ use App\Models\GameRoom;
 use App\Models\GameRoomPlayer;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Packages\CasinoHoldem\Models\CasinoHoldem;
 
 class GameRoomController extends Controller
 {
@@ -32,13 +35,32 @@ class GameRoomController extends Controller
             ->first();
 
         if ($room->id ?? false) {
-            $room->dealer = GameRoomPlayer::where('game_room_id', $room->id)->orderBy('created_at', 'asc')->first();
+            $players = GameRoomPlayer::where('game_room_id', $room->id)->orderBy('created_at', 'asc')->get();
+            if ($players->count() > 2) {
+                $room->dealer =$players->first();
+                $room->small_blind = $players->skip(1)->take(1)->first();
+                $room->big_blind = $players->skip(2)->take(1)->first();
+            } else {
+                $room->small_blind = $players->first();
+                $room->big_blind = $players->skip(1)->take(1)->first();
+            }
+
+            // load initially shuffled deck
+            $deck = new CardDeck();
+            $poker = new Poker($deck);
+            $gameable = new CasinoHoldem();
+            $poker->addPlayers(2)->deal(2, 3)->play();
+            $gameable->player_cards = $poker->getPlayer(1)->getPocketCards()->map->code;
         }
 
         // find the game model for the given room and user
         $game = $room
             ? $room->player($request->user())->game
             : NULL;
+
+        if ($room && $gameable ?? false) {
+            $room->gameable = $gameable;
+        }
 
         return $room
             ? [

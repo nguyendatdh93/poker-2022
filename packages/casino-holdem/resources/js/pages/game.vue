@@ -38,6 +38,18 @@
               </v-progress-circular>
             </div>
           </template>
+          <template v-slot:bottom>
+            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
+              <p v-if="room.big_blind && room.small_blind.user_id == i">
+                <span class="coin">{{ room.parameters.bet * 1 }}</span>
+                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
+              </p>
+              <p v-if="room.big_blind && room.big_blind.user_id == i">
+                <span class="coin">{{ room.parameters.bet * 2 }}</span>
+                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
+              </p>
+            </div>
+          </template>
         </hand>
       </div>
       <div class="d-flex justify-center fill-height align-center">
@@ -53,6 +65,18 @@
           <template v-slot:title>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
               {{ room.dealer && user.id == room.dealer.user_id ? 'Dealer' : user.name }}
+            </div>
+          </template>
+          <template v-slot:bottom>
+            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
+              <p v-if="room.small_blind && room.small_blind.user_id == user.id">
+                <span class="coin">{{ room.parameters.bet * 1 }}</span>
+                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
+              </p>
+              <p v-if="room.big_blind && room.big_blind.user_id == user.id">
+                <span class="coin">{{ room.parameters.bet * 2 }}</span>
+                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
+              </p>
             </div>
           </template>
         </hand>
@@ -93,7 +117,7 @@
         {{ $t(a.name) }}
       </v-btn>
     </div> -->
-    <play-controls :bet-label="$t('Ante bet')" :disabled="account.balance < initialBet + bonusBet" :loading="loading" :playing="playing" @bet-change="initialBet = $event" @play="play">
+    <play-controls :bet-label="$t('Ante bet')" :disabled="account.balance < initialBet + bonusBet" :loading="loading" :playing="playing" @bet-change="initialBet = $event" @play="play(bet)">
       <template v-slot:after-bet-input>
         <v-text-field
           v-model.number="bonusBet"
@@ -158,7 +182,6 @@ export default {
         { name: 'call', disabled: true, loading: false } // $t('Call')
       ],
       playing: false,
-
       initialBet: 0,
       anteBet: 0,
       bonusBet: 0,
@@ -191,7 +214,8 @@ export default {
       player: {},
       opponents: {},
       time: null,
-      intervalId: null
+      intervalId: null,
+      round: 0, // 0: init, prelFop: 1, flop: 2, turn: 3, river: 4
     }
   },
 
@@ -274,13 +298,27 @@ export default {
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
       setProvablyFairGame: 'provably-fair/set'
     }),
+    isBigBlind() {
+        return this.room.big_blind && this.room.big_blind.user_id == this.user.id;
+    },
+    isSmallBlind() {
+      return this.room.small_blind && this.room.small_blind.user_id == this.user.id;
+    },
     play (bet) {
       this.loading = true
       this.playing = true
 
       this.anteBet = bet
 
-      this.action('play', { bet, bonus_bet: this.bonusBet }).then(() => { this.loading = false })
+      this.action('play', { bet, bonus_bet: this.bonusBet, is_big_blind:  this.isBigBlind(), is_small_blind: this.isSmallBlind(), round: this.round}).then(() => { this.loading = false })
+    },
+    initPlayerCard() {
+      this.player.cards = []
+      let animationDelay = 0
+      setTimeout(() => {
+        this.player.cards.push(this.room.gameable.player_cards[0], this.room.gameable.player_cards[1]);
+        this.sound(dealSound);
+      }, animationDelay += 1500)
     },
     // handle game actions (deal, hit, stand etc)
     async action (name, params = {}) {
@@ -547,7 +585,7 @@ export default {
     },
     onRoomChange (room) {
       this.room = room
-      this.play(this.bet);
+      this.initPlayerCard();
     },
     onPlayers (players) {
       // loop through player hands
@@ -685,5 +723,14 @@ export default {
 <style lang="scss" scoped>
   .bonus-bet-input {
     max-width: 160px;
+  }
+
+  .coin {
+    margin-top: 5px;
+    font-weight: bold;
+  }
+
+  .coin-icon {
+    color: red;
   }
 </style>

@@ -30,6 +30,7 @@
         :class="resultClass"
       />
     </div>
+    <slot name="bottom"></slot>
     <hand-bet-win :bet="bet" :win="win" />
   </div>
 </template>

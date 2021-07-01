@@ -14,7 +14,7 @@ class GameController extends Controller
     {
         return $gameService
             ->loadProvablyFairGame($request->hash)
-            ->deal($request->only(['bet', 'bonus_bet']))
+            ->deal($request->only(['bet', 'bonus_bet', 'is_big_blind', 'is_small_blind']))
             ->getGame();
     }
 
