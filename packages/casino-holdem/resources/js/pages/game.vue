@@ -318,7 +318,28 @@ export default {
       setTimeout(() => {
         this.player.cards.push(this.room.gameable.player_cards[0], this.room.gameable.player_cards[1]);
         this.sound(dealSound);
+      }, animationDelay += 1500);
+
+      // 1st dealer card
+      setTimeout(() => {
+        this.dealer.cards.push(null)
+        this.sound(dealSound)
       }, animationDelay += 1500)
+
+      // 2nd dealer card
+      setTimeout(() => {
+        this.dealer.cards.push(null)
+        this.sound(dealSound)
+      }, animationDelay += 500)
+
+      // deal 3 community cards
+      this.room.gameable.community_cards.forEach(card => {
+        setTimeout(() => {
+          this.community.cards.push(card)
+          this.sound(dealSound)
+        }, animationDelay += 2000)
+      })
+
     },
     // handle game actions (deal, hit, stand etc)
     async action (name, params = {}) {

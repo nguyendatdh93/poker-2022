@@ -51,6 +51,9 @@ class GameRoomController extends Controller
             $gameable = new CasinoHoldem();
             $poker->addPlayers(2)->deal(2, 3)->play();
             $gameable->player_cards = $poker->getPlayer(1)->getPocketCards()->map->code;
+            $gameable->community_cards = $poker->getCommunityCards()->map->code;
+            $gameable->player_hand = $poker->getPlayer(1)->getHand()->get()->map->code;
+            $gameable->player_hand_rank = $poker->getPlayer(1)->getHand()->getRank();
         }
 
         // find the game model for the given room and user
