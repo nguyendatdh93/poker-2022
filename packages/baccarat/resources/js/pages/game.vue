@@ -54,6 +54,8 @@
       </v-btn-toggle>
     </div>
     <play-controls :loading="loading" :playing="playing" @play="play" />
+
+    <chat v-model="chatDrawer"/>
   </div>
 </template>
 
@@ -72,11 +74,12 @@ import winSound from 'packages/baccarat/resources/audio/win.wav'
 import loseSound from 'packages/baccarat/resources/audio/lose.wav'
 import pushSound from 'packages/baccarat/resources/audio/push.wav'
 import PlayControls from '~/components/Games/PlayControls'
+import Chat from '~/components/Chat'
 
 export default {
   name: 'Baccarat',
 
-  components: { PlayControls, Hand },
+  components: { PlayControls, Hand, Chat },
 
   mixins: [FormMixin, GameMixin, SoundMixin],
 
@@ -95,7 +98,7 @@ export default {
       currentBetType: -1,
       winType: 0,
       win: 0,
-
+      chatDrawer: false,
       playerHandCards: ['D3', 'H5'],
       playerHandScore: 8,
       playerHandResult: this.$t('Win'),

@@ -873,6 +873,7 @@ class ComposerStaticInit71c7e146d86ef7ddb6a07a2dc986ea91
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
+        'App\\Providers\\LogMysqlQueryServiceProvider' => __DIR__ . '/../..' . '/app/Providers/LogMysqlQueryServiceProvider.php',
         'App\\Providers\\PackageServiceProvider' => __DIR__ . '/../..' . '/app/Providers/PackageServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\Rules\\BalanceIsSufficient' => __DIR__ . '/../..' . '/app/Rules/BalanceIsSufficient.php',

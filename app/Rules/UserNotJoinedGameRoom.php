@@ -29,7 +29,8 @@ class UserNotJoinedGameRoom implements Rule
      */
     public function passes($attribute, $value)
     {
-        return GameRoomPlayer::where('user_id', $this->user->id)->count() == 0;
+        return true;
+//        return GameRoomPlayer::where('user_id', $this->user->id)->count() == 0;
     }
 
     /**

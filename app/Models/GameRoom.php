@@ -93,4 +93,17 @@ class GameRoom extends Model
     {
         return $query->where('status', self::STATUS_OPEN);
     }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        self::created(function($gameRoom){
+            ChatRoom::create([
+                'name' => "Auto chat room",
+                'room_id' => $gameRoom->id,
+                'enabled' => 1,
+            ]);
+        });
+    }
 }

@@ -9,6 +9,8 @@ class ChatRoom extends Model
 {
     use StandardDateFormat;
 
+    protected $guarded = [];
+
     /**
      * The accessors to append to the model's array form.
      *

@@ -162,6 +162,7 @@ return array(
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',
     'App\\Providers\\BroadcastServiceProvider' => $baseDir . '/app/Providers/BroadcastServiceProvider.php',
     'App\\Providers\\EventServiceProvider' => $baseDir . '/app/Providers/EventServiceProvider.php',
+    'App\\Providers\\LogMysqlQueryServiceProvider' => $baseDir . '/app/Providers/LogMysqlQueryServiceProvider.php',
     'App\\Providers\\PackageServiceProvider' => $baseDir . '/app/Providers/PackageServiceProvider.php',
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
     'App\\Rules\\BalanceIsSufficient' => $baseDir . '/app/Rules/BalanceIsSufficient.php',

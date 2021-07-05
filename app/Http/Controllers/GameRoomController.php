@@ -13,6 +13,7 @@ use App\Models\GameRoom;
 use App\Models\GameRoomPlayer;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Packages\CasinoHoldem\Models\CasinoHoldem;
 
 class GameRoomController extends Controller
