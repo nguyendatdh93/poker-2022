@@ -25,7 +25,7 @@
         >
           <template v-slot:title>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              {{ isFirstJoiner(i) ? 'Dealer' : opponent.name }}
+              {{ isDealer(opponent.id) ? 'Dealer' : opponent.name }}
               <v-progress-circular
                   v-show="isOpponentTurn(opponent)"
                   :rotate="360"
@@ -40,11 +40,11 @@
           </template>
           <template v-slot:bottom>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              <p v-if="room.big_blind && room.small_blind.user_id == i">
+              <p v-if="isSmallBlind(opponent.id)">
                 <span class="coin">{{ room.parameters.bet * 1 }}</span>
                 <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
               </p>
-              <p v-if="room.big_blind && room.big_blind.user_id == i">
+              <p v-if="isBigBlind(opponent.id)">
                 <span class="coin">{{ room.parameters.bet * 2 }}</span>
                 <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
               </p>
@@ -52,35 +52,35 @@
           </template>
         </hand>
       </div>
-      <div class="d-flex justify-center fill-height align-center">
-        <hand
-            v-if="player.cards"
-            :cards="player.cards"
-            :score="player.score"
-            :result="player.score > 0 && !playing ? resultMessage(player) : player.result"
-            :result-class="resultClass(player)"
-            :bet="player.bet"
-            :win="player.win"
-        >
-          <template v-slot:title>
-            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              {{ room.dealer && user.id == room.dealer.user_id ? 'Dealer' : user.name }}
-            </div>
-          </template>
-          <template v-slot:bottom>
-            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              <p v-if="room.small_blind && room.small_blind.user_id == user.id">
-                <span class="coin">{{ room.parameters.bet * 1 }}</span>
-                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
-              </p>
-              <p v-if="room.big_blind && room.big_blind.user_id == user.id">
-                <span class="coin">{{ room.parameters.bet * 2 }}</span>
-                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
-              </p>
-            </div>
-          </template>
-        </hand>
-      </div>
+<!--      <div class="d-flex justify-center fill-height align-center">-->
+<!--        <hand-->
+<!--            v-if="player.cards"-->
+<!--            :cards="player.cards"-->
+<!--            :score="player.score"-->
+<!--            :result="player.score > 0 && !playing ? resultMessage(player) : player.result"-->
+<!--            :result-class="resultClass(player)"-->
+<!--            :bet="player.bet"-->
+<!--            :win="player.win"-->
+<!--        >-->
+<!--          <template v-slot:title>-->
+<!--            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">-->
+<!--              {{ room.dealer && user.id == room.dealer.user_id ? 'Dealer' : user.name }}-->
+<!--            </div>-->
+<!--          </template>-->
+<!--          <template v-slot:bottom>-->
+<!--            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">-->
+<!--              <p v-if="room.small_blind && room.small_blind.user_id == user.id">-->
+<!--                <span class="coin">{{ room.parameters.bet * 1 }}</span>-->
+<!--                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>-->
+<!--              </p>-->
+<!--              <p v-if="room.big_blind && room.big_blind.user_id == user.id">-->
+<!--                <span class="coin">{{ room.parameters.bet * 2 }}</span>-->
+<!--                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>-->
+<!--              </p>-->
+<!--            </div>-->
+<!--          </template>-->
+<!--        </hand>-->
+<!--      </div>-->
       <!-- <hand
         :cards="dealer.cards"
         :result="dealer.result"
@@ -301,11 +301,54 @@ export default {
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
       setProvablyFairGame: 'provably-fair/set'
     }),
-    isBigBlind() {
-      return this.room.big_blind && this.room.big_blind.user_id == this.user.id;
+    isDealer(playerId) {
+      if (this.players.length >= 3) {
+        for (let i = 1; i<= this.players.length; i++) {
+          if (this.players[i-1].id == playerId && i == 1) {
+            return true;
+          }
+        }
+      }
+
+      return false;
     },
-    isSmallBlind() {
-      return this.room.small_blind && this.room.small_blind.user_id == this.user.id;
+    isBigBlind(playerId) {
+      if (this.players.length >= 3) {
+        for (let i = 1; i<= this.players.length; i++) {
+          if (this.players[i-1].id == playerId && i == 3) {
+            return true;
+          }
+        }
+
+        return false;
+      } else {
+        for (let i = 0; i<= this.players.length; i++) {
+          if (this.players[i-1].id == playerId && i == 2) {
+            return true;
+          }
+        }
+
+        return false;
+      }
+    },
+    isSmallBlind(playerId) {
+      if (this.players.length >= 2) {
+        for (let i = 1; i<= this.players.length; i++) {
+          if (this.players[i-1].id == playerId && i == 2) {
+            return true;
+          }
+        }
+
+        return false;
+      } else {
+        for (let i = 0; i<= this.players.length; i++) {
+          if (this.players[i-1].id == playerId && i == 1) {
+            return true;
+          }
+        }
+
+        return false;
+      }
     },
     play(bet) {
       this.loading = true
