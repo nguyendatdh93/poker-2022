@@ -210,6 +210,7 @@ export default {
     },
 
     async fetchMessages (room) {
+      console.log(1111111);
       if (!room) {
         return false
       }

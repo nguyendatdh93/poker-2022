@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\ChatMessageSent;
+use App\Events\TurnToPlay;
 use App\Http\Requests\SendChatMessage;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
@@ -71,7 +72,7 @@ class ChatController extends Controller
         }
 
         broadcast(new ChatMessageSent($room, $message));
-
+        broadcast(new TurnToPlay($room, $request->get('turn_to_play') ?? 0));
         return [
             'success' => TRUE
         ];

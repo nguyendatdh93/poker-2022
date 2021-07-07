@@ -52,35 +52,35 @@
           </template>
         </hand>
       </div>
-<!--      <div class="d-flex justify-center fill-height align-center">-->
-<!--        <hand-->
-<!--            v-if="player.cards"-->
-<!--            :cards="player.cards"-->
-<!--            :score="player.score"-->
-<!--            :result="player.score > 0 && !playing ? resultMessage(player) : player.result"-->
-<!--            :result-class="resultClass(player)"-->
-<!--            :bet="player.bet"-->
-<!--            :win="player.win"-->
-<!--        >-->
-<!--          <template v-slot:title>-->
-<!--            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">-->
-<!--              {{ room.dealer && user.id == room.dealer.user_id ? 'Dealer' : user.name }}-->
-<!--            </div>-->
-<!--          </template>-->
-<!--          <template v-slot:bottom>-->
-<!--            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">-->
-<!--              <p v-if="room.small_blind && room.small_blind.user_id == user.id">-->
-<!--                <span class="coin">{{ room.parameters.bet * 1 }}</span>-->
-<!--                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>-->
-<!--              </p>-->
-<!--              <p v-if="room.big_blind && room.big_blind.user_id == user.id">-->
-<!--                <span class="coin">{{ room.parameters.bet * 2 }}</span>-->
-<!--                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>-->
-<!--              </p>-->
-<!--            </div>-->
-<!--          </template>-->
-<!--        </hand>-->
-<!--      </div>-->
+      <!--      <div class="d-flex justify-center fill-height align-center">-->
+      <!--        <hand-->
+      <!--            v-if="player.cards"-->
+      <!--            :cards="player.cards"-->
+      <!--            :score="player.score"-->
+      <!--            :result="player.score > 0 && !playing ? resultMessage(player) : player.result"-->
+      <!--            :result-class="resultClass(player)"-->
+      <!--            :bet="player.bet"-->
+      <!--            :win="player.win"-->
+      <!--        >-->
+      <!--          <template v-slot:title>-->
+      <!--            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">-->
+      <!--              {{ room.dealer && user.id == room.dealer.user_id ? 'Dealer' : user.name }}-->
+      <!--            </div>-->
+      <!--          </template>-->
+      <!--          <template v-slot:bottom>-->
+      <!--            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">-->
+      <!--              <p v-if="room.small_blind && room.small_blind.user_id == user.id">-->
+      <!--                <span class="coin">{{ room.parameters.bet * 1 }}</span>-->
+      <!--                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>-->
+      <!--              </p>-->
+      <!--              <p v-if="room.big_blind && room.big_blind.user_id == user.id">-->
+      <!--                <span class="coin">{{ room.parameters.bet * 2 }}</span>-->
+      <!--                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>-->
+      <!--              </p>-->
+      <!--            </div>-->
+      <!--          </template>-->
+      <!--        </hand>-->
+      <!--      </div>-->
       <!-- <hand
         :cards="dealer.cards"
         :result="dealer.result"
@@ -104,7 +104,7 @@
           :result-class="playerResultClass"
         />
       </div>
-      <div class="d-flex justify-center flex-wrap mt-10">
+      <div class="d5-flex justify-center flex-wrap mt-10">
         <v-btn
           v-for="a in actions"
           :key="a.name"
@@ -117,7 +117,11 @@
           {{ $t(a.name) }}
         </v-btn>
       </div> -->
-      <play-controls :bet-label="$t('Ante bet')" :disabled="account.balance < initialBet + bonusBet" :loading="loading"
+      <play-controls v-if="!isBigBlind(user.id) && !isSmallBlind(user.id) && !isDealer(user.id)"
+                     :bet-label="$t('Ante bet')" :disabled="account.balance < initialBet + bonusBet" :loading="loading"
+                     :is-dealer="isDealer(user.id)"
+                     :is-small-blind="isSmallBlind(user.id)"
+                     :is-big-blind="isBigBlind(user.id)"
                      :playing="playing" @bet-change="initialBet = $event" @play="play(bet)">
         <template v-slot:after-bet-input>
           <v-text-field
@@ -149,7 +153,7 @@
       </play-controls>
     </template>
 
-    <chat v-model="chatDrawer" class="chat-abc"/>
+    <chat v-model="chatDrawer" class="chat"/>
   </div>
 </template>
 
@@ -171,6 +175,7 @@ import pushSound from 'packages/casino-holdem/resources/audio/push.wav'
 import PlayControls from '~/components/Games/HoldemPlayControls'
 import GameRoom from '~/components/Games/GameRoom'
 import Chat from '~/components/Chat'
+import Form from "vform";
 
 export default {
   name: 'CasinoHoldem',
@@ -218,6 +223,11 @@ export default {
       opponents: {},
       time: null,
       intervalId: null,
+      turn: null,
+      turnForm: new Form({
+        message: '',
+        recipients: []
+      }),
       round: 0, // 0: init, prelFop: 1, flop: 2, turn: 3, river: 4
     }
   },
@@ -286,6 +296,19 @@ export default {
       if (wasPlaying && !playing) {
         this.clearActionTimeInterval()
       }
+    },
+    room(room, prevRoom) {
+      if (!this.isSmallBlind(this.user.id) && !this.isBigBlind(this.user.id) && !this.isDealer(this.user.id)) {
+        this.turnForm = new Form({
+          message: `${this.user.name} it's your turn. You have 30 seconds to act`,
+          recipients: [],
+          turn_to_play: this.user.id,
+        });
+
+        this.turnForm.post(`/api/chat/${room.id}`)
+        this.turnForm.message = ''
+        this.turnForm.recipients = []
+      }
     }
   },
   created() {
@@ -303,8 +326,8 @@ export default {
     }),
     isDealer(playerId) {
       if (this.players.length >= 3) {
-        for (let i = 1; i<= this.players.length; i++) {
-          if (this.players[i-1].id == playerId && i == 1) {
+        for (let i = 1; i <= this.players.length; i++) {
+          if (this.players[i - 1].id == playerId && i == 1) {
             return true;
           }
         }
@@ -314,16 +337,16 @@ export default {
     },
     isBigBlind(playerId) {
       if (this.players.length >= 3) {
-        for (let i = 1; i<= this.players.length; i++) {
-          if (this.players[i-1].id == playerId && i == 3) {
+        for (let i = 1; i <= this.players.length; i++) {
+          if (this.players[i - 1].id == playerId && i == 3) {
             return true;
           }
         }
 
         return false;
       } else {
-        for (let i = 0; i<= this.players.length; i++) {
-          if (this.players[i-1].id == playerId && i == 2) {
+        for (let i = 1; i <= this.players.length; i++) {
+          if (this.players[i - 1].id == playerId && i == 2) {
             return true;
           }
         }
@@ -332,17 +355,17 @@ export default {
       }
     },
     isSmallBlind(playerId) {
-      if (this.players.length >= 2) {
-        for (let i = 1; i<= this.players.length; i++) {
-          if (this.players[i-1].id == playerId && i == 2) {
+      if (this.players.length > 2) {
+        for (let i = 1; i <= this.players.length; i++) {
+          if (this.players[i - 1].id == playerId && i == 2) {
             return true;
           }
         }
 
         return false;
       } else {
-        for (let i = 0; i<= this.players.length; i++) {
-          if (this.players[i-1].id == playerId && i == 1) {
+        for (let i = 1; i <= this.players.length; i++) {
+          if (this.players[i - 1].id == playerId && i == 1) {
             return true;
           }
         }
@@ -671,7 +694,7 @@ export default {
         // if the hand belongs to the current user
         if (this.user.id === player.id) {
           // set the player hand to default values
-          this.player = {...this.defaultHand, id: player.id}
+          this.player = {...this.defaultHand, id: player.id, name: this.user.name}
           // update player hand to display cards
           setTimeout(() => {
             this.updatePlayerHand(
@@ -706,6 +729,11 @@ export default {
       this.players = this.players.sort((player1, player2) => player1.id - player2.id);
     },
     onPlayerJoined(player) {
+      console.log(111111);
+      this.players.splice(this.players.findIndex(function (i) {
+        return i.id === player.id;
+      }), 1);
+
       // if this player didn't join earlier
       if (!this.opponents[player.id]) {
         this.$set(this.opponents, player.id, {...this.defaultHand, name: player.name})
@@ -720,7 +748,7 @@ export default {
         this.updatePlayerHand(this.opponents[player.id], {result: ''})
       }
 
-      this.players.push(player);
+      this.players.push(this.opponents[player.id]);
       this.players = this.players.sort((player1, player2) => player1.id - player2.id);
     },
     onPlayerLeft(player) {
