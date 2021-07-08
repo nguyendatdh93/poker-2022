@@ -223,12 +223,11 @@ export default {
       opponents: {},
       time: null,
       intervalId: null,
-      turn: null,
       turnForm: new Form({
         message: '',
         recipients: []
       }),
-      round: 0, // 0: init, prelFop: 1, flop: 2, turn: 3, river: 4
+      round: 1, // 0: init, prelFop: 1, flop: 2, turn: 3, river: 4
     }
   },
 
@@ -297,15 +296,27 @@ export default {
         this.clearActionTimeInterval()
       }
     },
-    room(room, prevRoom) {
-      if (!this.isSmallBlind(this.user.id) && !this.isBigBlind(this.user.id) && !this.isDealer(this.user.id)) {
+    players(players, prevPlayers) {
+      if (this.round != 1) { // Temporarily processing for round preflop
+        return;
+      }
+      let turn = false;
+      if (players.length <= 3) {
+        if (this.isSmallBlind(this.user.id)) {
+          turn = true;
+        }
+      } else if (!this.isSmallBlind(this.user.id) && !this.isBigBlind(this.user.id) && !this.isDealer(this.user.id)) {
+        turn = true;
+      }
+
+      if (turn) {
         this.turnForm = new Form({
           message: `${this.user.name} it's your turn. You have 30 seconds to act`,
           recipients: [],
           turn_to_play: this.user.id,
         });
 
-        this.turnForm.post(`/api/chat/${room.id}`)
+        this.turnForm.post(`/api/chat/${this.room.id}`)
         this.turnForm.message = ''
         this.turnForm.recipients = []
       }
@@ -395,13 +406,13 @@ export default {
       setTimeout(() => {
         this.player.cards.push(this.room.gameable.player_cards[0], this.room.gameable.player_cards[1]);
         this.sound(dealSound);
-      }, animationDelay += 1500);
+      }, animationDelay += 2500);
 
       // 1st dealer card
       setTimeout(() => {
         this.dealer.cards.push(null)
         this.sound(dealSound)
-      }, animationDelay += 1500)
+      }, animationDelay += 2500)
 
       // 2nd dealer card
       setTimeout(() => {
@@ -414,7 +425,7 @@ export default {
         setTimeout(() => {
           this.community.cards.push(card)
           this.sound(dealSound)
-        }, animationDelay += 2000)
+        }, animationDelay += 3000)
       })
 
     },
@@ -729,7 +740,6 @@ export default {
       this.players = this.players.sort((player1, player2) => player1.id - player2.id);
     },
     onPlayerJoined(player) {
-      console.log(111111);
       this.players.splice(this.players.findIndex(function (i) {
         return i.id === player.id;
       }), 1);

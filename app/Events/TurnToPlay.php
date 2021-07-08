@@ -19,16 +19,18 @@ class TurnToPlay implements ShouldBroadcast
 
     public $room;
     public $turnToPlay;
+    public $message;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(ChatRoom $room, $turnToPlay)
+    public function __construct(ChatRoom $room, $message, $turnToPlay)
     {
         $this->room = $room;
         $this->turnToPlay = $turnToPlay;
+        $this->message = $message;
     }
 
     /**
@@ -38,7 +40,7 @@ class TurnToPlay implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('turn_to_play.' . $this->room->id);
+        return new PresenceChannel('chat.' . $this->room->id);
     }
 
     /**
@@ -51,7 +53,9 @@ class TurnToPlay implements ShouldBroadcast
         $user = User::find($this->turnToPlay);
         return array_merge(
             [
-                'user' => $user->only('id', 'name', 'avatar_url')
+                'user' => $user->only('id', 'name', 'avatar_url'),
+                'message' => $this->message,
+                'turn_to_play' => $this->turnToPlay
             ], [
                 'recipients' => []
             ]

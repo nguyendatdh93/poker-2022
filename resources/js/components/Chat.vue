@@ -44,7 +44,7 @@
         <transition-group name="slide-x-transition" tag="div">
           <v-hover v-slot:default="{ hover }" v-for="(msg, index) in messages" :key="`message-${index}`">
             <v-list-item :class="{ 'grey darken-2': hover }">
-              <v-list-item-avatar size="50">
+              <v-list-item-avatar size="50" v-if="msg.user && msg.user.avatar_url">
                 <user-avatar :user="msg.user" />
               </v-list-item-avatar>
               <v-list-item-content>
@@ -210,7 +210,6 @@ export default {
     },
 
     async fetchMessages (room) {
-      console.log(1111111);
       if (!room) {
         return false
       }
@@ -285,6 +284,15 @@ export default {
         })
         // new message
         .listen('ChatMessageSent', message => this.addMessage(message))
+        .listen('TurnToPlay', data => {
+          this.addMessage({
+            user: {
+              name: 'Dealer',
+            },
+            recipients: [],
+            message: data.message,
+          })
+        })
     },
 
     leaveRoom (room) {
