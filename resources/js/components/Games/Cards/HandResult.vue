@@ -42,12 +42,13 @@ export default {
 <style lang="scss" scoped>
 .hand-result {
   position: absolute;
-  height: 2em;
+  height: 1.2em;
   bottom: 0.75em;
   text-align: center;
-  line-height: 2em;
+  line-height: 1.2em;
   opacity: 0.85;
   border-radius: 0.25em;
+  font-size: 0.9em;
 }
 
 .balloon-enter-active {

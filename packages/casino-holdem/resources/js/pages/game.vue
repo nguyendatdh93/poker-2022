@@ -12,6 +12,7 @@
       @exit="onExit"
     />
     <template v-if="room">
+      <img src="/images/table.gif" class="poker_table" />
             <div id="opponent-hands" class="d-flex justify-space-around mt-2">
         <hand
           v-for="(opponent, i) in opponents"
@@ -22,6 +23,7 @@
           :result-class="resultClass(opponent)"
           :bet="opponent.bet"
           :win="opponent.win"
+          :id="craeteId(i)"
         >
           <template v-slot:title>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
@@ -61,6 +63,7 @@
           :result-class="resultClass(player)"
           :bet="player.bet"
           :win="player.win"
+          :player="true"
         >
           <template v-slot:title>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
@@ -70,11 +73,11 @@
           <template v-slot:bottom>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
               <p v-if="room.small_blind && room.small_blind.user_id == user.id">
-                <span class="coin">{{ room.parameters.bet * 1 }}</span>
+                <span class="coin relative">{{ room.parameters.bet * 1 }}</span>
                 <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
               </p>
               <p v-if="room.big_blind && room.big_blind.user_id == user.id">
-                <span class="coin">{{ room.parameters.bet * 2 }}</span>
+                <span class="coin relative">{{ room.parameters.bet * 2 }}</span>
                 <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
               </p>
             </div>
@@ -212,7 +215,80 @@ export default {
         win: 0
       },
       player: {},
-      opponents: {},
+      opponents: {
+        // 2: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        // 3: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        // 3: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        // 4: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        // 5: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        // 6: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        // 7: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        // 8: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        // 9: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+      },
       time: null,
       intervalId: null,
       round: 0, // 0: init, prelFop: 1, flop: 2, turn: 3, river: 4
@@ -298,6 +374,17 @@ export default {
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
       setProvablyFairGame: 'provably-fair/set'
     }),
+    craeteId(index) {
+      const opponentCount = Object.keys(this.opponents).length;
+      let id = "opponent_";
+      if (index == 2 && opponentCount == 8) {
+        return id + "_" + index;
+      }
+      if (index == 9 && opponentCount == 8) {
+        return id + "_" + index;
+      }
+      return id + index;
+    },
     isBigBlind() {
         return this.room.big_blind && this.room.big_blind.user_id == this.user.id;
     },
@@ -733,4 +820,13 @@ export default {
   .coin-icon {
     color: red;
   }
+.relative {
+  position: relative;
+}
+.poker_table {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 </style>
