@@ -12,7 +12,7 @@
       @exit="onExit"
     />
     <template v-if="room">
-      <img src="/images/table.gif" class="poker_table" />
+      <img src="/images/table.png" class="poker_table" />
             <div id="opponent-hands" class="d-flex justify-space-around mt-2">
         <hand
           v-for="(opponent, i) in opponents"
