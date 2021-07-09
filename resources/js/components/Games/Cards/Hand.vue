@@ -1,10 +1,10 @@
 <template>
-  <div
-    class="hand"
-    :class="{ 'inactive': inactive }"
-  >
+  <div class="hand" :class="{ inactive: inactive, player: player }" :id="id">
     <slot name="title">
-      <div v-if="title" class="font-weight-thin title text-center mb-2 ml-n10 ml-lg-0">
+      <div
+        v-if="title"
+        class="font-weight-thin title text-center mb-2 ml-n10 ml-lg-0"
+      >
         {{ title }}
       </div>
     </slot>
@@ -25,10 +25,7 @@
         </playing-card>
       </transition-group>
       <hand-score :score="score" />
-      <hand-result
-        :result="result"
-        :class="resultClass"
-      />
+      <hand-result :result="result" :class="resultClass" />
     </div>
     <slot name="bottom"></slot>
     <hand-bet-win :bet="bet" :win="win" />
@@ -36,10 +33,10 @@
 </template>
 
 <script>
-import PlayingCard from './PlayingCard'
-import HandScore from './HandScore'
-import HandResult from './HandResult'
-import HandBetWin from './HandBetWin'
+import PlayingCard from "./PlayingCard";
+import HandScore from "./HandScore";
+import HandResult from "./HandResult";
+import HandBetWin from "./HandBetWin";
 
 export default {
   components: { PlayingCard, HandScore, HandResult, HandBetWin },
@@ -47,61 +44,71 @@ export default {
     // array of cards, e.g. ['H2', 'H3']
     cards: {
       type: Array,
-      required: true
+      required: true,
     },
     score: {
       type: Number,
       required: false,
-      default: -1
+      default: -1,
     },
     result: {
       type: String,
       required: false,
-      default: ''
+      default: "",
     },
     resultClass: {
       type: String,
       required: false,
-      default: ''
+      default: "",
     },
     bet: {
       type: Number,
       required: false,
-      default: 0
+      default: 0,
     },
     win: {
       type: Number,
       required: false,
-      default: 0
+      default: 0,
     },
     inactive: {
       type: Boolean,
       required: false,
-      default: false
+      default: false,
+    },
+    player: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    id: {
+      type: String,
+      required: false,
+      default: "",
     },
     inactiveCards: {
       type: Array,
       required: false,
-      default: () => []
+      default: () => [],
     },
     title: {
       type: String,
       required: false,
-      default: ''
+      default: "",
     },
     clickable: {
       type: Boolean,
       required: false,
-      default: false
-    }
+      default: false,
+    },
   },
 
   methods: {
-    click (index, card) {
-      this.$emit('playing-card-click', { index, card })
-    }
-  }
-}
+    click(index, card) {
+      this.$emit("playing-card-click", { index, card });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -111,11 +118,56 @@ export default {
 
   &.inactive {
     opacity: 0.4;
-   }
+  }
 
   .playing-cards {
     position: relative;
   }
+}
+#opponent_2 {
+  position: absolute;
+
+}
+#opponent__2 {
+position: absolute;
+    left: 38%;
+    top: 10%;
+
+}
+#opponent_3 {
+  position: absolute;
+    top: 40%;
+  left: 20%;
+}
+#opponent_4 {
+  position: absolute;
+      top: 40%;
+    right: 20%;
+}
+#opponent_5 {
+  position: absolute;
+    top: 63%;
+    left: 24%;
+}
+#opponent_6 {
+ position: absolute;
+    top: 12%;
+    left: 25%;
+}
+#opponent_7 {
+  position: absolute;
+    top: 12%;
+    right: 25%;
+}
+#opponent_8 {
+ position: absolute;
+    bottom: 15%;
+    right: 25%;
+}
+#opponent__9 {
+    position: absolute;
+    left: 52%;
+    top: 10%;
 }
 
 .deal-enter-active {
@@ -128,6 +180,10 @@ export default {
 
 .deal-move {
   transition: transform 0.3s;
+}
+.player {
+  position: absolute;
+  bottom: 60px;
 }
 
 @keyframes deal {

@@ -12,6 +12,7 @@
         @exit="onExit"
     />
     <template v-if="room">
+      <img src="/images/table.png" class="poker_table"/>
       <div id="opponent-hands" class="d-flex justify-space-around mt-2">
         <hand
             v-for="(opponent, i) in players"
@@ -22,6 +23,7 @@
             :result-class="resultClass(opponent)"
             :bet="opponent.bet"
             :win="opponent.win"
+            :id="craeteId(i)"
         >
           <template v-slot:title>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
@@ -97,12 +99,31 @@
       <div class="d-flex justify-center align-center">
         <hand
           :cards="player.cards"
-          :bet="bet"
-          :win="win"
-          :inactive-cards="winCards.length ? player.cards.filter(card => winCards.indexOf(card) === -1) : []"
-          :result="player.result"
-          :result-class="playerResultClass"
-        />
+          :score="player.score"
+          :result="player.score > 0 && !playing ? resultMessage(player) : player.result"
+          :result-class="resultClass(player)"
+          :bet="player.bet"
+          :win="player.win"
+          :player="true"
+        >
+          <template v-slot:title>
+            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
+              {{ room.dealer && user.id == room.dealer.user_id ? 'Dealer' : user.name }}
+            </div>
+          </template>
+          <template v-slot:bottom>
+            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
+              <p v-if="room.small_blind && room.small_blind.user_id == user.id">
+                <span class="coin relative">{{ room.parameters.bet * 1 }}</span>
+                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
+              </p>
+              <p v-if="room.big_blind && room.big_blind.user_id == user.id">
+                <span class="coin relative">{{ room.parameters.bet * 2 }}</span>
+                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
+              </p>
+            </div>
+          </template>
+        </hand>
       </div>
       <div class="d5-flex justify-center flex-wrap mt-10">
         <v-btn
@@ -220,7 +241,80 @@ export default {
         win: 0
       },
       player: {},
-      opponents: {},
+      opponents: {
+        // 2: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        // 3: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        // 3: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        // 4: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        // 5: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        // 6: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        // 7: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        // 8: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        // 9: {
+        //   name: "test",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+      },
       time: null,
       intervalId: null,
       turnForm: new Form({
@@ -346,6 +440,17 @@ export default {
 
       return false;
     },
+    craeteId(index) {
+      const opponentCount = Object.keys(this.opponents).length;
+      let id = "opponent_";
+      if (index == 2 && opponentCount == 8) {
+        return id + "_" + index;
+      }
+      if (index == 9 && opponentCount == 8) {
+        return id + "_" + index;
+      }
+      return id + index;
+    },
     isBigBlind(playerId) {
       if (this.players.length >= 3) {
         for (let i = 1; i <= this.players.length; i++) {
@@ -421,12 +526,12 @@ export default {
       }, animationDelay += 500)
 
       // deal 3 community cards
-      this.room.gameable.community_cards.forEach(card => {
-        setTimeout(() => {
-          this.community.cards.push(card)
-          this.sound(dealSound)
-        }, animationDelay += 3000)
-      })
+      // this.room.gameable.community_cards.forEach(card => {
+      //   setTimeout(() => {
+      //     this.community.cards.push(card)
+      //     this.sound(dealSound)
+      //   }, animationDelay += 3000)
+      // })
 
     },
     // handle game actions (deal, hit, stand etc)
@@ -857,5 +962,16 @@ export default {
 
 .coin-icon {
   color: red;
+}
+
+.relative {
+  position: relative;
+}
+
+.poker_table {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>
