@@ -2,8 +2,18 @@
 import { config } from '~/plugins/config'
 import { route } from '~/plugins/route'
 import {mapState} from "vuex";
+import Form from "vform";
 
 export default {
+  data() {
+    return {
+      turnForm: new Form({
+        message: '',
+        recipients: [],
+        turn_to_play : 0,
+      }),
+    }
+  },
   computed: {
     ...mapState('broadcasting', ['echo']),
     gamePackageId () {
@@ -25,7 +35,18 @@ export default {
   methods: {
     getRoute (action) {
       return route(`games.${this.gamePackageId}.${action}`)
-    }
+    },
+    nextTurn() {
+      this.turnForm = new Form({
+        message: `${this.user.name} it's your turn. You have 30 seconds to act`,
+        recipients: [],
+        turn_to_play: this.user.id,
+      });
+
+      this.turnForm.post(`/api/chat/${this.room.id}`)
+      this.turnForm.message = ''
+      this.turnForm.recipients = []
+    },
   }
 }
 </script>

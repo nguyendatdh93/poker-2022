@@ -38,24 +38,11 @@ class GameRoomController extends Controller
 
         $gameable = new CasinoHoldem();
         if ($room->id ?? false) {
-            $players = GameRoomPlayer::where('game_room_id', $room->id)->orderBy('created_at', 'asc')->get();
-            if ($players->count() > 2) {
-                $room->dealer =$players->first();
-                $room->small_blind = $players->skip(1)->take(1)->first();
-                $room->big_blind = $players->skip(2)->take(1)->first();
-            } else {
-                $room->small_blind = $players->first();
-                $room->big_blind = $players->skip(1)->take(1)->first();
-            }
-
-            // load initially shuffled deck
             $deck = new CardDeck();
             $poker = new Poker($deck);
             $poker->addPlayers(2)->deal(2, 3)->play();
             $gameable->player_cards = $poker->getPlayer(1)->getPocketCards()->map->code;
             $gameable->community_cards = $poker->getCommunityCards()->map->code;
-            $gameable->player_hand = $poker->getPlayer(1)->getHand()->get()->map->code;
-            $gameable->player_hand_rank = $poker->getPlayer(1)->getHand()->getRank();
         }
 
         // find the game model for the given room and user
