@@ -3,6 +3,8 @@
 
 namespace Packages\CasinoHoldem\Services;
 
+use App\Events\ChatMessageSent;
+use App\Events\Fold;
 use App\Helpers\Games\CardDeck;
 use App\Helpers\Games\Poker;
 use App\Helpers\Games\PokerPlayer;
@@ -90,28 +92,26 @@ class GameService extends ParentGameService
      * @return GameService
      * @throws \Exception
      */
-    public function fold(): GameService
+    public function fold($params): GameService
     {
-        $gameable = $this->getGameable();
-
-        $poker = new Poker(new CardDeck($gameable->deck));
-        $poker->addPlayers(2)->deal(2, 3)->play();
-
-        if ($gameable->bonus_bet > 0) {
-            $bonusHand = new PokerHand($poker->getPlayer(1)->getPocketCards(), $poker->getCommunityCards());
-
-            if ($bonusHand->isPairOfAcesOrBetter()) {
-                $gameable->player_bonus_hand = $bonusHand->get()->map->code;
-                $gameable->player_bonus_hand_rank = $bonusHand->getRank();
-                $bonusPayout = (int) config('casino-holdem.bonus_paytable')[$gameable->player_bonus_hand_rank];
-                $gameable->bonus_win = $bonusPayout > 0 ? $gameable->bonus_bet * $bonusPayout : 0;
-            }
-        }
-
-        $this->save([
-            'win' => $gameable->bonus_win,
-            'status' => Game::STATUS_COMPLETED
-        ]);
+        broadcast(new Fold($params['room_id'], $params['user_id']));
+//        $provablyFairGame = $this->getProvablyFairGame();
+//        $poker = new Poker(new CardDeck(explode(',', $provablyFairGame->secret)));
+//        $poker->addPlayers(2)->deal(2, 3)->play();
+//        if ($params['bonus_bet'] > 0) {
+//            $bonusHand = new PokerHand($poker->getPlayer(1)->getPocketCards(), $poker->getCommunityCards());
+//
+//            if ($bonusHand->isPairOfAcesOrBetter()) {
+//                $player_bonus_hand_rank = $bonusHand->getRank();
+//                $bonusPayout = (int) config('casino-holdem.bonus_paytable')[$player_bonus_hand_rank];
+//                $bonus_win = $bonusPayout > 0 ? $params['bonus_bet'] * $bonusPayout : 0;
+//            }
+//        }
+//
+//        $this->save([
+//            'win' => $bonus_win ??  $params['bonus_bet'],
+//            'status' => Game::STATUS_COMPLETED
+//        ]);
 
         return $this;
     }

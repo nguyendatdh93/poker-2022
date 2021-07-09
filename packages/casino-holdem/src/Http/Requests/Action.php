@@ -20,11 +20,7 @@ class Action extends FormRequest
     {
         if ($this->hash) {
             $this->provablyFairGame = ProvablyFairGameService::get($this->hash, CasinoHoldem::class);
-            return $this->provablyFairGame
-                && $this->provablyFairGame->game
-                && !$this->provablyFairGame->game->is_completed
-                && $this->provablyFairGame->game->account_id == $this->user()->account->id
-                && $this->provablyFairGame->game->gameable;
+            return $this->provablyFairGame && !$this->provablyFairGame->game;;
         }
 
         return FALSE;

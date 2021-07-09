@@ -1,9 +1,11 @@
 <script>
 import { config } from '~/plugins/config'
 import { route } from '~/plugins/route'
+import {mapState} from "vuex";
 
 export default {
   computed: {
+    ...mapState('broadcasting', ['echo']),
     gamePackageId () {
       return this.$route.params.game
     },

@@ -125,19 +125,26 @@
           </template>
         </hand>
       </div>
+      -->
       <div class="d5-flex justify-center flex-wrap mt-10">
         <v-btn
-          v-for="a in actions"
-          :key="a.name"
-          :disabled="!provablyFairGame.hash || a.disabled"
-          :loading="a.loading"
-          class="mx-1 my-2 my-lg-0"
-          small
-          @click="action(a.name)"
+            v-for="a in actions"
+            :key="a.name"
+            :disabled="!provablyFairGame.hash || a.disabled"
+            :loading="a.loading"
+            class="mx-1 my-2 my-lg-0"
+            small
+            @click="action(a.name, {
+            room_id: room.id,
+            user_id: user.id,
+            anteBet,
+            bonus_bet: bonusBet,
+            round: round
+          })"
         >
           {{ $t(a.name) }}
         </v-btn>
-      </div> -->
+      </div>
       <play-controls v-if="!isBigBlind(user.id) && !isSmallBlind(user.id) && !isDealer(user.id)"
                      :bet-label="$t('Ante bet')" :disabled="account.balance < initialBet + bonusBet" :loading="loading"
                      :is-dealer="isDealer(user.id)"
@@ -208,8 +215,9 @@ export default {
   data() {
     return {
       actions: [
-        {name: 'fold', disabled: true, loading: false}, // $t('Fold')
-        {name: 'call', disabled: true, loading: false} // $t('Call')
+        {name: 'fold', disabled: false, loading: false}, // $t('Fold')
+        {name: 'call', disabled: false, loading: false}, // $t('Call')
+        {name: 'raise', disabled: false, loading: false} // $t('Call')
       ],
       playing: false,
       initialBet: 0,
@@ -240,6 +248,7 @@ export default {
         bet: 0,
         win: 0
       },
+      foldPlayers: [],
       player: {},
       opponents: {
         // 2: {
@@ -414,6 +423,12 @@ export default {
         this.turnForm.message = ''
         this.turnForm.recipients = []
       }
+    },
+    room(room) {
+      this.echo.join(`game.${room.id}`)
+          .listen('Fold', data => {
+            this.foldPlayers.push(data.user_id);
+          });
     }
   },
   created() {
@@ -421,7 +436,7 @@ export default {
     // after switching from one game page to another.
     this.$nextTick(() => {
       this.bonusBet = this.defaultBonusBet
-    })
+    });
   },
 
   methods: {

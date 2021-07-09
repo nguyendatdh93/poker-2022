@@ -3,6 +3,7 @@
 namespace Packages\CasinoHoldem\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\GameRoom;
 use Packages\CasinoHoldem\Http\Requests\Play;
 use Packages\CasinoHoldem\Http\Requests\Fold;
 use Packages\CasinoHoldem\Http\Requests\Call;
@@ -10,7 +11,7 @@ use Packages\CasinoHoldem\Services\GameService;
 
 class GameController extends Controller
 {
-    public function play(Play $request, GameService $gameService)
+    public function play(Play $request, GameRoom $room, GameService $gameService)
     {
         return $gameService
             ->loadProvablyFairGame($request->hash)
@@ -22,7 +23,7 @@ class GameController extends Controller
     {
         return $gameService
             ->loadProvablyFairGame($request->hash)
-            ->fold()
+            ->fold($request->only(['bet', 'bonus_bet', 'room_id', 'user_id']))
             ->getGame();
     }
 

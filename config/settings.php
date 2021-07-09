@@ -107,7 +107,7 @@ return [
         ],
         'multiplayer' => [
             // max number of rooms one user can create and have open at the same time
-            'rooms_creation_limit' => env('GAMES_MULTIPLAYER_ROOMS_CREATION_LIMIT', 2)
+            'rooms_creation_limit' => env('GAMES_MULTIPLAYER_ROOMS_CREATION_LIMIT', 10)
         ]
     ],
 
