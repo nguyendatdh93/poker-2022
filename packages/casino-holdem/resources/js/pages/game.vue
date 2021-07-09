@@ -42,6 +42,9 @@
           </template>
           <template v-slot:bottom>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
+              <p v-if="isFold(opponent)">
+                Fold
+              </p>
               <p v-if="isSmallBlind(opponent.id)">
                 <span class="coin">{{ room.parameters.bet * 1 }}</span>
                 <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
@@ -126,25 +129,6 @@
         </hand>
       </div>
       -->
-      <div class="d5-flex justify-center flex-wrap mt-10">
-        <v-btn
-            v-for="a in actions"
-            :key="a.name"
-            :disabled="!provablyFairGame.hash || a.disabled"
-            :loading="a.loading"
-            class="mx-1 my-2 my-lg-0"
-            small
-            @click="action(a.name, {
-            room_id: room.id,
-            user_id: user.id,
-            anteBet,
-            bonus_bet: bonusBet,
-            round: round
-          })"
-        >
-          {{ $t(a.name) }}
-        </v-btn>
-      </div>
       <play-controls v-if="!isBigBlind(user.id) && !isSmallBlind(user.id) && !isDealer(user.id)"
                      :bet-label="$t('Ante bet')" :disabled="account.balance < initialBet + bonusBet" :loading="loading"
                      :is-dealer="isDealer(user.id)"
@@ -179,6 +163,25 @@
           </v-text-field>
         </template>
       </play-controls>
+
+      <div class="d5-flex justify-center flex-wrap mt-10">
+        <v-btn
+            v-for="a in actions"
+            :key="a.name"
+            :disabled="!provablyFairGame.hash || isFold(user)"
+            class="mx-1 my-2 my-lg-0"
+            small
+            @click="action(a.name, {
+              room_id: room.id,
+              user_id: user.id,
+              anteBet,
+              bonus_bet: bonusBet,
+              round: round
+            })"
+        >
+          {{ $t(a.name) }}
+        </v-btn>
+      </div>
     </template>
 
     <chat v-model="chatDrawer" class="chat"/>
@@ -444,6 +447,15 @@ export default {
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
       setProvablyFairGame: 'provably-fair/set'
     }),
+    isFold(user) {
+      for (let i = 0; i< this.foldPlayers.length; i++) {
+        if (this.foldPlayers[i] == user.id) {
+          return true;
+        }
+      }
+
+      return false;
+    },
     isDealer(playerId) {
       if (this.players.length >= 3) {
         for (let i = 1; i <= this.players.length; i++) {
