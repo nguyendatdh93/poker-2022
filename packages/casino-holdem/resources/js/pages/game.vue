@@ -337,7 +337,7 @@ export default {
           .listen('Fold', data => {
             this.foldPlayers.push(data.user_id);
           });
-    }
+    },
   },
   created() {
     // it's important to wait until next tick to ensure config computed property is updated
@@ -708,6 +708,7 @@ export default {
     onPlayers(players) {
       this.players = [];
       // loop through player hands
+      players = players.sort((player1, player2) => player1.id - player2.id);
       players.forEach(player => {
         // if the hand belongs to the current user
         if (this.user.id === player.id) {
@@ -727,24 +728,26 @@ export default {
             if (this.playing) {
               this.enableActionTimeInterval()
             }
+
+            this.players.push(this.player);
           }, 100)
 
-          this.players.push(this.player);
           // if the hand DOES NOT belong to the current user
         } else {
           // set the opponent hand to default values
           this.$set(this.opponents, player.id, {...this.defaultHand, name: player.name, id: player.id})
           // update opponent hand to display values
-          setTimeout(() => this.updatePlayerHand(this.opponents[player.id],
-              get(this.game, 'gameable.opponent_hands')
-                  ? {...get(this.game, 'gameable.opponent_hands.' + player.id)}
-                  : {cards: [null, null]}
-          ), 100)
-          this.players.push(this.opponents[player.id]);
+          setTimeout(() => {
+            this.updatePlayerHand(this.opponents[player.id],
+                get(this.game, 'gameable.opponent_hands')
+                    ? {...get(this.game, 'gameable.opponent_hands.' + player.id)}
+                    : {cards: [null, null]}
+            )
+
+            this.players.push(this.opponents[player.id]);
+          }, 100)
         }
       })
-
-      this.players = this.players.sort((player1, player2) => player1.id - player2.id);
     },
     onPlayerJoined(player) {
       // if this player didn't join earlier
@@ -770,9 +773,8 @@ export default {
           return i.id === player.id;
         }), 1);
       }
-      
+
       this.players.push(this.opponents[player.id]);
-      this.players = this.players.sort((player1, player2) => player1.id - player2.id);
     },
     onPlayerLeft(player) {
       // add a message when a player leaves the room (it also happens when the page is refreshed)
