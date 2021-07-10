@@ -169,7 +169,7 @@
         </template>
       </play-controls>
 
-      <div class="d5-flex justify-center flex-wrap mt-10" v-if="showActions()">
+      <div class="d5-flex justify-center flex-wrap mt-10" v-if="showActions()" id="player_actions"> 
         <v-btn
             v-for="a in actions"
             :key="a.name"
@@ -883,5 +883,11 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+#player_actions{
+    position: absolute;
+    bottom: 2%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 </style>
