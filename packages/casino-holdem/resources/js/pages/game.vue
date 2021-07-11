@@ -45,14 +45,14 @@
               <p v-if="isFold(opponent)">
                 Fold
               </p>
-              <p v-if="isSmallBlind(opponent.id)">
-                <span class="coin">{{ room.parameters.bet * 1 }}</span>
+              <p v-if="playersBet[i]">
+                <span class="coin">{{ playersBet[i] }}</span>
                 <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
               </p>
-              <p v-if="isBigBlind(opponent.id)">
-                <span class="coin">{{ room.parameters.bet * 2 }}</span>
-                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
-              </p>
+<!--              <p v-if="isBigBlind(opponent.id)">-->
+<!--                <span class="coin">{{ room.parameters.bet * 2 }}</span>-->
+<!--                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>-->
+<!--              </p>-->
             </div>
           </template>
         </hand>
@@ -169,22 +169,32 @@
         </template>
       </play-controls>
 
-      <div class="d5-flex justify-center flex-wrap mt-10" v-if="showActions()" id="player_actions"> 
+      <div class="d5-flex justify-center flex-wrap mt-10" v-if="showActions()" id="player_actions">
         <v-btn
-            v-for="a in actions"
-            :key="a.name"
             :disabled="!provablyFairGame.hash || isFold(user)"
             class="mx-1 my-2 my-lg-0"
             small
-            @click="action(a.name, {
+            @click="action('fold', {
               room_id: room.id,
               user_id: user.id,
               anteBet,
               bonus_bet: bonusBet,
               round: round
             })"
-        >
-          {{ $t(a.name) }}
+        > Fold
+        </v-btn>
+        <v-btn
+            :disabled="!provablyFairGame.hash || isFold(user)"
+            class="mx-1 my-2 my-lg-0"
+            small
+            @click="doCall({
+              room_id: room.id,
+              user_id: user.id,
+              anteBet,
+              bonus_bet: bonusBet,
+              round: round
+            })"
+        > Call
         </v-btn>
       </div>
     </template>
@@ -259,11 +269,15 @@ export default {
         win: 0
       },
       foldPlayers: [],
+      playersBet: {
+        0: 0,
+        1: 0,
+        2: 0,
+      },
       player: {},
       opponents: {},
       time: null,
       intervalId: null,
-      round: 1, // 0: init, prelFop: 1, flop: 2, turn: 3, river: 4
     }
   },
 
@@ -333,9 +347,14 @@ export default {
       }
     },
     room(room) {
+      this.playersBet["1"] = this.room.parameters.bet;
+      this.playersBet["2"] = this.room.parameters.bet * 2;
       this.echo.join(`game.${room.id}`)
           .listen('Fold', data => {
             this.foldPlayers.push(data.user_id);
+          })
+          .listen('call', data => {
+            console.log(data);
           });
     },
   },
@@ -352,13 +371,6 @@ export default {
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
       setProvablyFairGame: 'provably-fair/set'
     }),
-    showActions() {
-      if (this.round == 1 && this.turnForm.turn_to_play == this.user.id) {
-        return true;
-      }
-
-      return false;
-    },
     isFold(user) {
       for (let i = 0; i< this.foldPlayers.length; i++) {
         if (this.foldPlayers[i] == user.id) {

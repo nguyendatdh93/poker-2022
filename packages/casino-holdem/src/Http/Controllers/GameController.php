@@ -4,6 +4,8 @@ namespace Packages\CasinoHoldem\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\GameRoom;
+use App\Models\GameRoomPlayer;
+use Http\Client\Request;
 use Packages\CasinoHoldem\Http\Requests\Play;
 use Packages\CasinoHoldem\Http\Requests\Fold;
 use Packages\CasinoHoldem\Http\Requests\Call;
@@ -31,7 +33,7 @@ class GameController extends Controller
     {
         return $gameService
             ->loadProvablyFairGame($request->hash)
-            ->call()
+            ->call($request->only(['bet', 'room_id', 'user_id']))
             ->getGame();
     }
 }

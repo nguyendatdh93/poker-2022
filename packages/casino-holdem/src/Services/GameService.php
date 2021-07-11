@@ -3,6 +3,7 @@
 
 namespace Packages\CasinoHoldem\Services;
 
+use App\Events\CallEvent;
 use App\Events\ChatMessageSent;
 use App\Events\Fold;
 use App\Helpers\Games\CardDeck;
@@ -122,67 +123,68 @@ class GameService extends ParentGameService
      * @return GameService
      * @throws \Exception
      */
-    public function call(): GameService
+    public function call($params): GameService
     {
-        $gameable = $this->getGameable();
-
-        $poker = new Poker(new CardDeck($gameable->deck));
-
-        // use PokerHand class from the game package
-        $poker->addPlayers(2)->deal(2, 5)->getPlayers()->each(function (PokerPlayer $player) {
-            $player->setHand(new PokerHand($player->getPocketCards(), $player->getCommunityCards()));
-        });
-
-        $gameable->call_bet = $gameable->ante_bet * 2;
-        $gameable->community_cards = $poker->getCommunityCards()->map->code;
-        $gameable->player_hand = $poker->getPlayer(1)->getHand()->get()->map->code;
-        $gameable->player_kickers = $poker->getPlayer(1)->getHand()->getKickers()->count() > 0 ? $poker->getPlayer(1)->getHand()->getKickers()->map->code : collect();
-        $gameable->player_hand_rank = $poker->getPlayer(1)->getHand()->getRank();
-        $gameable->dealer_cards = $poker->getPlayer(2)->getPocketCards()->map->code;
-        $gameable->dealer_kickers = $poker->getPlayer(2)->getHand()->getKickers()->count() > 0 ? $poker->getPlayer(2)->getHand()->getKickers()->map->code : collect();
-        $gameable->dealer_hand = $poker->getPlayer(2)->getHand()->get()->map->code;
-        $gameable->dealer_hand_rank = $poker->getPlayer(2)->getHand()->getRank();
-
-        // if the dealer qualifies
-        if ($poker->getPlayer(2)->getHand()->isPairOfFoursOrBetter()) {
-            $gameable->dealer_qualified = TRUE;
-
-            // compare player and dealer hands
-            $result = $poker->getPlayer(1)->getHand()->compare($poker->getPlayer(2)->getHand());
-
-            // player wins
-            if ($result == PokerHand::RESULT_WIN) {
-                $antePayout = (int) config('casino-holdem.ante_paytable')[$gameable->player_hand_rank];
-                $gameable->ante_win = $antePayout > 0 ? $gameable->ante_bet * $antePayout : 0;
-                $gameable->call_win = $gameable->call_bet * 2; // call bet always pays 1:1
-            // push
-            } elseif ($result == PokerHand::RESULT_PUSH) {
-                $gameable->ante_win = $gameable->ante_bet;
-                $gameable->call_win = $gameable->call_bet;
-            }
-        // If the dealer does not qualify then the Ante will pay according to the Ante pay table below and the Call bet will push.
-        } else {
-            $antePayout = (int) config('casino-holdem.ante_paytable')[$gameable->player_hand_rank];
-            $gameable->ante_win = $antePayout > 0 ? $gameable->ante_bet * $antePayout : 0;
-            $gameable->call_win = $gameable->call_bet;
-        }
-
-        if ($gameable->bonus_bet > 0) {
-            $bonusHand = new PokerHand($poker->getPlayer(1)->getPocketCards(), $poker->getCommunityCards()->take(3));
-
-            if ($bonusHand->isPairOfAcesOrBetter()) {
-                $gameable->player_bonus_hand = $bonusHand->get()->map->code;
-                $gameable->player_bonus_hand_rank = $bonusHand->getRank();
-                $bonusPayout = (int) config('casino-holdem.bonus_paytable')[$gameable->player_bonus_hand_rank];
-                $gameable->bonus_win = $bonusPayout > 0 ? $gameable->bonus_bet * $bonusPayout : 0;
-            }
-        }
-
-        $this->save([
-            'bet' => $gameable->ante_bet + $gameable->bonus_bet + $gameable->call_bet,
-            'win' => $gameable->ante_win + $gameable->bonus_win + $gameable->call_win,
-            'status' => Game::STATUS_COMPLETED
-        ]);
+        broadcast(new CallEvent($params['room_id'], $params['user_id'], $params['bet']));
+//        $gameable = $this->getGameable();
+//
+//        $poker = new Poker(new CardDeck($gameable->deck));
+//
+//        // use PokerHand class from the game package
+//        $poker->addPlayers(2)->deal(2, 5)->getPlayers()->each(function (PokerPlayer $player) {
+//            $player->setHand(new PokerHand($player->getPocketCards(), $player->getCommunityCards()));
+//        });
+//
+//        $gameable->call_bet = $gameable->ante_bet * 2;
+//        $gameable->community_cards = $poker->getCommunityCards()->map->code;
+//        $gameable->player_hand = $poker->getPlayer(1)->getHand()->get()->map->code;
+//        $gameable->player_kickers = $poker->getPlayer(1)->getHand()->getKickers()->count() > 0 ? $poker->getPlayer(1)->getHand()->getKickers()->map->code : collect();
+//        $gameable->player_hand_rank = $poker->getPlayer(1)->getHand()->getRank();
+//        $gameable->dealer_cards = $poker->getPlayer(2)->getPocketCards()->map->code;
+//        $gameable->dealer_kickers = $poker->getPlayer(2)->getHand()->getKickers()->count() > 0 ? $poker->getPlayer(2)->getHand()->getKickers()->map->code : collect();
+//        $gameable->dealer_hand = $poker->getPlayer(2)->getHand()->get()->map->code;
+//        $gameable->dealer_hand_rank = $poker->getPlayer(2)->getHand()->getRank();
+//
+//        // if the dealer qualifies
+//        if ($poker->getPlayer(2)->getHand()->isPairOfFoursOrBetter()) {
+//            $gameable->dealer_qualified = TRUE;
+//
+//            // compare player and dealer hands
+//            $result = $poker->getPlayer(1)->getHand()->compare($poker->getPlayer(2)->getHand());
+//
+//            // player wins
+//            if ($result == PokerHand::RESULT_WIN) {
+//                $antePayout = (int) config('casino-holdem.ante_paytable')[$gameable->player_hand_rank];
+//                $gameable->ante_win = $antePayout > 0 ? $gameable->ante_bet * $antePayout : 0;
+//                $gameable->call_win = $gameable->call_bet * 2; // call bet always pays 1:1
+//            // push
+//            } elseif ($result == PokerHand::RESULT_PUSH) {
+//                $gameable->ante_win = $gameable->ante_bet;
+//                $gameable->call_win = $gameable->call_bet;
+//            }
+//        // If the dealer does not qualify then the Ante will pay according to the Ante pay table below and the Call bet will push.
+//        } else {
+//            $antePayout = (int) config('casino-holdem.ante_paytable')[$gameable->player_hand_rank];
+//            $gameable->ante_win = $antePayout > 0 ? $gameable->ante_bet * $antePayout : 0;
+//            $gameable->call_win = $gameable->call_bet;
+//        }
+//
+//        if ($gameable->bonus_bet > 0) {
+//            $bonusHand = new PokerHand($poker->getPlayer(1)->getPocketCards(), $poker->getCommunityCards()->take(3));
+//
+//            if ($bonusHand->isPairOfAcesOrBetter()) {
+//                $gameable->player_bonus_hand = $bonusHand->get()->map->code;
+//                $gameable->player_bonus_hand_rank = $bonusHand->getRank();
+//                $bonusPayout = (int) config('casino-holdem.bonus_paytable')[$gameable->player_bonus_hand_rank];
+//                $gameable->bonus_win = $bonusPayout > 0 ? $gameable->bonus_bet * $bonusPayout : 0;
+//            }
+//        }
+//
+//        $this->save([
+//            'bet' => $gameable->ante_bet + $gameable->bonus_bet + $gameable->call_bet,
+//            'win' => $gameable->ante_win + $gameable->bonus_win + $gameable->call_win,
+//            'status' => Game::STATUS_COMPLETED
+//        ]);
 
         return $this;
     }

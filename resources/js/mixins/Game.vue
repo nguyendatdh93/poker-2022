@@ -3,14 +3,16 @@ import { config } from '~/plugins/config'
 import { route } from '~/plugins/route'
 import {mapState} from "vuex";
 import Form from "vform";
+import axios from "axios";
 
 export default {
   data() {
     return {
+      round: 1, // 0: init, prelFop: 1, flop: 2, turn: 3, river: 4
       turnForm: new Form({
         message: '',
         recipients: [],
-        turn_to_play : 0,
+        turn_to_play : 3,
       }),
     }
   },
@@ -47,6 +49,29 @@ export default {
       this.turnForm.message = ''
       this.turnForm.recipients = []
     },
+    showActions() {
+      if (!this.players[this.turnForm.turn_to_play]) {
+          return false;
+      }
+
+      if (this.players[this.turnForm.turn_to_play].id != this.user.id) {
+        return false;
+      }
+
+      return true;
+    },
+    doCall(params) {
+      console.log(this.user.id);
+      let index = this.players.findIndex(player => player.id = this.user.id);
+      console.log(index);
+      const endpoint = this.getRoute('call')
+      // const {data: game} = axios.post(endpoint, {
+      //   hash: this.provablyFairGame.hash,
+      //   user_id : this.user.id,
+      //   room_id: params.room_id,
+      //   bet: this.playersBet[index-1],
+      // });
+    }
   }
 }
 </script>
