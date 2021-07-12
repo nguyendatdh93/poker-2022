@@ -169,7 +169,7 @@
         </template>
       </play-controls>
 
-      <div class="d5-flex justify-center flex-wrap mt-10" v-if="showActions()" id="player_actions">
+      <div class="d5-flex justify-center flex-wrap mt-10" id="player_actions">
         <v-btn
             :disabled="!provablyFairGame.hash || isFold(user)"
             class="mx-1 my-2 my-lg-0"
@@ -353,8 +353,14 @@ export default {
           .listen('Fold', data => {
             this.foldPlayers.push(data.user_id);
           })
-          .listen('call', data => {
-            console.log(data);
+          .listen('CallEvent', data => {
+            let index = this.players.findIndex(player => player.id == data.user_id);
+            this.playersBet[index] = data.bet;
+            if (index == this.players.length - 1) {
+              this.turnForm.turn_to_play = 0;
+            } else{
+              this.turnForm.turn_to_play = index+1;
+            }
           });
     },
   },

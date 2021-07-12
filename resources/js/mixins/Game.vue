@@ -61,16 +61,16 @@ export default {
       return true;
     },
     doCall(params) {
-      console.log(this.user.id);
-      let index = this.players.findIndex(player => player.id = this.user.id);
-      console.log(index);
+      // let index = this.players.findIndex(player => player.id = this.user.id);
       const endpoint = this.getRoute('call')
-      // const {data: game} = axios.post(endpoint, {
-      //   hash: this.provablyFairGame.hash,
-      //   user_id : this.user.id,
-      //   room_id: params.room_id,
-      //   bet: this.playersBet[index-1],
-      // });
+      const {data: game} = axios.post(endpoint, {
+        hash: this.provablyFairGame.hash,
+        user_id : this.user.id,
+        room_id: params.room_id,
+        bet: this.room.parameters.bet * 2,
+      });
+      
+      this.updateUserAccountBalance(this.account.balance - this.room.parameters.bet * 2)
     }
   }
 }

@@ -9,9 +9,14 @@ use App\Events\Fold;
 use App\Helpers\Games\CardDeck;
 use App\Helpers\Games\Poker;
 use App\Helpers\Games\PokerPlayer;
+use App\Models\Account;
+use App\Models\AccountTransaction;
 use App\Models\Game;
+use App\Models\GameRoom;
 use App\Models\User;
+use App\Services\AccountService;
 use App\Services\GameService as ParentGameService;
+use Illuminate\Support\Facades\DB;
 use Packages\CasinoHoldem\Helpers\PokerHand;
 use Packages\CasinoHoldem\Models\CasinoHoldem;
 
@@ -79,9 +84,9 @@ class GameService extends ParentGameService
         }
 
         $this->save([
-            'bet' => $gameable->ante_bet + $gameable->bonus_bet,
-            'win' => 0,
-            'status' => Game::STATUS_IN_PROGRESS]
+                'bet' => $gameable->ante_bet + $gameable->bonus_bet,
+                'win' => 0,
+                'status' => Game::STATUS_IN_PROGRESS]
         );
 
         return $this;
@@ -125,8 +130,27 @@ class GameService extends ParentGameService
      */
     public function call($params): GameService
     {
-        broadcast(new CallEvent($params['room_id'], $params['user_id'], $params['bet']));
-//        $gameable = $this->getGameable();
+        try {
+            DB::beginTransaction();
+            $account = Account::where('user_id', $params['user_id'])->first();
+            $account->decrement('balance', abs($params['bet']));
+
+            AccountTransaction::create([
+                'account_id' => $account->id,
+                'amount' => -$params['bet'],
+                'balance' => $account->balance,
+                'transactionable_type' => CasinoHoldem::class,
+                'transactionable_id' => 1,
+            ]);
+
+            broadcast(new CallEvent($params['room_id'], $params['user_id'], $params['bet']));
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
+
+        return $this;
+        // create a new account transaction
 //
 //        $poker = new Poker(new CardDeck($gameable->deck));
 //
@@ -185,15 +209,13 @@ class GameService extends ParentGameService
 //            'win' => $gameable->ante_win + $gameable->bonus_win + $gameable->call_win,
 //            'status' => Game::STATUS_COMPLETED
 //        ]);
-
-        return $this;
     }
 
     public static function createRandomGame(User $user): void
     {
         $instance = new self($user);
 
-        $instance->createProvablyFairGame(random_int(10000,99999));
+        $instance->createProvablyFairGame(random_int(10000, 99999));
 
         $minBet = intval(config('settings.bots.games.min_bet'));
         $maxBet = intval(config('settings.bots.games.max_bet'));
