@@ -9,6 +9,7 @@ use App\Http\Requests\CreateGameRoom;
 use App\Http\Requests\GetGameRooms;
 use App\Http\Requests\JoinGameRoom;
 use App\Http\Requests\LeaveGameRoom;
+use App\Models\ChatRoom;
 use App\Models\GameRoom;
 use App\Models\GameRoomPlayer;
 use App\Models\User;
@@ -81,15 +82,28 @@ class GameRoomController extends Controller
      */
     public function create(CreateGameRoom $request, $packageId, PackageManager $packageManager)
     {
-        $room = new GameRoom();
-        $room->owner()->associate($request->user());
-        $room->name = $request->name;
-        $room->gameable_type = $packageManager->get($packageId)->model;
-        $room->status = GameRoom::STATUS_OPEN;
-        $room->parameters = $request->parameters;
-        $room->save();
+        try {
+            DB::beginTransaction();
+            $room = new GameRoom();
+            $room->owner()->associate($request->user());
+            $room->name = $request->name;
+            $room->gameable_type = $packageManager->get($packageId)->model;
+            $room->status = GameRoom::STATUS_OPEN;
+            $room->parameters = $request->parameters;
+            $room->save();
 
-        return $this->joinGameRoom($room, $request->user());
+            // create new chat room
+            $chatRoom = new ChatRoom();
+            $chatRoom->name = $request->name;
+            $chatRoom->room_id = $room->id;
+            $chatRoom->save();
+
+            DB::commit();
+            return $this->joinGameRoom($room, $request->user());
+        } catch (\Exception $e) {
+            DB::rollBack();
+            var_dump($e->getMessage());
+        }
     }
 
     /**

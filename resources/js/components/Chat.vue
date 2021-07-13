@@ -143,7 +143,7 @@ export default {
 
   mixins: [FormMixin, SoundMixin],
 
-  props: ['value'],
+  props: ['value', 'room-id'],
 
   data () {
     return {
@@ -200,12 +200,16 @@ export default {
 
   methods: {
     async fetchRooms () {
-      const { data } = await axios.get('/api/chat/rooms')
+      if (!this.roomId) {
+        const { data } = await axios.get('/api/chat/rooms')
 
-      this.rooms = data
+        this.rooms = data
 
-      if (this.rooms.length) {
-        this.room = this.rooms[0].id
+        if (this.rooms.length) {
+          this.room = this.rooms[0].id
+        }
+      } else {
+        this.room = this.roomId;
       }
     },
 

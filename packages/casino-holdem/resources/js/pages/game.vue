@@ -199,7 +199,7 @@
       </div>
     </template>
 
-    <chat v-model="chatDrawer" class="chat"/>
+    <chat v-if="room" v-model="chatDrawer" :room-id="room.id" class="chat"/>
   </div>
 </template>
 
