@@ -146,6 +146,7 @@ return array(
     'App\\Models\\GameRoom' => $baseDir . '/app/Models/GameRoom.php',
     'App\\Models\\GameRoomPlayer' => $baseDir . '/app/Models/GameRoomPlayer.php',
     'App\\Models\\GameRoomPlayerCard' => $baseDir . '/app/Models/GameRoomPlayerCard.php',
+    'App\\Models\\GameRoomPlayerFold' => $baseDir . '/app/Models/GameRoomPlayerFold.php',
     'App\\Models\\Gameable' => $baseDir . '/app/Models/Gameable.php',
     'App\\Models\\GenericAccountTransaction' => $baseDir . '/app/Models/GenericAccountTransaction.php',
     'App\\Models\\PercentageAffiliateCommission' => $baseDir . '/app/Models/PercentageAffiliateCommission.php',

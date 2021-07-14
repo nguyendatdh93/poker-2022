@@ -27,7 +27,7 @@ class GameController extends Controller
     {
         return $gameService
             ->loadProvablyFairGame($request->hash)
-            ->fold($request->only(['bet', 'bonus_bet', 'room_id', 'user_id']))
+            ->fold($request->only(['room_id', 'user_id']))
             ->getGame();
     }
 

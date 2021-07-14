@@ -79,6 +79,11 @@ class GameRoom extends Model
         return $this->players()->where($column, $id)->get()->first();
     }
 
+    public function foldPlayers()
+    {
+        return $this->hasMany(GameRoomPlayerFold::class, 'game_room_id', 'id');
+    }
+
     /**
      * Players who joined the room and started a game
      *

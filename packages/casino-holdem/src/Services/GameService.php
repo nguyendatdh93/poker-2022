@@ -5,7 +5,7 @@ namespace Packages\CasinoHoldem\Services;
 
 use App\Events\CallEvent;
 use App\Events\ChatMessageSent;
-use App\Events\Fold;
+use App\Events\FoldEvent;
 use App\Events\OnPlayersEvent;
 use App\Helpers\Games\CardDeck;
 use App\Helpers\Games\Poker;
@@ -16,6 +16,7 @@ use App\Models\Game;
 use App\Models\GameRoom;
 use App\Models\GameRoomPlayer;
 use App\Models\GameRoomPlayerCard;
+use App\Models\GameRoomPlayerFold;
 use App\Models\User;
 use App\Services\AccountService;
 use App\Services\GameService as ParentGameService;
@@ -104,25 +105,14 @@ class GameService extends ParentGameService
      */
     public function fold($params): GameService
     {
-        broadcast(new Fold($params['room_id'], $params['user_id']));
-//        $provablyFairGame = $this->getProvablyFairGame();
-//        $poker = new Poker(new CardDeck(explode(',', $provablyFairGame->secret)));
-//        $poker->addPlayers(2)->deal(2, 3)->play();
-//        if ($params['bonus_bet'] > 0) {
-//            $bonusHand = new PokerHand($poker->getPlayer(1)->getPocketCards(), $poker->getCommunityCards());
-//
-//            if ($bonusHand->isPairOfAcesOrBetter()) {
-//                $player_bonus_hand_rank = $bonusHand->getRank();
-//                $bonusPayout = (int) config('casino-holdem.bonus_paytable')[$player_bonus_hand_rank];
-//                $bonus_win = $bonusPayout > 0 ? $params['bonus_bet'] * $bonusPayout : 0;
-//            }
-//        }
-//
-//        $this->save([
-//            'win' => $bonus_win ??  $params['bonus_bet'],
-//            'status' => Game::STATUS_COMPLETED
-//        ]);
+        GameRoomPlayerFold::updateOrCreate([
+            'game_room_id' => $params['room_id'],
+            'user_id' => $params['user_id'],
+        ], [
+            'updated_at' => now()
+        ]);
 
+        broadcast(new FoldEvent($params['room_id'], $params['user_id']));
         return $this;
     }
 

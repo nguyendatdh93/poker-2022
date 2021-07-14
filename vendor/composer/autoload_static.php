@@ -857,6 +857,7 @@ class ComposerStaticInit71c7e146d86ef7ddb6a07a2dc986ea91
         'App\\Models\\GameRoom' => __DIR__ . '/../..' . '/app/Models/GameRoom.php',
         'App\\Models\\GameRoomPlayer' => __DIR__ . '/../..' . '/app/Models/GameRoomPlayer.php',
         'App\\Models\\GameRoomPlayerCard' => __DIR__ . '/../..' . '/app/Models/GameRoomPlayerCard.php',
+        'App\\Models\\GameRoomPlayerFold' => __DIR__ . '/../..' . '/app/Models/GameRoomPlayerFold.php',
         'App\\Models\\Gameable' => __DIR__ . '/../..' . '/app/Models/Gameable.php',
         'App\\Models\\GenericAccountTransaction' => __DIR__ . '/../..' . '/app/Models/GenericAccountTransaction.php',
         'App\\Models\\PercentageAffiliateCommission' => __DIR__ . '/../..' . '/app/Models/PercentageAffiliateCommission.php',

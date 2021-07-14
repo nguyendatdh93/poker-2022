@@ -42,9 +42,6 @@
           </template>
           <template v-slot:bottom>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              <p v-if="isFold(opponent)">
-                Fold
-              </p>
               <p v-if="playersBet[i]">
                 <span class="coin">{{ playersBet[i] }}</span>
                 <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
@@ -53,34 +50,7 @@
           </template>
         </hand>
       </div>
-      <div class="d5-flex justify-center flex-wrap mt-10" id="player_actions">
-        <v-btn
-            :disabled="!provablyFairGame.hash || isFold(user)"
-            class="mx-1 my-2 my-lg-0"
-            small
-            @click="action('fold', {
-              room_id: room.id,
-              user_id: user.id,
-              anteBet,
-              bonus_bet: bonusBet,
-              round: round
-            })"
-        > Fold
-        </v-btn>
-        <v-btn
-            :disabled="!provablyFairGame.hash || isFold(user)"
-            class="mx-1 my-2 my-lg-0"
-            small
-            @click="doCall({
-              room_id: room.id,
-              user_id: user.id,
-              anteBet,
-              bonus_bet: bonusBet,
-              round: round
-            })"
-        > Call
-        </v-btn>
-      </div>
+      <actions :room="room" :provably-fair-game="provablyFairGame" :user="user"></actions>
     </template>
 
     <chat v-if="room" v-model="chatDrawer" :room-id="room.id" class="chat"/>
@@ -107,11 +77,12 @@ import PlayControls from '~/components/Games/HoldemPlayControls'
 import GameRoom from '~/components/Games/GameRoom'
 import Chat from '~/components/Chat'
 import Form from "vform";
+import Actions from "../../../../../resources/js/mixins/Holdem/Actions";
 
 export default {
   name: 'CasinoHoldem',
 
-  components: {GameRoom, PlayControls, Hand, Chat},
+  components: {GameRoom, PlayControls, Hand, Chat, Actions},
 
   mixins: [FormMixin, GameMixin, SoundMixin, GameRoomMixin],
 
@@ -212,15 +183,6 @@ export default {
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
       setProvablyFairGame: 'provably-fair/set',
     }),
-    isFold(user) {
-      for (let i = 0; i< this.foldPlayers.length; i++) {
-        if (this.foldPlayers[i] == user.id) {
-          return true;
-        }
-      }
-
-      return false;
-    },
     isDealer(playerId) {
       if (this.players.length >= 3) {
         for (let i = 1; i <= this.players.length; i++) {
