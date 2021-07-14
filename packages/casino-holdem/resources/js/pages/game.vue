@@ -53,41 +53,6 @@
           </template>
         </hand>
       </div>
-      <play-controls v-if="!isBigBlind(user.id) && !isSmallBlind(user.id) && !isDealer(user.id)"
-                     :bet-label="$t('Ante bet')" :disabled="account.balance < initialBet + bonusBet" :loading="loading"
-                     :is-dealer="isDealer(user.id)"
-                     :is-small-blind="isSmallBlind(user.id)"
-                     :is-big-blind="isBigBlind(user.id)"
-                     :playing="playing" @bet-change="initialBet = $event" @play="play(bet)">
-        <template v-slot:after-bet-input>
-          <v-text-field
-              v-model.number="bonusBet"
-              :label="$t('Bonus bet')"
-              dense
-              :rules="!isNaN(minBonusBet) && !isNaN(maxBonusBet) ? [validationInteger, v => validationMin(v, minBonusBet), v => validationMax(v, maxBonusBet)] : []"
-              :disabled="playing"
-              outlined
-              :full-width="false"
-              class="bonus-bet-input text-center ml-md-2"
-          >
-            <template v-slot:prepend-inner>
-              <v-btn small text icon color="primary" @click="bonusBet = Math.max(minBonusBet, bonusBet - bonusBetStep)">
-                <v-icon small>
-                  mdi-minus
-                </v-icon>
-              </v-btn>
-            </template>
-            <template v-slot:append>
-              <v-btn small text icon color="primary" @click="bonusBet = Math.min(maxBonusBet, bonusBet + bonusBetStep)">
-                <v-icon small>
-                  mdi-plus
-                </v-icon>
-              </v-btn>
-            </template>
-          </v-text-field>
-        </template>
-      </play-controls>
-
       <div class="d5-flex justify-center flex-wrap mt-10" id="player_actions">
         <v-btn
             :disabled="!provablyFairGame.hash || isFold(user)"
@@ -164,29 +129,11 @@ export default {
       win: 0,
       netWin: 1,
       chatDrawer: true,
-      dealer: {
-        cards: ['C5', 'DT'],
-        result: this.$t('Two pair')
-      },
-      community: {
-        cards: ['DJ', 'HK', 'H9', 'S5', 'HT']
-      },
-      winCards: ['HK', 'H9', 'HA', 'H4', 'HT'],
       ready: false,
       room: null,
       game: null,
       // action: null,
       loading: false,
-      defaultHand: {
-        name: '',
-        cards: [
-          null, null
-        ],
-        score: -1,
-        result: '',
-        bet: 0,
-        win: 0
-      },
       foldPlayers: [],
       playersBet: {
         0: 0,
@@ -202,18 +149,6 @@ export default {
 
   computed: {
     ...mapState('auth', ['account', 'user']),
-    defaultBonusBet() {
-      return parseInt(this.config.default_bonus_bet_amount, 10)
-    },
-    minBonusBet() {
-      return parseInt(this.config.min_bonus_bet, 10)
-    },
-    maxBonusBet() {
-      return parseInt(this.config.max_bonus_bet, 10)
-    },
-    bonusBetStep() {
-      return parseInt(this.config.bonus_bet_change_amount, 10)
-    },
     playerResultClass() {
       return this.netWin > 0 || this.playing ? 'primary text--primary' : (this.netWin < 0 ? 'error' : 'warning')
     },
@@ -259,28 +194,9 @@ export default {
         this.doAction('stand')
       }
     },
-    playing(playing, wasPlaying) {
-      // clear action time interval when the game is completed
-      if (wasPlaying && !playing) {
-        this.clearActionTimeInterval()
-      }
-    },
     room(room) {
       this.playersBet["1"] = this.room.parameters.bet;
       this.playersBet["2"] = this.room.parameters.bet * 2;
-      // this.echo.join(`game.${room.id}`)
-      //     .listen('Fold', data => {
-      //       this.foldPlayers.push(data.user_id);
-      //     })
-      //     .listen('CallEvent', data => {
-      //       let index = this.players.findIndex(player => player.id == data.user_id);
-      //       this.playersBet[index] = data.bet;
-      //       if (index == this.players.length - 1) {
-      //         this.turnForm.turn_to_play = 0;
-      //       } else{
-      //         this.turnForm.turn_to_play = index+1;
-      //       }
-      //     });
     },
   },
   created() {
@@ -381,225 +297,8 @@ export default {
         this.loading = false
       })
     },
-    // handle game actions (deal, hit, stand etc)
-    async action(name, params = {}) {
-      if (name !== 'play') {
-        this.sound(clickSound)
-      }
-
-      // disable all actions
-      this.actions.forEach(action => {
-        action.disabled = true
-        action.loading = action.name === name
-      })
-
-      // update user balance
-      if (name === 'call') {
-        this.bet += this.anteBet * 2
-        this.updateUserAccountBalance(this.account.balance - this.anteBet * 2)
-      }
-
-      this.player.result = ''
-
-      // clear previous game results
-      if (name === 'play') {
-        this.bet = 0
-        this.win = 0
-        setTimeout(() => {
-          this.netWin = 0
-        }, 500)
-
-        this.player.cards = []
-        this.dealer.cards = []
-        this.community.cards = []
-        this.winCards = []
-
-        this.dealer.result = ''
-
-        this.updateUserAccountBalance(this.account.balance - this.anteBet)
-
-        this.sound(swooshSound)
-
-        await sleep(500)
-      }
-
-      // API request params
-      const endpoint = this.getRoute(name)
-      const requestParams = {hash: this.provablyFairGame.hash, ...params}
-
-      // execute the action
-      const {data: game} = await axios.post(endpoint, requestParams)
-
-      let animationDelay = 0
-
-      // initial draw
-      if (!game.is_completed) {
-        this.bet = game.bet
-
-        // 1st player card
-        this.player.cards.push(game.gameable.player_cards[0])
-        this.sound(dealSound)
-
-        // 1st dealer card
-        setTimeout(() => {
-          this.dealer.cards.push(null)
-          this.sound(dealSound)
-        }, animationDelay += 500)
-
-        // 2nd player card
-        setTimeout(() => {
-          this.player.cards.push(game.gameable.player_cards[1])
-          this.sound(dealSound)
-        }, animationDelay += 500)
-
-        // 2nd dealer card
-        setTimeout(() => {
-          this.dealer.cards.push(null)
-          this.sound(dealSound)
-        }, animationDelay += 500)
-
-        // deal 3 community cards
-        game.gameable.community_cards.forEach(card => {
-          setTimeout(() => {
-            this.community.cards.push(card)
-            this.sound(dealSound)
-          }, animationDelay += 500)
-        })
-
-        // display player hand rank
-        setTimeout(() => {
-          this.player.result = game.gameable.player_hand_title
-          this.winCards = game.gameable.player_combination_cards
-
-          // show action buttons
-          this.actions.forEach(action => {
-            // if user has sufficient funds to place call bet
-            if (action.name !== 'call' || this.account.balance >= this.anteBet * 2) {
-              action.disabled = false
-            }
-          })
-        }, animationDelay)
-
-        setTimeout(() => {
-          this.winCards = []
-        }, animationDelay += 2500)
-        // game completed
-      } else {
-        this.setProvablyFairGame({key: this.gamePackageId, game: game.pf_game})
-
-        this.actions.forEach(action => {
-          setTimeout(() => {
-            action.loading = false
-          }, animationDelay)
-        })
-
-        animationDelay += 250
-
-        if (game.gameable.call_bet) {
-          // deal 2 more community cards
-          game.gameable.community_cards.slice(3).forEach(card => {
-            setTimeout(() => {
-              this.community.cards.push(card)
-              this.sound(dealSound)
-            }, animationDelay += 500)
-          })
-
-          // show dealer cards
-          game.gameable.dealer_cards.forEach((card, i) => {
-            setTimeout(() => {
-              // direct assignment causes animation strange delay, so using splice instead
-              this.dealer.cards.splice(i, 1, card)
-              this.sound(flipSound)
-            }, animationDelay += 500)
-          })
-        }
-
-        // display dealer score and result for each hand
-        setTimeout(() => {
-          this.win = game.win
-          this.netWin = game.win - game.bet
-
-          this.player.result = game.gameable.call_bet ? game.gameable.player_hand_title : this.$t('Fold')
-
-          if (game.gameable.call_bet) {
-            this.dealer.result = game.gameable.dealer_hand_title
-          }
-
-          this.playing = false
-
-          // update balance
-          this.updateUserAccountBalance(game.account.balance)
-
-          if (game.gameable.call_bet) {
-            if (game.gameable.call_win > 0) {
-              this.winCards = game.gameable.player_combination_cards
-            } else if (game.gameable.call_win === 0) {
-              this.winCards = game.gameable.dealer_combination_cards
-            }
-          }
-
-          // play sound
-          if (this.netWin > 0) {
-            this.sound(winSound)
-          } else if (this.netWin === 0) {
-            this.sound(pushSound)
-          } else {
-            this.sound(loseSound)
-          }
-        }, animationDelay += 500)
-      }
-    },
     isOpponentTurn(opponent) {
       return this.time && opponent.action_start && opponent.action_end && opponent.action_start <= this.time && this.time <= opponent.action_end
-    },
-
-    // handle game actions (play, hit, stand)
-    async doAction(action) {
-      this.action = action
-
-      // clear previous game results
-      if (action === 'play') {
-        this.sound(swooshSound)
-        this.playing = true
-        this.updateUserAccountBalance(this.account.balance - this.bet)
-
-        // assign default hand values (remove existing cards)
-        this.player = {...this.defaultHand}
-
-        for (const userId in this.opponents) {
-          if (this.opponents[userId].score > 0) {
-            this.opponents[userId] = {...this.defaultHand, name: this.opponents[userId].name}
-            setTimeout(() => this.updatePlayerHand(this.opponents[userId], {cards: [null, null]}), 200)
-          }
-        }
-      } else {
-        this.sound(clickSound)
-      }
-
-      // execute the action
-      const {data: game} = await axios.post(this.getRoute(action).replace('{room}', `${this.room.id}`))
-
-      this.game = game
-
-      // deal sound
-      if (action === 'play' || action === 'hit') {
-        this.sound(dealSound)
-      }
-
-      if (action !== 'cancel') {
-        // update player hand
-        this.player = {...this.player, ...game.gameable.player_hand}
-      } else {
-        // assign default hand values (remove existing cards)
-        this.updatePlayerHand(this.player, {...this.defaultHand, cards: [null, null], result: this.$t('Cancelled')})
-        this.updateUserAccountBalance(this.account.balance + game.gameable.player_hand.win)
-      }
-
-      // enable action buttons
-      this.action = null
-
-      // enable action time interval
-      this.enableActionTimeInterval()
     },
     isActionDisabled(action) {
       return !!this.action
@@ -614,13 +313,6 @@ export default {
         this.intervalId = setInterval(() => {
           this.time++
         }, 1000)
-      }
-    },
-    clearActionTimeInterval() {
-      if (this.intervalId) {
-        clearInterval(this.intervalId)
-        this.intervalId = null
-        this.time = null
       }
     },
     resultClass(player) {
@@ -644,69 +336,8 @@ export default {
         players: players,
         room_id: this.room.id,
       })
-
-      players.forEach(player => {
-        // if the hand belongs to the current user
-        if (this.user.id === player.id) {
-          // set the player hand to default values
-          this.player = {...this.defaultHand, id: player.id, name: this.user.name}
-          // update player hand to display cards
-          setTimeout(() => {
-            this.updatePlayerHand(
-                this.player,
-                this.game
-                    ? {...get(this.game, 'gameable.player_hand')}
-                    : {
-                      cards: this.room.gameable.player_cards, result: players.length === this.playersCount ? this.$t('Click Play') : this.$t('Waiting')
-                    }
-            )
-
-            if (this.playing) {
-              this.enableActionTimeInterval()
-            }
-          }, 100)
-
-          // if the hand DOES NOT belong to the current user
-        } else {
-          // set the opponent hand to default values
-          this.$set(this.opponents, player.id, {...this.defaultHand, name: player.name, id: player.id})
-          // update opponent hand to display values
-          setTimeout(() => {
-            this.updatePlayerHand(this.opponents[player.id],
-                get(this.game, 'gameable.opponent_hands')
-                    ? {...get(this.game, 'gameable.opponent_hands.' + player.id)}
-                    : {cards: [null, null]}
-            )
-          }, 100)
-        }
-      })
     },
     onPlayerJoined(player) {
-      // if this player didn't join earlier
-      if (!this.opponents[player.id]) {
-        this.$set(this.opponents, player.id, {...this.defaultHand, name: player.name})
-        setTimeout(() => this.updatePlayerHand(this.opponents[player.id], {cards: [null, null]}), 100)
-
-        // update player message when all players joined
-        if (Object.keys(this.opponents).length + 1 === this.playersCount) {
-          this.updatePlayerHand(this.player, {result: this.$t('Click Play')})
-        }
-        // if this player already exists (probably left and joined again)
-      } else {
-        this.updatePlayerHand(this.opponents[player.id], {result: ''})
-      }
-
-      let playerIndex = this.players.findIndex(function (i) {
-        return i.id === player.id;
-      });
-
-      if (playerIndex > -1) {
-        this.players.splice(this.players.findIndex(function (i) {
-          return i.id === player.id;
-        }), 1);
-      }
-
-      this.players.push(this.opponents[player.id]);
     },
     onPlayerLeft(player) {
       // add a message when a player leaves the room (it also happens when the page is refreshed)
@@ -786,7 +417,6 @@ export default {
       this.player = {}
       this.opponents = {}
       this.playing = false
-      this.clearActionTimeInterval()
     }
 
   }
