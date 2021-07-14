@@ -6,6 +6,7 @@ namespace Packages\CasinoHoldem\Services;
 use App\Events\CallEvent;
 use App\Events\ChatMessageSent;
 use App\Events\Fold;
+use App\Events\OnPlayersEvent;
 use App\Helpers\Games\CardDeck;
 use App\Helpers\Games\Poker;
 use App\Helpers\Games\PokerPlayer;
@@ -13,9 +14,12 @@ use App\Models\Account;
 use App\Models\AccountTransaction;
 use App\Models\Game;
 use App\Models\GameRoom;
+use App\Models\GameRoomPlayer;
+use App\Models\GameRoomPlayerCard;
 use App\Models\User;
 use App\Services\AccountService;
 use App\Services\GameService as ParentGameService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Packages\CasinoHoldem\Helpers\PokerHand;
 use Packages\CasinoHoldem\Models\CasinoHoldem;
@@ -235,5 +239,56 @@ class GameService extends ParentGameService
         } else {
             $instance->call();
         }
+    }
+
+    public function onPlayers($params)
+    {
+        $players = $params['players'];
+        foreach ($players as $player) {
+            if (GameRoomPlayer::where('user_id', $player['id'])->count() == 0) {
+                GameRoomPlayer::create([
+                    'game_room_id' => $params['room_id'],
+                    'user_id' => $player['id'],
+                ]);
+            }
+        }
+
+        $this->getPlayersCard($params['room_id'], $players);
+        $players = GameRoomPlayer::with([
+            'gameRoomPlayerCards' => function($query) use ($params) {
+                return $query->where('game_room_id', $params['room_id']);
+            }
+        ])->where('game_room_id', $params['room_id'])->orderBy('id', 'asc')->get();
+        foreach ($players as $key => $player) {
+            $players[$key]['cards'] = $player->gameRoomPlayerCards->first()->cards;
+        }
+
+        broadcast(new OnPlayersEvent($players->toJson(), $params['room_id']));
+        return $this;
+    }
+
+    private function getPlayersCard($roomID, $players)
+    {
+        $provablyFairGame = $this->getProvablyFairGame();
+
+        // load initially shuffled deck
+        $deck = new CardDeck(explode(',', $provablyFairGame->secret));
+        // cut the deck (provably fair)
+        $deck->cut($provablyFairGame->shift_value % 52);
+        $poker = new Poker($deck);
+        $poker->addPlayers(count($players))->deal(2, 3)->play();;
+
+        foreach ($players as $key => $player) {
+            if (Auth::id() == $player['id']) {
+                $cards = $poker->getPlayer($key+1)->getPocketCards()->map->code;
+                GameRoomPlayerCard::updateOrCreate([
+                    'game_room_id' => $roomID,
+                    'user_id' => $player['id'],
+                ],[
+                    'cards' => $cards
+                ]);
+            }
+        }
+
     }
 }

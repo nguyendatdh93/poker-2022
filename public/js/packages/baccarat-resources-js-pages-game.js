@@ -118,17 +118,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
-/***/ "./resources/js/plugins/route.js":
-/*!***************************************!*\
-  !*** ./resources/js/plugins/route.js ***!
-  \***************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"route\": () => (/* binding */ route)\n/* harmony export */ });\n/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ~/store */ \"./resources/js/store/index.js\");\n\nfunction route(name) {\n  return _store__WEBPACK_IMPORTED_MODULE_0__.default.getters[\"route/get\"](name);\n}//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9yZXNvdXJjZXMvanMvcGx1Z2lucy9yb3V0ZS5qcz80MDU5Il0sIm5hbWVzIjpbInJvdXRlIiwibmFtZSIsInN0b3JlIl0sIm1hcHBpbmdzIjoiOzs7OztBQUFBO0FBRU8sU0FBU0EsS0FBVCxDQUFnQkMsSUFBaEIsRUFBc0I7QUFDM0IsU0FBT0MsZ0VBQUEsQ0FBMkJELElBQTNCLENBQVA7QUFDRCIsImZpbGUiOiIuL3Jlc291cmNlcy9qcy9wbHVnaW5zL3JvdXRlLmpzLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHN0b3JlIGZyb20gJ34vc3RvcmUnXG5cbmV4cG9ydCBmdW5jdGlvbiByb3V0ZSAobmFtZSkge1xuICByZXR1cm4gc3RvcmUuZ2V0dGVyc1sncm91dGUvZ2V0J10obmFtZSlcbn1cbiJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./resources/js/plugins/route.js\n");
-
-/***/ }),
-
 /***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-11[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-11[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-11[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./packages/baccarat/resources/js/pages/game.vue?vue&type=style&index=0&id=76bf20b1&lang=scss&scoped=true&":
 /*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-11[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-11[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-11[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./packages/baccarat/resources/js/pages/game.vue?vue&type=style&index=0&id=76bf20b1&lang=scss&scoped=true& ***!

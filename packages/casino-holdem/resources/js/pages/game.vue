@@ -17,7 +17,7 @@
         <hand
             v-for="(opponent, i) in players"
             :key="i"
-            :cards="opponent.cards"
+            :cards="opponent.user_id == user.id ? opponent.cards : [null, null]"
             :score="opponent.score"
             :result="opponent.score > 0 && !playing ? resultMessage(opponent) : opponent.result"
             :result-class="resultClass(opponent)"
@@ -49,91 +49,10 @@
                 <span class="coin">{{ playersBet[i] }}</span>
                 <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
               </p>
-<!--              <p v-if="isBigBlind(opponent.id)">-->
-<!--                <span class="coin">{{ room.parameters.bet * 2 }}</span>-->
-<!--                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>-->
-<!--              </p>-->
             </div>
           </template>
         </hand>
       </div>
-<!--      <div class="d-flex justify-center fill-height align-center">-->
-<!--        <hand-->
-<!--            v-if="player.cards"-->
-<!--            :cards="player.cards"-->
-<!--            :score="player.score"-->
-<!--            :result="player.score > 0 && !playing ? resultMessage(player) : player.result"-->
-<!--            :result-class="resultClass(player)"-->
-<!--            :bet="player.bet"-->
-<!--            :win="player.win"-->
-<!--        >-->
-<!--          <template v-slot:title>-->
-<!--            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">-->
-<!--              {{ room.dealer && user.id == room.dealer.user_id ? 'Dealer' : user.name }}-->
-<!--            </div>-->
-<!--          </template>-->
-<!--          <template v-slot:bottom>-->
-<!--            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">-->
-<!--              <p v-if="isFold(player)">-->
-<!--                Fold-->
-<!--              </p>-->
-<!--              <p v-if="isSmallBlind(player.id)">-->
-<!--                <span class="coin">{{ room.parameters.bet * 1 }}</span>-->
-<!--                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>-->
-<!--              </p>-->
-<!--              <p v-if="isBigBlind(player.id)">-->
-<!--                <span class="coin">{{ room.parameters.bet * 2 }}</span>-->
-<!--                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>-->
-<!--              </p>-->
-<!--            </div>-->
-<!--          </template>-->
-<!--        </hand>-->
-<!--      </div>-->
-
-
-      <!-- <hand
-        :cards="dealer.cards"
-        :result="dealer.result"
-        :inactive-cards="winCards.length && !playing ? dealer.cards.filter(card => winCards.indexOf(card) === -1) : []"
-        class="d-flex justify-center"
-        :result-class="dealerResultClass"
-      />
-      <div class="d-flex justify-space-around fill-height align-center">
-        <hand
-          :cards="community.cards"
-          :inactive-cards="winCards.length ? community.cards.filter(card => winCards.indexOf(card) === -1) : []"
-        />
-      </div>
-      <div class="d-flex justify-center align-center">
-        <hand
-          :cards="player.cards"
-          :score="player.score"
-          :result="player.score > 0 && !playing ? resultMessage(player) : player.result"
-          :result-class="resultClass(player)"
-          :bet="player.bet"
-          :win="player.win"
-          :player="true"
-        >
-          <template v-slot:title>
-            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              {{ room.dealer && user.id == room.dealer.user_id ? 'Dealer' : user.name }}
-            </div>
-          </template>
-          <template v-slot:bottom>
-            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              <p v-if="room.small_blind && room.small_blind.user_id == user.id">
-                <span class="coin relative">{{ room.parameters.bet * 1 }}</span>
-                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
-              </p>
-              <p v-if="room.big_blind && room.big_blind.user_id == user.id">
-                <span class="coin relative">{{ room.parameters.bet * 2 }}</span>
-                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
-              </p>
-            </div>
-          </template>
-        </hand>
-      </div>
-      -->
       <play-controls v-if="!isBigBlind(user.id) && !isSmallBlind(user.id) && !isDealer(user.id)"
                      :bet-label="$t('Ante bet')" :disabled="account.balance < initialBet + bonusBet" :loading="loading"
                      :is-dealer="isDealer(user.id)"
@@ -207,6 +126,7 @@
 import axios from 'axios'
 import {mapState, mapActions} from 'vuex'
 import FormMixin from '~/mixins/Form'
+import GameRoomMixin from '~/mixins/Holdem/GameRoom'
 import GameMixin from '~/mixins/Game'
 import SoundMixin from '~/mixins/Sound'
 import Hand from '~/components/Games/Cards/Hand'
@@ -228,7 +148,7 @@ export default {
 
   components: {GameRoom, PlayControls, Hand, Chat},
 
-  mixins: [FormMixin, GameMixin, SoundMixin],
+  mixins: [FormMixin, GameMixin, SoundMixin, GameRoomMixin],
 
   data() {
     return {
@@ -251,7 +171,6 @@ export default {
       community: {
         cards: ['DJ', 'HK', 'H9', 'S5', 'HT']
       },
-      players: [],
       winCards: ['HK', 'H9', 'HA', 'H4', 'HT'],
       ready: false,
       room: null,
@@ -349,19 +268,19 @@ export default {
     room(room) {
       this.playersBet["1"] = this.room.parameters.bet;
       this.playersBet["2"] = this.room.parameters.bet * 2;
-      this.echo.join(`game.${room.id}`)
-          .listen('Fold', data => {
-            this.foldPlayers.push(data.user_id);
-          })
-          .listen('CallEvent', data => {
-            let index = this.players.findIndex(player => player.id == data.user_id);
-            this.playersBet[index] = data.bet;
-            if (index == this.players.length - 1) {
-              this.turnForm.turn_to_play = 0;
-            } else{
-              this.turnForm.turn_to_play = index+1;
-            }
-          });
+      // this.echo.join(`game.${room.id}`)
+      //     .listen('Fold', data => {
+      //       this.foldPlayers.push(data.user_id);
+      //     })
+      //     .listen('CallEvent', data => {
+      //       let index = this.players.findIndex(player => player.id == data.user_id);
+      //       this.playersBet[index] = data.bet;
+      //       if (index == this.players.length - 1) {
+      //         this.turnForm.turn_to_play = 0;
+      //       } else{
+      //         this.turnForm.turn_to_play = index+1;
+      //       }
+      //     });
     },
   },
   created() {
@@ -375,7 +294,7 @@ export default {
   methods: {
     ...mapActions({
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
-      setProvablyFairGame: 'provably-fair/set'
+      setProvablyFairGame: 'provably-fair/set',
     }),
     isFold(user) {
       for (let i = 0; i< this.foldPlayers.length; i++) {
@@ -633,11 +552,7 @@ export default {
     isOpponentTurn(opponent) {
       return this.time && opponent.action_start && opponent.action_end && opponent.action_start <= this.time && this.time <= opponent.action_end
     },
-    updatePlayerHand(player, values) {
-      Object.keys(values).forEach(key => {
-        player[key] = values[key]
-      })
-    },
+
     // handle game actions (play, hit, stand)
     async doAction(action) {
       this.action = action
@@ -724,9 +639,12 @@ export default {
       this.room = room;
     },
     onPlayers(players) {
-      this.players = [];
-      // loop through player hands
-      players = players.sort((player1, player2) => player1.id - player2.id);
+      this.$store.dispatch('game-room/onPlayers', {
+        hash: this.provablyFairGame.hash,
+        players: players,
+        room_id: this.room.id,
+      })
+
       players.forEach(player => {
         // if the hand belongs to the current user
         if (this.user.id === player.id) {
@@ -746,8 +664,6 @@ export default {
             if (this.playing) {
               this.enableActionTimeInterval()
             }
-
-            this.players.push(this.player);
           }, 100)
 
           // if the hand DOES NOT belong to the current user
@@ -761,8 +677,6 @@ export default {
                     ? {...get(this.game, 'gameable.opponent_hands.' + player.id)}
                     : {cards: [null, null]}
             )
-
-            this.players.push(this.opponents[player.id]);
           }, 100)
         }
       })

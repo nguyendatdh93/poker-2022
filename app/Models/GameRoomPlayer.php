@@ -27,4 +27,9 @@ class GameRoomPlayer extends Model
     {
         return $this->belongsTo(Game::class);
     }
+
+    public function gameRoomPlayerCards()
+    {
+        return $this->hasMany(GameRoomPlayerCard::class, 'user_id','user_id');
+    }
 }

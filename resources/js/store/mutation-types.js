@@ -24,3 +24,6 @@ export const ONLINE_REMOVE = 'ONLINE_REMOVE'
 // game.js
 export const GAME_ADD = 'GAME_ADD'
 export const GAME_INCREMENT_COUNT = 'GAME_INCREMENT_COUNT'
+
+// game-room.js
+export const GAME_ROOM_PLAYERS = 'GAME_ROOM_PLAYERS'
