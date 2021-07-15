@@ -243,7 +243,27 @@ class GameService extends ParentGameService
             }
         }
 
-        $this->getPlayersCard($params['room_id'], $players);
+        // Delete users who are no longer in the room
+        if (array_column($players, 'id')) {
+            GameRoomPlayer::whereNotIn('user_id', array_column($players, 'id'))->delete();
+        }
+
+        $players = $this->getRoomPlayers($params);
+        broadcast(new OnPlayersEvent($players->toJson(), $params['room_id']));
+        return $this;
+    }
+
+    public function left($params)
+    {
+        $player = $params['player'];
+        GameRoomPlayer::where('user_id', $player['id'])->delete();
+        $players = $this->getRoomPlayers($params);
+        broadcast(new OnPlayersEvent($players->toJson(), $params['room_id']));
+        return $this;
+    }
+
+    private function getRoomPlayers($params)
+    {
         $players = GameRoomPlayer::with([
             'gameRoomPlayerCards' => function($query) use ($params) {
                 return $query->where('game_room_id', $params['room_id']);
@@ -253,8 +273,7 @@ class GameService extends ParentGameService
             $players[$key]['cards'] = $player->gameRoomPlayerCards->first()->cards;
         }
 
-        broadcast(new OnPlayersEvent($players->toJson(), $params['room_id']));
-        return $this;
+        return $players;
     }
 
     private function getPlayersCard($roomID, $players)

@@ -23,7 +23,7 @@
             :result-class="resultClass(opponent)"
             :bet="opponent.bet"
             :win="opponent.win"
-            :id="craeteId(i)"
+            :id="createId(i)"
         >
           <template v-slot:title>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
@@ -194,7 +194,7 @@ export default {
 
       return false;
     },
-    craeteId(index) {
+    createId(index) {
       const opponentCount = Object.keys(this.opponents).length;
       let id = "opponent_";
       if (index == 2 && opponentCount == 8) {
@@ -302,8 +302,11 @@ export default {
     onPlayerJoined(player) {
     },
     onPlayerLeft(player) {
-      // add a message when a player leaves the room (it also happens when the page is refreshed)
-      this.updatePlayerHand(this.opponents[player.id], {result: this.$t('Left')})
+      axios.post('/api/games/casino-holdem/left', {
+        hash: this.provablyFairGame.hash,
+        room_id: this.room.id,
+        player: player
+      });
     },
     // called when the page is refreshed
     onGame(game) {

@@ -11,5 +11,6 @@ Route::name('games.casino-holdem.')
         Route::post('api/games/casino-holdem/fold', [GameController::class, 'fold'])->name('fold');
         Route::post('api/games/casino-holdem/call', [GameController::class, 'call'])->name('call');
         Route::post('api/games/casino-holdem/turn', [GameController::class, 'leave'])->name('turn');
+        Route::post('api/games/casino-holdem/left', [GameController::class, 'left'])->name('left');
         Route::post('api/games/casino-holdem/players', [GameController::class, 'onPlayers'])->name('on.players');
     });

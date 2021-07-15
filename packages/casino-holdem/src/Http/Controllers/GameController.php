@@ -46,4 +46,12 @@ class GameController extends Controller
             ->onPlayers($request->only(['room_id', 'players']))
             ->getGame();
     }
+
+    public function left(Action $request, GameService $gameService)
+    {
+        return $gameService
+            ->loadProvablyFairGame($request->hash)
+            ->left($request->only(['room_id', 'player']))
+            ->getGame();
+    }
 }
