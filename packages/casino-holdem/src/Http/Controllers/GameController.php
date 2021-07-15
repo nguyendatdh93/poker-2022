@@ -62,4 +62,12 @@ class GameController extends Controller
             ->communityCard($request->only(['room_id']))
             ->getGame();
     }
+
+    public function action(Action $request, GameService $gameService)
+    {
+        return $gameService
+            ->loadProvablyFairGame($request->hash)
+            ->action($request->only(['room_id', 'round']))
+            ->getGame();
+    }
 }

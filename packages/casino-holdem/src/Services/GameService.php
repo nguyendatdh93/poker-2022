@@ -289,6 +289,13 @@ class GameService extends ParentGameService
         return $this;
     }
 
+    public function action($params)
+    {
+        $playerIdsFold = GameRoomPlayerFold::where('game_room_id', $params['room_id'])->get()->pluck('user_id');
+        $playerCanAction = GameRoomPlayerBet::whereNotIn('user_id', $playerIdsFold)->where('round', $params['round'])->first();
+        return $this;
+    }
+
     private function getRoomPlayers($params)
     {
         $players = GameRoomPlayer::with([
