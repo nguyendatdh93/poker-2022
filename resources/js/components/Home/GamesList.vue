@@ -15,15 +15,18 @@
           mandatory
         >
           <v-chip label active @click="filterByCategory('')">
-            {{ $t('All') }}
+            Cash Games
           </v-chip>
-          <v-chip v-for="category in categories" :key="category" label @click="filterByCategory(category)">
+          <v-chip label @click="showTournaments()">
+            Tournaments 
+          </v-chip>
+          <!-- <v-chip v-for="category in categories" :key="category" label @click="filterByCategory(category)">
             {{ category }}
-          </v-chip>
+          </v-chip> -->
         </v-chip-group>
       </v-col>
     </v-row>
-    <v-row ref="games" class="justify-center">
+    <v-row ref="games" class="justify-center" v-if="!tournaments">
       <template v-for="(game, id) in games">
         <v-col
           v-if="!config(id + '.variations')"
@@ -65,7 +68,8 @@ export default {
   data () {
     return {
       selectedCategory: null,
-      shuffle: null
+      shuffle: null,
+      tournaments:false,
     }
   },
 
@@ -96,11 +100,16 @@ export default {
   methods: {
     config,
     filterByCategory (category) {
+      this.tournaments = false;
       if (!this.shuffle) {
         this.shuffle = new Shuffle(this.$refs.games, { itemSelector: '.game-card' })
       }
 
       this.shuffle.filter(category)
+    },
+    showTournaments(){
+      this.tournaments = true;
+      // no tournaments available for now
     }
   }
 }
