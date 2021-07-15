@@ -729,6 +729,7 @@ class ComposerStaticInit71c7e146d86ef7ddb6a07a2dc986ea91
         'App\\Events\\ChatMessageSent' => __DIR__ . '/../..' . '/app/Events/ChatMessageSent.php',
         'App\\Events\\FoldEvent' => __DIR__ . '/../..' . '/app/Events/FoldEvent.php',
         'App\\Events\\GamePlayed' => __DIR__ . '/../..' . '/app/Events/GamePlayed.php',
+        'App\\Events\\GameRoomCommunityCardEvent' => __DIR__ . '/../..' . '/app/Events/GameRoomCommunityCardEvent.php',
         'App\\Events\\GameRoomStartEvent' => __DIR__ . '/../..' . '/app/Events/GameRoomStartEvent.php',
         'App\\Events\\MultiplayerGameStateChanged' => __DIR__ . '/../..' . '/app/Events/MultiplayerGameStateChanged.php',
         'App\\Events\\OnPlayersEvent' => __DIR__ . '/../..' . '/app/Events/OnPlayersEvent.php',

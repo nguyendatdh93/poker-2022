@@ -18,6 +18,7 @@ return array(
     'App\\Events\\ChatMessageSent' => $baseDir . '/app/Events/ChatMessageSent.php',
     'App\\Events\\FoldEvent' => $baseDir . '/app/Events/FoldEvent.php',
     'App\\Events\\GamePlayed' => $baseDir . '/app/Events/GamePlayed.php',
+    'App\\Events\\GameRoomCommunityCardEvent' => $baseDir . '/app/Events/GameRoomCommunityCardEvent.php',
     'App\\Events\\GameRoomStartEvent' => $baseDir . '/app/Events/GameRoomStartEvent.php',
     'App\\Events\\MultiplayerGameStateChanged' => $baseDir . '/app/Events/MultiplayerGameStateChanged.php',
     'App\\Events\\OnPlayersEvent' => $baseDir . '/app/Events/OnPlayersEvent.php',
