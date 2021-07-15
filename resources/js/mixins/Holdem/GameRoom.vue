@@ -21,7 +21,13 @@ export default {
               console.log('GameRoomStartEvent', JSON.parse(data.game_room));
               let gameRoom = JSON.parse(data.game_room);
               this.$store.dispatch('game-room/setPlayersBet', gameRoom.players_bet);
-              this.$store.dispatch('game-room/setCommunityCard', gameRoom.community_card);
+              this.$store.dispatch('game-room/fetchCommunityCard', {
+                hash: this.provablyFairGame.hash,
+                room_id: gameRoom.id
+              });
+          }).listen('GameRoomCommunityCardEvent', data => {
+              console.log('GameRoomCommunityCardEvent', data);
+              this.$store.dispatch('game-room/setCommunityCard', data.community_card);
           });
     },
   },

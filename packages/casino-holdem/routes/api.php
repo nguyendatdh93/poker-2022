@@ -13,4 +13,5 @@ Route::name('games.casino-holdem.')
         Route::post('api/games/casino-holdem/turn', [GameController::class, 'leave'])->name('turn');
         Route::post('api/games/casino-holdem/left', [GameController::class, 'left'])->name('left');
         Route::post('api/games/casino-holdem/players', [GameController::class, 'onPlayers'])->name('on.players');
+        Route::post('api/games/casino-holdem/community-card', [GameController::class, 'showCommunityCard'])->name('community.card');
     });

@@ -42,7 +42,7 @@
           </template>
           <template v-slot:bottom>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              <p v-if="playersBet[opponent.user_id]">
+              <p v-if="playersBet[opponent.user_id] && playersBet[opponent.user_id].bet > 0">
                 <span class="coin">{{ playersBet[opponent.user_id].bet }}</span>
                 <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
               </p>

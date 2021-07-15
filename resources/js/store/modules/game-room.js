@@ -49,5 +49,8 @@ export const actions = {
   setCommunityCard({commit}, payload) {
     // execute the action
     commit(GAME_ROOM_COMMUNITY_CARD, payload);
+  },
+  async fetchCommunityCard({commit}, payload) {
+    await axios.post('/api/games/casino-holdem/community-card', payload)
   }
 }

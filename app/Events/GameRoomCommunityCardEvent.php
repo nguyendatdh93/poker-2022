@@ -19,7 +19,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class GameRoomStartEvent implements ShouldBroadcast
+class GameRoomCommunityCardEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -54,9 +54,10 @@ class GameRoomStartEvent implements ShouldBroadcast
      */
     public function broadcastWhen()
     {
+        // if all players have bet => show community card
+        $gameRoomPlayersBetCount = GameRoomPlayerBet::where('game_room_id',$this->roomId)->count();
         $this->gameRoom = GameRoom::where('id', $this->roomId)->first();
-        $this->players = GameRoomPlayer::where('game_room_id', $this->roomId)->orderBy('id', 'asc')->get();
-        return $this->gameRoom->parameters->players_count == $this->players->count();
+        return $this->gameRoom->parameters->players_count == $gameRoomPlayersBetCount;
     }
 
     /**
@@ -66,38 +67,10 @@ class GameRoomStartEvent implements ShouldBroadcast
      */
     public function broadcastWith()
     {
-        $this->initPlayersBet();
-        $this->gameRoom->players_bet = $this->gameRoom->playersBet()->get()->keyBy('user_id');
+        $communityCard = $this->gameRoom->communityCard()->first();
         return [
             'room_id' => $this->roomId,
-            'players' => $this->players,
-            'game_room' => json_encode($this->gameRoom),
+            'community_card' => $communityCard,
         ];
-    }
-
-    private function initPlayersBet()
-    {
-        $this->updateOrCreatePlayerBet($this->players->first()->user_id, $this->roomId, 0); // dealer is always bet = 0 for preFlop.
-        $smallBlindIndex = $this->players->count() == 2 ? 0 : 1;
-        $bigBlindIndex = $this->players->count() == 2 ? 1 : 2;
-        foreach ($this->players as $key => $player) {
-            if ($key == $smallBlindIndex) { // for small blind
-                $this->updateOrCreatePlayerBet($player->user_id, $this->roomId, $this->gameRoom->parameters->bet);
-            }
-
-            if ($key == $bigBlindIndex) { // for big blind
-                $this->updateOrCreatePlayerBet($player->user_id, $this->roomId, $this->gameRoom->parameters->bet * 2);
-            }
-        }
-    }
-
-    private function updateOrCreatePlayerBet($playerId, $roomId, $bet)
-    {
-        GameRoomPlayerBet::updateOrCreate([
-            'game_room_id' => $roomId,
-            'user_id' => $playerId,
-        ], [
-            'bet' => $bet,
-        ]);
     }
 }

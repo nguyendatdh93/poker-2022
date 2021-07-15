@@ -6,6 +6,7 @@ namespace Packages\CasinoHoldem\Services;
 use App\Events\CallEvent;
 use App\Events\ChatMessageSent;
 use App\Events\FoldEvent;
+use App\Events\GameRoomCommunityCardEvent;
 use App\Events\GameRoomStartEvent;
 use App\Events\OnPlayersEvent;
 use App\Helpers\Games\CardDeck;
@@ -15,7 +16,9 @@ use App\Models\Account;
 use App\Models\AccountTransaction;
 use App\Models\Game;
 use App\Models\GameRoom;
+use App\Models\GameRoomCommunityCard;
 use App\Models\GameRoomPlayer;
+use App\Models\GameRoomPlayerBet;
 use App\Models\GameRoomPlayerCard;
 use App\Models\GameRoomPlayerFold;
 use App\Models\User;
@@ -262,6 +265,27 @@ class GameService extends ParentGameService
         GameRoomPlayer::where('user_id', $player['id'])->delete();
         $players = $this->getRoomPlayers($params);
         broadcast(new OnPlayersEvent($players->toJson(), $params['room_id']));
+        return $this;
+    }
+
+    public function communityCard($params)
+    {
+        $gameRoomCommunityCard = GameRoomCommunityCard::where('game_room_id', $params['room_id'])->first();
+        if (!$gameRoomCommunityCard) {
+            $provablyFairGame = $this->getProvablyFairGame();
+            $deck = new CardDeck(explode(',', $provablyFairGame->secret));
+            $deck->cut($provablyFairGame->shift_value % 52);
+            $poker = new Poker($deck);
+            $poker->addPlayers($this->players->count())->deal(2, 3)->play();
+
+            GameRoomCommunityCard::updateOrCreate([
+                'game_room_id' => $this->roomId,
+            ], [
+                'cards' => $poker->getCommunityCards()->map->code,
+            ]);
+        }
+
+        broadcast(new GameRoomCommunityCardEvent($params['room_id']));
         return $this;
     }
 
