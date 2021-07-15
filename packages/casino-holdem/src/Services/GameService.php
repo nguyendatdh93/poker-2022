@@ -6,6 +6,7 @@ namespace Packages\CasinoHoldem\Services;
 use App\Events\CallEvent;
 use App\Events\ChatMessageSent;
 use App\Events\FoldEvent;
+use App\Events\GameRoomStartEvent;
 use App\Events\OnPlayersEvent;
 use App\Helpers\Games\CardDeck;
 use App\Helpers\Games\Poker;
@@ -248,8 +249,10 @@ class GameService extends ParentGameService
             GameRoomPlayer::whereNotIn('user_id', array_column($players, 'id'))->delete();
         }
 
+        $this->getPlayersCard($params['room_id'], $players);
         $players = $this->getRoomPlayers($params);
         broadcast(new OnPlayersEvent($players->toJson(), $params['room_id']));
+        broadcast(new GameRoomStartEvent($params['room_id'], $this->getProvablyFairGame()));
         return $this;
     }
 
@@ -298,6 +301,5 @@ class GameService extends ParentGameService
                 ]);
             }
         }
-
     }
 }

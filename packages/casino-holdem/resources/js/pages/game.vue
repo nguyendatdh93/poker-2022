@@ -42,13 +42,25 @@
           </template>
           <template v-slot:bottom>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              <p v-if="playersBet[i]">
-                <span class="coin">{{ playersBet[i] }}</span>
+              <p v-if="playersBet[opponent.user_id]">
+                <span class="coin">{{ playersBet[opponent.user_id].bet }}</span>
                 <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
               </p>
             </div>
           </template>
         </hand>
+      </div>
+      <div id="community-card" class="d-flex justify-space-around mt-2">
+        <playing-card
+            v-for="(card, i) in communityCard.cards"
+            :key="`card-${i}`"
+            :card="card"
+            :clickable="false"
+        >
+          <template v-slot:top>
+            <slot v-if="$scopedSlots['top.' + i]" :name="`top.${i}`" />
+          </template>
+        </playing-card>
       </div>
       <actions :room="room" :provably-fair-game="provablyFairGame" :user="user"></actions>
     </template>
@@ -78,11 +90,12 @@ import GameRoom from '~/components/Games/GameRoom'
 import Chat from '~/components/Chat'
 import Form from "vform";
 import Actions from "../../../../../resources/js/mixins/Holdem/Actions";
+import PlayingCard from "../../../../../resources/js/components/Games/Cards/PlayingCard";
 
 export default {
   name: 'CasinoHoldem',
 
-  components: {GameRoom, PlayControls, Hand, Chat, Actions},
+  components: {GameRoom, PlayControls, Hand, Chat, Actions, PlayingCard},
 
   mixins: [FormMixin, GameMixin, SoundMixin, GameRoomMixin],
 
@@ -105,12 +118,6 @@ export default {
       game: null,
       // action: null,
       loading: false,
-      foldPlayers: [],
-      playersBet: {
-        0: 0,
-        1: 0,
-        2: 0,
-      },
       player: {},
       opponents: {},
       time: null,
@@ -119,7 +126,9 @@ export default {
   },
 
   computed: {
+    ...mapState('broadcasting', ['echo']),
     ...mapState('auth', ['account', 'user']),
+    ...mapState('game-room', ['foldPlayers', 'playersBet', 'communityCard']),
     playerResultClass() {
       return this.netWin > 0 || this.playing ? 'primary text--primary' : (this.netWin < 0 ? 'error' : 'warning')
     },
@@ -165,14 +174,8 @@ export default {
         this.doAction('stand')
       }
     },
-    room(room) {
-      this.playersBet["1"] = this.room.parameters.bet;
-      this.playersBet["2"] = this.room.parameters.bet * 2;
-    },
   },
   created() {
-    // it's important to wait until next tick to ensure config computed property is updated
-    // after switching from one game page to another.
     this.$nextTick(() => {
       this.bonusBet = this.defaultBonusBet
     });

@@ -1,4 +1,5 @@
-storage/framework/cache/*
+storage/*
+storage/framework/cache/data/*
 storage/logs/
 storage/sessions/
 node_modules/

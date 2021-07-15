@@ -54,6 +54,16 @@ class GameRoom extends Model
         return $this->hasMany(GameRoomPlayer::class);
     }
 
+    public function playersBet()
+    {
+        return $this->hasMany(GameRoomPlayerBet::class, 'game_room_id', 'id');
+    }
+
+    public function communityCard()
+    {
+        return $this->hasOne(GameRoomCommunityCard::class, 'game_room_id', 'id');
+    }
+
     /**
      * Get player by ID
      *
