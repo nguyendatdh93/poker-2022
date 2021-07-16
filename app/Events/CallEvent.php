@@ -4,6 +4,7 @@ namespace App\Events;
 
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
+use App\Models\GameRoomPlayerBet;
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -50,10 +51,9 @@ class CallEvent implements ShouldBroadcast
      */
     public function broadcastWith()
     {
+        $playersBet = GameRoomPlayerBet::where('game_room_id', $this->room)->get()->keyBy('user_id');
         return [
-            'room_id' => $this->room,
-            'user_id' => $this->user,
-            'bet' => $this->bet,
+            'players_bet' => $playersBet
         ];
     }
 }

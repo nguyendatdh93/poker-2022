@@ -25,9 +25,27 @@ export default {
                 hash: this.provablyFairGame.hash,
                 room_id: gameRoom.id
               });
+              this.$store.dispatch('game-room/action', {
+                hash: this.provablyFairGame.hash,
+                room_id: gameRoom.id
+              });
           }).listen('GameRoomCommunityCardEvent', data => {
               console.log('GameRoomCommunityCardEvent', data);
               this.$store.dispatch('game-room/setCommunityCard', data.community_card);
+          }).listen('ActionEvent', data => {
+              console.log('ActionEvent', data);
+              this.$store.dispatch('game-room/setAction', data.player);
+          }).listen('CallEvent', data => {
+              console.log('CallEvent', data);
+              this.$store.dispatch('game-room/setPlayersBet', data.players_bet);
+              this.$store.dispatch('game-room/fetchCommunityCard', {
+                hash: this.provablyFairGame.hash,
+                room_id: gameRoom.id
+              });
+              this.$store.dispatch('game-room/action', {
+                hash: this.provablyFairGame.hash,
+                room_id: gameRoom.id
+              });
           });
     },
   },

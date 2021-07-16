@@ -62,7 +62,7 @@
           </template>
         </playing-card>
       </div>
-      <actions :room="room" :provably-fair-game="provablyFairGame" :user="user"></actions>
+      <actions v-if="room && action && action.user_id == user.id" :room="room" :provably-fair-game="provablyFairGame" :user="user"></actions>
     </template>
 
     <chat v-if="room" v-model="chatDrawer" :room-id="room.id" class="chat"/>
@@ -128,7 +128,7 @@ export default {
   computed: {
     ...mapState('broadcasting', ['echo']),
     ...mapState('auth', ['account', 'user']),
-    ...mapState('game-room', ['foldPlayers', 'playersBet', 'communityCard']),
+    ...mapState('game-room', ['foldPlayers', 'playersBet', 'communityCard', 'action']),
     playerResultClass() {
       return this.netWin > 0 || this.playing ? 'primary text--primary' : (this.netWin < 0 ? 'error' : 'warning')
     },

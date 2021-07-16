@@ -11,7 +11,7 @@
         :disabled="!provablyFairGame.hash || foldPlayers[user.id]"
         class="mx-1 my-2 my-lg-0"
         small
-        @click="doCall({
+        @click="onCall({
               room_id: room.id,
               user_id: user.id,
             })"
@@ -45,17 +45,12 @@ export default {
         user_id: this.user.id
       });
     },
-    doCall(params) {
-      // let index = this.players.findIndex(player => player.id = this.user.id);
-      const endpoint = this.getRoute('call')
-      const {data: game} = axios.post(endpoint, {
+    onCall(params) {
+      axios.post('/api/games/casino-holdem/call', {
         hash: this.provablyFairGame.hash,
-        user_id : this.user.id,
-        room_id: params.room_id,
-        bet: this.room.parameters.bet * 2,
+        room_id: this.room.id,
+        user_id: this.user.id
       });
-
-      this.updateUserAccountBalance(this.account.balance - this.room.parameters.bet * 2)
     }
   }
 }

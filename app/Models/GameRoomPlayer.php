@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class GameRoomPlayer extends Model
 {
+    protected $guarded = [];
     /**
      * All of the relationships to be touched.
      *

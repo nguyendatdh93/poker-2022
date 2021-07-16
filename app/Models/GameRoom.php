@@ -10,6 +10,8 @@ class GameRoom extends Model
     const STATUS_OPEN  = 0;
     const STATUS_CLOSED = 1;
 
+    protected $guarded = [];
+    
     /**
      * This format will be used when the model is serialized to an array or JSON.
      *
