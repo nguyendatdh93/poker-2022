@@ -124,50 +124,32 @@ export default {
     position: relative;
   }
 }
-#opponent_2 {
-  position: absolute;
-
+#opponent_1 {
+    transform:translate(520px, 0px);
 }
-#opponent__2 {
-position: absolute;
-    left: 38%;
-    top: 10%;
-
+div#opponent_2 {
+    transform: translate(180px, 100px);
 }
-#opponent_3 {
-  position: absolute;
-    top: 40%;
-  left: 20%;
+div#opponent_3 {
+    transform: translate(4px, 240px);
 }
-#opponent_4 {
-  position: absolute;
-      top: 40%;
-    right: 20%;
+div#opponent_4 {
+    transform: translate(-2px, 340px);
 }
-#opponent_5 {
-  position: absolute;
-    top: 63%;
-    left: 24%;
+div#opponent_5 {
+    transform: translate(10px, 340px);
 }
-#opponent_6 {
- position: absolute;
-    top: 12%;
-    left: 25%;
+div#opponent_6 {
+    transform: translate(22px, 340px);
 }
-#opponent_7 {
-  position: absolute;
-    top: 12%;
-    right: 25%;
+div#opponent_7{
+    transform: translate(-20px, 220px);
 }
-#opponent_8 {
- position: absolute;
-    bottom: 15%;
-    right: 25%;
+div#opponent_8 {
+    transform: translate(-201px, 100px);
 }
-#opponent__9 {
-    position: absolute;
-    left: 52%;
-    top: 10%;
+div#opponent_9 {
+    transform: translate(-530px, 0px);
 }
 
 .deal-enter-active {

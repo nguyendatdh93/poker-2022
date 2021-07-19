@@ -23,7 +23,7 @@
             :result-class="resultClass(opponent)"
             :bet="opponent.bet"
             :win="opponent.win"
-            :id="createId(i)"
+            :id="createId(Number(i)+1)"
         >
           <template v-slot:title>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
@@ -119,7 +119,79 @@ export default {
       // action: null,
       loading: false,
       player: {},
-      opponents: {},
+      opponents: [
+        //   {
+        //   name: "test 1",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },  {
+        //   name: "test 2",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        //  {
+        //   name: "test 3",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        //  {
+        //   name: "test 4",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        //  {
+        //   name: "test 5",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        //  {
+        //   name: "test 6",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        //  {
+        //   name: "test 7",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        //  {
+        //   name: "test 8",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+        //  {
+        //   name: "test 9",
+        //   cards: ["C5", "DT"],
+        //   score: -1,
+        //   result: "",
+        //   bet: 0,
+        //   win: 0,
+        // },
+      ],
       time: null,
       intervalId: null,
     }
@@ -413,6 +485,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 65% !important;
 }
 #player_actions{
     position: absolute;

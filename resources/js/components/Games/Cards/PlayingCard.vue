@@ -76,8 +76,8 @@ export default {
     .front, .back {
       border-radius: 0.75em;
       position: absolute;
-      width: 80%;
-      height: 80%;
+       width: 60px;
+      height: 80px;
       background-size: 100%;
       background-position: center;
       background-repeat: no-repeat;
