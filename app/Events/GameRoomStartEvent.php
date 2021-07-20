@@ -77,18 +77,25 @@ class GameRoomStartEvent implements ShouldBroadcast
 
     private function initPlayersBet()
     {
-        $this->updateOrCreatePlayerBet($this->players->first()->user_id, $this->roomId, 0); // dealer is always bet = 0 for preFlop.
         $smallBlindIndex = $this->players->count() == 2 ? 0 : 1;
         $bigBlindIndex = $this->players->count() == 2 ? 1 : 2;
+        $this->updateOrCreatePlayerBet($this->players[$smallBlindIndex]->user_id, $this->roomId, $this->gameRoom->parameters->bet);
+        $this->updateOrCreatePlayerBet($this->players[$bigBlindIndex]->user_id, $this->roomId, $this->gameRoom->parameters->bet * 2);
         foreach ($this->players as $key => $player) {
-            if ($key == $smallBlindIndex) { // for small blind
-                $this->updateOrCreatePlayerBet($player->user_id, $this->roomId, $this->gameRoom->parameters->bet);
-            }
-
-            if ($key == $bigBlindIndex) { // for big blind
-                $this->updateOrCreatePlayerBet($player->user_id, $this->roomId, $this->gameRoom->parameters->bet * 2);
+            if ($key > $bigBlindIndex) {
+                $this->updateOrCreatePlayerBet($this->players[$bigBlindIndex]->user_id, $this->roomId, 0);
             }
         }
+
+        foreach ($this->players as $key => $player) {
+            if ($key < $smallBlindIndex) {
+                $this->updateOrCreatePlayerBet($player->user_id, $this->roomId, 0);
+                continue;
+            }
+
+            break;
+        }
+
     }
 
     private function updateOrCreatePlayerBet($playerId, $roomId, $bet)

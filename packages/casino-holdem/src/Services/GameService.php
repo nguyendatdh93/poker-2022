@@ -252,20 +252,14 @@ class GameService extends ParentGameService
         $playerIdsFold = GameRoomPlayerFold::where('game_room_id', $params['room_id'])
             ->get()
             ->pluck('user_id');
-        $gameRoomPlayerBetIds = GameRoomPlayerBet::where('game_room_id', $params['room_id'])
+        $playerCanAction = GameRoomPlayerBet::where('game_room_id', $params['room_id'])
             ->where('round', $gameRoom->round)
-            ->get()
-            ->pluck('user_id');
-        $playerCanAction = GameRoomPlayer::where('game_room_id', $params['room_id'])
-            ->whereNotIn('user_id', $playerIdsFold)
-            ->whereNotIn('user_id', $gameRoomPlayerBetIds)
-            ->orderBy('id', 'asc')
+            ->whereIn('bet', [null, 0])
             ->first();
         if (!$playerCanAction) { // finish round
             $gameRoom->update(['round' => $gameRoom->round + 1]);
-            $playerCanAction = GameRoomPlayer::where('game_room_id', $params['room_id'])
+            $playerCanAction = GameRoomPlayerBet::where('game_room_id', $params['room_id'])
                 ->whereNotIn('user_id', $playerIdsFold)
-                ->orderBy('id', 'asc')
                 ->first();
         }
 
