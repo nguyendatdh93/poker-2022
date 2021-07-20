@@ -133,16 +133,12 @@ class GameService extends ParentGameService
             DB::beginTransaction();
             $account = Account::where('user_id', $params['user_id'])->first();
             $gameRoom = GameRoom::where('id', $params['room_id'])->first();
-            $lastPlayerBet = GameRoomPlayerBet::where('game_room_id', $params['room_id'])
-                ->where('round', $gameRoom->round)
-                ->orderBy('id', 'desc')
-                ->first();
-
-            $account->decrement('balance', abs($lastPlayerBet->bet));
+            $bets = $gameRoom->parameters->bet * 2;
+            $account->decrement('balance', abs($bets));
 
             AccountTransaction::create([
                 'account_id' => $account->id,
-                'amount' => -$lastPlayerBet->bet,
+                'amount' => -$bets,
                 'balance' => $account->balance,
                 'transactionable_type' => CasinoHoldem::class,
                 'transactionable_id' => 1,
@@ -152,11 +148,11 @@ class GameService extends ParentGameService
                 'game_room_id' => $params['room_id'],
                 'user_id' => $params['user_id'],
             ], [
-                'bet' => $lastPlayerBet->bet,
+                'bet' => $bets,
                 'round' => $gameRoom->round,
             ]);
 
-            broadcast(new CallEvent($params['room_id'], $params['user_id'], $lastPlayerBet->bet));
+            broadcast(new CallEvent($params['room_id'], $params['user_id'], $bets, $account));
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();

@@ -21,17 +21,19 @@ class CallEvent implements ShouldBroadcast
     public $room;
     public $user;
     public $bet;
+    public $account;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($room, $user, $bet)
+    public function __construct($room, $user, $bet, $account)
     {
         $this->room = $room;
         $this->user = $user;
         $this->bet = $bet;
+        $this->account = $account;
     }
 
     /**
@@ -53,7 +55,8 @@ class CallEvent implements ShouldBroadcast
     {
         $playersBet = GameRoomPlayerBet::where('game_room_id', $this->room)->get()->keyBy('user_id');
         return [
-            'players_bet' => $playersBet
+            'players_bet' => $playersBet,
+            'account' => $this->account,
         ];
     }
 }

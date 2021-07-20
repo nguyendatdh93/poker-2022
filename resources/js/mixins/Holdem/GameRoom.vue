@@ -1,7 +1,7 @@
 <script>
 import {config} from '~/plugins/config'
 import {route} from '~/plugins/route'
-import {mapState} from "vuex";
+import {mapActions, mapState} from "vuex";
 import Form from "vform";
 import axios from "axios";
 
@@ -37,19 +37,23 @@ export default {
               this.$store.dispatch('game-room/setAction', data.player);
           }).listen('CallEvent', data => {
               console.log('CallEvent', data);
+              this.updateUserAccountBalance(data.account.balance);
               this.$store.dispatch('game-room/setPlayersBet', data.players_bet);
               this.$store.dispatch('game-room/fetchCommunityCard', {
                 hash: this.provablyFairGame.hash,
-                room_id: gameRoom.id
+                room_id: room.id
               });
               this.$store.dispatch('game-room/action', {
                 hash: this.provablyFairGame.hash,
-                room_id: gameRoom.id
+                room_id: room.id
               });
           });
     },
   },
   methods: {
+    ...mapActions({
+      updateUserAccountBalance: 'auth/updateUserAccountBalance',
+    }),
     updatePlayerHand(player, values) {
       Object.keys(values).forEach(key => {
         player[key] = values[key]
