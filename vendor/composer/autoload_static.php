@@ -726,6 +726,7 @@ class ComposerStaticInit71c7e146d86ef7ddb6a07a2dc986ea91
         'App\\Console\\Commands\\DeleteUnusedProvablyFairGames' => __DIR__ . '/../..' . '/app/Console/Commands/DeleteUnusedProvablyFairGames.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Events\\CallEvent' => __DIR__ . '/../..' . '/app/Events/CallEvent.php',
+        'App\\Events\\RaiseEvent' => __DIR__ . '/../..' . '/app/Events/RaiseEvent.php',
         'App\\Events\\ChatMessageSent' => __DIR__ . '/../..' . '/app/Events/ChatMessageSent.php',
         'App\\Events\\FoldEvent' => __DIR__ . '/../..' . '/app/Events/FoldEvent.php',
         'App\\Events\\GamePlayed' => __DIR__ . '/../..' . '/app/Events/GamePlayed.php',

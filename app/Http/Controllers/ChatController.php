@@ -30,9 +30,9 @@ class ChatController extends Controller
      * @param ChatRoom $room
      * @return mixed
      */
-    public function getMessages(ChatRoom $room)
+    public function getMessages(Request $request)
     {
-        return ChatMessage::fromRoom($room->id)
+        return ChatMessage::where('room_id',$request->room)
             ->orderBy('id', 'desc')
             ->with('user:id,name,email,avatar')
             ->with(['recipients' => function($query) {

@@ -17,6 +17,13 @@
             })"
     > Call
     </v-btn>
+        <v-btn
+        :disabled="!provablyFairGame.hash || foldPlayers[user.id]"
+        class="mx-1 my-2 my-lg-0"
+        small
+        @click="onRaise()"
+    > Raise
+    </v-btn>
   </div>
 </template>
 
@@ -47,6 +54,13 @@ export default {
     },
     onCall(params) {
       axios.post('/api/games/casino-holdem/call', {
+        hash: this.provablyFairGame.hash,
+        room_id: this.room.id,
+        user_id: this.user.id
+      });
+    },
+      onRaise() {
+      axios.post('/api/games/casino-holdem/raise', {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
         user_id: this.user.id

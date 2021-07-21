@@ -15,6 +15,7 @@ return array(
     'App\\Console\\Commands\\DeleteUnusedProvablyFairGames' => $baseDir . '/app/Console/Commands/DeleteUnusedProvablyFairGames.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Events\\CallEvent' => $baseDir . '/app/Events/CallEvent.php',
+    'App\\Events\\RaiseEvent' => $baseDir . '/app/Events/RaiseEvent.php',
     'App\\Events\\ChatMessageSent' => $baseDir . '/app/Events/ChatMessageSent.php',
     'App\\Events\\FoldEvent' => $baseDir . '/app/Events/FoldEvent.php',
     'App\\Events\\GamePlayed' => $baseDir . '/app/Events/GamePlayed.php',

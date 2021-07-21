@@ -11,6 +11,7 @@ use Packages\CasinoHoldem\Http\Requests\Action;
 use Packages\CasinoHoldem\Http\Requests\Play;
 use Packages\CasinoHoldem\Http\Requests\Fold;
 use Packages\CasinoHoldem\Http\Requests\Call;
+use Packages\CasinoHoldem\Http\Requests\Raise;
 use Packages\CasinoHoldem\Services\GameService;
 
 class GameController extends Controller
@@ -36,6 +37,13 @@ class GameController extends Controller
         return $gameService
             ->loadProvablyFairGame($request->hash)
             ->call($request->only(['bet', 'room_id', 'user_id']))
+            ->getGame();
+    }
+    public function raise(Raise $request, GameService $gameService)
+    {
+        return $gameService
+            ->loadProvablyFairGame($request->hash)
+            ->raise($request->only(['bet', 'room_id', 'user_id']))
             ->getGame();
     }
 

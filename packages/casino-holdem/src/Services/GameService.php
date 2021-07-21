@@ -5,6 +5,7 @@ namespace Packages\CasinoHoldem\Services;
 
 use App\Events\ActionEvent;
 use App\Events\CallEvent;
+use App\Events\RaiseEvent;
 use App\Events\ChatMessageSent;
 use App\Events\FoldEvent;
 use App\Events\GameRoomCommunityCardEvent;
@@ -153,6 +154,47 @@ class GameService extends ParentGameService
             ]);
 
             broadcast(new CallEvent($params['room_id'], $params['user_id'], $bets, $account));
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
+
+        return $this;
+    }
+    
+    /**
+     * Call
+     *
+     * @return GameService
+     * @throws \Exception
+     */
+    public function raise($params): GameService
+    {
+        try {
+            DB::beginTransaction();
+            $account = Account::where('user_id', $params['user_id'])->first();
+            $gameRoom = GameRoom::where('id', $params['room_id'])->first();
+            $gameRoom = GameRoom::where('id', $params['room_id'])->first();
+            $twiceBet = $gameRoom->parameters->bet * 2;
+            $account->decrement('balance', abs($twiceBet));
+
+            AccountTransaction::create([
+                'account_id' => $account->id,
+                'amount' => -$twiceBet,
+                'balance' => $account->balance,
+                'transactionable_type' => CasinoHoldem::class,
+                'transactionable_id' => 1,
+            ]);
+
+            GameRoomPlayerBet::updateOrCreate([
+                'game_room_id' => $params['room_id'],
+                'user_id' => $params['user_id'],
+            ], [
+                'bet' => $twiceBet,
+                'round' => $gameRoom->round,
+            ]);
+
+            broadcast(new RaiseEvent($params['room_id'], $params['user_id'], $twiceBet,$account));
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();

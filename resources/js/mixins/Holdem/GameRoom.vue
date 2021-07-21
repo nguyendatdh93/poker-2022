@@ -47,6 +47,14 @@ export default {
                 hash: this.provablyFairGame.hash,
                 room_id: room.id
               });
+          }).listen('RaiseEvent', data => {
+              console.log('RaiseEvent', data);
+              this.updateUserAccountBalance(data.account.balance)
+              this.$store.dispatch('game-room/setPlayersBet', data.players_bet);
+              this.$store.dispatch('game-room/action', {
+                hash: this.provablyFairGame.hash,
+                room_id: room.id
+              });
           });
     },
   },
