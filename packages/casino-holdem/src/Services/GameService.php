@@ -174,8 +174,8 @@ class GameService extends ParentGameService
             DB::beginTransaction();
             $account = Account::where('user_id', $params['user_id'])->first();
             $gameRoom = GameRoom::where('id', $params['room_id'])->first();
-            $gameRoom = GameRoom::where('id', $params['room_id'])->first();
-            $twiceBet = $gameRoom->parameters->bet * 2;
+            $gameRoomPlayerBet = GameRoomPlayerBet::where('round',$gameRoom->round)->orderBy('id', 'desc')->first()->bet;
+            $twiceBet = $gameRoomPlayerBet * 2;
             $account->decrement('balance', abs($twiceBet));
 
             AccountTransaction::create([
