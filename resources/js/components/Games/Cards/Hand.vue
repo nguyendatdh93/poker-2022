@@ -151,6 +151,9 @@ div#opponent_8 {
 div#opponent_9 {
     transform: translate(-530px, 0px);
 }
+#primary_user{
+  transform: translate(10px, 340px)!important;
+}
 
 .deal-enter-active {
   animation: deal 0.3s;

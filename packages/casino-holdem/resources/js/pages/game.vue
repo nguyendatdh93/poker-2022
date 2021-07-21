@@ -23,7 +23,7 @@
             :result-class="resultClass(opponent)"
             :bet="opponent.bet"
             :win="opponent.win"
-            :id="createId(Number(i)+1)"
+            :id="createId(Number(i)+1,opponent)"
         >
           <template v-slot:title>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
@@ -120,6 +120,7 @@ export default {
       loading: false,
       player: {},
       opponents: [
+        // this is for testing seat arrangement
         //   {
         //   name: "test 1",
         //   cards: ["C5", "DT"],
@@ -269,14 +270,10 @@ export default {
 
       return false;
     },
-    createId(index) {
-      const opponentCount = Object.keys(this.opponents).length;
+    createId(index,opponent) {
       let id = "opponent_";
-      if (index == 2 && opponentCount == 8) {
-        return id + "_" + index;
-      }
-      if (index == 9 && opponentCount == 8) {
-        return id + "_" + index;
+      if(opponent.user_id == this.user.id){
+        return "primary_user";
       }
       return id + index;
     },
