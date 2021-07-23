@@ -62,7 +62,8 @@
           </template>
         </playing-card>
       </div>
-      <actions v-show="room && gameRoom && gameRoom.action_index == getPlayerActionIndex(user.id)" :room="room" :provably-fair-game="provablyFairGame" :user="user"></actions>
+      <actions v-if="room && gameRoom && gameRoom.players && gameRoom.action_index == getPlayerActionIndex(user.id)" :room="room" :provably-fair-game="provablyFairGame" :user="user"></actions>
+
     </template>
 
     <chat v-if="room" v-model="chatDrawer" :room-id="room.id" class="chat"/>
