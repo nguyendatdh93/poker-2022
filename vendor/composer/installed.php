@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'f51172afef204d0123da0b6ca66dbafbfb6b7a71',
+        'reference' => '80703d9dec72bc07408572cefe9e3586f5d2be5a',
         'name' => 'financialplugins/stake',
         'dev' => true,
     ),
@@ -244,7 +244,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'f51172afef204d0123da0b6ca66dbafbfb6b7a71',
+            'reference' => '80703d9dec72bc07408572cefe9e3586f5d2be5a',
             'dev_requirement' => false,
         ),
         'fruitcake/laravel-cors' => array(
@@ -1051,8 +1051,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0.0',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '1.0.0',
             ),
         ),
         'psr/simple-cache' => array(
