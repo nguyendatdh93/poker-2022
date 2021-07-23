@@ -42,17 +42,17 @@
           </template>
           <template v-slot:bottom>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              <p v-if="playersBet[opponent.user_id] && playersBet[opponent.user_id].bet > 0">
-                <span class="coin">{{ playersBet[opponent.user_id].bet }}</span>
+              <p v-if="gameRoom.bets && gameRoom.bets[opponent.user_id] > 0">
+                <span class="coin">{{ gameRoom.bets[opponent.user_id] }}</span>
                 <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
               </p>
             </div>
           </template>
         </hand>
       </div>
-      <div id="community-card" class="d-flex justify-space-around mt-2">
+      <div id="community-card" class="d-flex justify-space-around mt-2" v-if="gameRoom.community_card && gameRoom.round >= 2">
         <playing-card
-            v-for="(card, i) in communityCard.cards"
+            v-for="(card, i) in gameRoom.community_card"
             :key="`card-${i}`"
             :card="card"
             :clickable="false"
@@ -62,7 +62,7 @@
           </template>
         </playing-card>
       </div>
-      <actions v-if="room && action && action.user_id == user.id" :room="room" :provably-fair-game="provablyFairGame" :user="user"></actions>
+      <actions v-show="room && gameRoom && gameRoom.action_index == getPlayerActionIndex(user.id)" :room="room" :provably-fair-game="provablyFairGame" :user="user"></actions>
     </template>
 
     <chat v-if="room" v-model="chatDrawer" :room-id="room.id" class="chat"/>
@@ -120,78 +120,6 @@ export default {
       loading: false,
       player: {},
       opponents: [
-        // this is for testing seat arrangement
-        //   {
-        //   name: "test 1",
-        //   cards: ["C5", "DT"],
-        //   score: -1,
-        //   result: "",
-        //   bet: 0,
-        //   win: 0,
-        // },  {
-        //   name: "test 2",
-        //   cards: ["C5", "DT"],
-        //   score: -1,
-        //   result: "",
-        //   bet: 0,
-        //   win: 0,
-        // },
-        //  {
-        //   name: "test 3",
-        //   cards: ["C5", "DT"],
-        //   score: -1,
-        //   result: "",
-        //   bet: 0,
-        //   win: 0,
-        // },
-        //  {
-        //   name: "test 4",
-        //   cards: ["C5", "DT"],
-        //   score: -1,
-        //   result: "",
-        //   bet: 0,
-        //   win: 0,
-        // },
-        //  {
-        //   name: "test 5",
-        //   cards: ["C5", "DT"],
-        //   score: -1,
-        //   result: "",
-        //   bet: 0,
-        //   win: 0,
-        // },
-        //  {
-        //   name: "test 6",
-        //   cards: ["C5", "DT"],
-        //   score: -1,
-        //   result: "",
-        //   bet: 0,
-        //   win: 0,
-        // },
-        //  {
-        //   name: "test 7",
-        //   cards: ["C5", "DT"],
-        //   score: -1,
-        //   result: "",
-        //   bet: 0,
-        //   win: 0,
-        // },
-        //  {
-        //   name: "test 8",
-        //   cards: ["C5", "DT"],
-        //   score: -1,
-        //   result: "",
-        //   bet: 0,
-        //   win: 0,
-        // },
-        //  {
-        //   name: "test 9",
-        //   cards: ["C5", "DT"],
-        //   score: -1,
-        //   result: "",
-        //   bet: 0,
-        //   win: 0,
-        // },
       ],
       time: null,
       intervalId: null,
@@ -201,7 +129,7 @@ export default {
   computed: {
     ...mapState('broadcasting', ['echo']),
     ...mapState('auth', ['account', 'user']),
-    ...mapState('game-room', ['foldPlayers', 'playersBet', 'communityCard', 'action']),
+    ...mapState('game-room', ['foldPlayers', 'playersBet', 'communityCard', 'action', 'gameRoom']),
     playerResultClass() {
       return this.netWin > 0 || this.playing ? 'primary text--primary' : (this.netWin < 0 ? 'error' : 'warning')
     },

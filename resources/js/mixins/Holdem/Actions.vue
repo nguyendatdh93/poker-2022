@@ -11,18 +11,23 @@
         :disabled="!provablyFairGame.hash || foldPlayers[user.id]"
         class="mx-1 my-2 my-lg-0"
         small
-        @click="onCall({
-              room_id: room.id,
-              user_id: user.id,
-            })"
+        @click="onCall()"
     > Call
     </v-btn>
-        <v-btn
+    <v-btn
         :disabled="!provablyFairGame.hash || foldPlayers[user.id]"
         class="mx-1 my-2 my-lg-0"
         small
         @click="onRaise()"
     > Raise
+    </v-btn>
+    <v-btn
+        v-if="gameRoom.round == 2 && user.id == gameRoom.small_blind"
+        :disabled="!provablyFairGame.hash"
+        class="mx-1 my-2 my-lg-0"
+        small
+        @click="onBet()"
+    > Bet
     </v-btn>
   </div>
 </template>
@@ -36,7 +41,7 @@ export default {
   props: ['room', 'provably-fair-game', 'user'],
   computed: {
     ...mapState('broadcasting', ['echo']),
-    ...mapState('game-room', ['foldPlayers']),
+    ...mapState('game-room', ['foldPlayers', 'gameRoom']),
   },
   created() {
     this.echo.join(`game.${this.room.id}`)
@@ -49,22 +54,40 @@ export default {
       await axios.post('/api/games/casino-holdem/fold', {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
-        user_id: this.user.id
+        user_id: this.user.id,
+        user_action_index: this.getPlayerActionIndex(user.id)
       });
     },
-    onCall(params) {
+    onCall() {
       axios.post('/api/games/casino-holdem/call', {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
-        user_id: this.user.id
+        user_id: this.user.id,
+        user_action_index: this.getPlayerActionIndex(user.id)
       });
     },
-      onRaise() {
+    onRaise() {
       axios.post('/api/games/casino-holdem/raise', {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
-        user_id: this.user.id
+        user_id: this.user.id,
+        user_action_index: this.getPlayerActionIndex(user.id)
       });
+    },
+    onBet() {
+      axios.post('/api/games/casino-holdem/raise', {
+        hash: this.provablyFairGame.hash,
+        room_id: this.room.id,
+        user_id: this.user.id,
+        user_action_index: this.getPlayerActionIndex(user.id)
+      });
+    },
+    getPlayerActionIndex(playerId) {
+      if (this.gameRoom.players) {
+        return this.gameRoom.players.findIndex((player) => {
+          return player == playerId;
+        })
+      }
     }
   }
 }

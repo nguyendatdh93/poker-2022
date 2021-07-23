@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Cache\GameRoomCache;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
 use App\Models\GameRoomPlayerBet;
@@ -58,6 +59,7 @@ class RaiseEvent implements ShouldBroadcast
         return [
             'players_bet' => $playersBet,
             'account' => $this->account,
+            'game_room' => GameRoomCache::getGameRoomCache($this->room)
         ];
     }
 }

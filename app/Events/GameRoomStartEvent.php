@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Cache\GameRoomCache;
 use App\Helpers\Games\CardDeck;
 use App\Helpers\Games\Poker;
 use App\Models\ChatMessage;
@@ -26,15 +27,17 @@ class GameRoomStartEvent implements ShouldBroadcast
     public $players;
     public $roomId;
     public $gameRoom;
+    public $provablyFairGame;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($roomId)
+    public function __construct($roomId, $provablyFairGame)
     {
         $this->roomId = $roomId;
+        $this->provablyFairGame = $provablyFairGame;
     }
 
     /**
@@ -71,7 +74,7 @@ class GameRoomStartEvent implements ShouldBroadcast
         return [
             'room_id' => $this->roomId,
             'players' => $this->players,
-            'game_room' => json_encode($this->gameRoom),
+            'game_room' => GameRoomCache::getGameRoomCache($this->roomId)
         ];
     }
 
@@ -79,32 +82,31 @@ class GameRoomStartEvent implements ShouldBroadcast
     {
         $smallBlindIndex = $this->players->count() == 2 ? 0 : 1;
         $bigBlindIndex = $this->players->count() == 2 ? 1 : 2;
-        $this->updateOrCreatePlayerBet($this->players[$smallBlindIndex]->user_id, $this->roomId, $this->gameRoom->parameters->bet);
-        $this->updateOrCreatePlayerBet($this->players[$bigBlindIndex]->user_id, $this->roomId, $this->gameRoom->parameters->bet * 2);
-        foreach ($this->players as $key => $player) {
-            if ($key > $bigBlindIndex) {
-                $this->updateOrCreatePlayerBet($this->players[$bigBlindIndex]->user_id, $this->roomId, 0);
-            }
-        }
+        $this->setGameRoomCache($smallBlindIndex, $bigBlindIndex);
 
-        foreach ($this->players as $key => $player) {
-            if ($key < $smallBlindIndex) {
-                $this->updateOrCreatePlayerBet($player->user_id, $this->roomId, 0);
-                continue;
-            }
-
-            break;
-        }
-
+        $deck = new CardDeck(explode(',', $this->provablyFairGame->secret));
+        $deck->cut($this->provablyFairGame->shift_value % 52);
+        $poker = new Poker($deck);
+        $poker->addPlayers($this->gameRoom->parameters->players_count)->deal(2, 3)->play();
+        GameRoomCache::setCommunityCard($this->roomId, $poker->getCommunityCards()->map->code);
     }
 
-    private function updateOrCreatePlayerBet($playerId, $roomId, $bet)
+    private function setGameRoomCache($smallBlindIndex, $bigBlindIndex )
     {
-        GameRoomPlayerBet::updateOrCreate([
-            'game_room_id' => $roomId,
-            'user_id' => $playerId,
-        ], [
-            'bet' => $bet,
-        ]);
+        GameRoomCache::setSmallBlind($this->roomId, $this->players[$smallBlindIndex]->user_id);
+        GameRoomCache::setBigBlind($this->roomId, $this->players[$bigBlindIndex]->user_id);
+        if ($smallBlindIndex > 0) {
+            GameRoomCache::setDealer($this->roomId, $this->players[0]->user_id);
+        }
+
+        GameRoomCache::setRound($this->roomId,  1);
+
+        GameRoomCache::setPlayers($this->roomId, $this->players->pluck('user_id'));
+
+        GameRoomCache::setActionIndex($this->roomId, $this->players->count() <= 3 ? 0 : 3);
+
+        GameRoomCache::setBet($this->roomId, $this->players[$smallBlindIndex]->user_id, $this->gameRoom->parameters->bet);
+        GameRoomCache::setBet($this->roomId, $this->players[$bigBlindIndex]->user_id, $this->gameRoom->parameters->bet * 2);
+        GameRoomCache::setPreviouslyBet($this->roomId,$this->gameRoom->parameters->bet * 2);
     }
 }

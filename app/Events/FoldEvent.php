@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Cache\GameRoomCache;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
 use App\Models\GameRoomPlayerFold;
@@ -54,6 +55,7 @@ class FoldEvent implements ShouldBroadcast
             'players' => $foldPlayers,
             'room_id' => $this->room,
             'user_id' => $this->user,
+            'game_room' => GameRoomCache::getGameRoomCache($this->room)
         ];
     }
 }

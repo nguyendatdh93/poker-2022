@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Cache\GameRoomCache;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
 use App\Models\User;
@@ -51,6 +52,7 @@ class OnPlayersEvent implements ShouldBroadcast
         return [
             'room_id' => $this->roomId,
             'players' => $this->players,
+            'game_room' => GameRoomCache::getGameRoomCache($this->roomId)
         ];
     }
 }

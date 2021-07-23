@@ -2,7 +2,7 @@ import axios from 'axios'
 import { route } from '~/plugins/route'
 
 import {
-  GAME_ROOM_PLAYERS, GAME_ROOM_FOLD_PLAYERS, GAME_ROOM_PLAYERS_BET, GAME_ROOM_COMMUNITY_CARD, GAME_ROOM_ACTION
+  GAME_ROOM_PLAYERS, GAME_ROOM_FOLD_PLAYERS, GAME_ROOM_PLAYERS_BET, GAME_ROOM_COMMUNITY_CARD, GAME_ROOM_ACTION, GAME_ROOM
 } from '../mutation-types'
 
 // state
@@ -12,6 +12,7 @@ export const state = {
   playersBet: [],
   communityCard: [],
   action: [],
+  gameRoom: [],
 }
 
 // mutations
@@ -31,10 +32,16 @@ export const mutations = {
   [GAME_ROOM_ACTION] (state, payload) {
     state.action = payload;
   },
+  [GAME_ROOM] (state, payload) {
+    state.gameRoom = payload;
+  },
 }
 
 // actions
 export const actions = {
+  setGameRoom({commit}, playload) {
+    commit(GAME_ROOM, playload);
+  },
   async onPlayers ({ commit }, payload) {
     // execute the action
     const {data: players} = await axios.post('/api/games/casino-holdem/players', payload)

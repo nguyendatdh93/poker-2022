@@ -3,8 +3,10 @@
 
 namespace Packages\CasinoHoldem\Services;
 
+use App\Cache\GameRoomCache;
 use App\Events\ActionEvent;
 use App\Events\CallEvent;
+use App\Events\GameRoomPlayEvent;
 use App\Events\RaiseEvent;
 use App\Events\ChatMessageSent;
 use App\Events\FoldEvent;
@@ -111,14 +113,12 @@ class GameService extends ParentGameService
      */
     public function fold($params): GameService
     {
-        GameRoomPlayerFold::updateOrCreate([
-            'game_room_id' => $params['room_id'],
-            'user_id' => $params['user_id'],
-        ], [
-            'updated_at' => now()
-        ]);
-
-        broadcast(new FoldEvent($params['room_id'], $params['user_id']));
+        $gameRoom = GameRoom::where('id', $params['room_id'])->first();
+        $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
+        GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index'] == $gameRoom->parameters->players_count - 1 ? 0 : $params['user_action_index'] + 1);
+        $this->nextRound($params['room_id'], $params['user_id']);
+        GameRoomCache::setFoldPlayer($params['room_id'], $params['user_id']);
+        broadcast(new GameRoomPlayEvent($params['room_id'], $previouslyBet));
         return $this;
     }
 
@@ -134,26 +134,21 @@ class GameService extends ParentGameService
             DB::beginTransaction();
             $account = Account::where('user_id', $params['user_id'])->first();
             $gameRoom = GameRoom::where('id', $params['room_id'])->first();
-            $bets = $gameRoom->parameters->bet * 2;
-            $account->decrement('balance', abs($bets));
+            $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
+            $account->decrement('balance', abs($previouslyBet));
 
             AccountTransaction::create([
                 'account_id' => $account->id,
-                'amount' => -$bets,
+                'amount' => -$previouslyBet,
                 'balance' => $account->balance,
                 'transactionable_type' => CasinoHoldem::class,
                 'transactionable_id' => 1,
             ]);
 
-            GameRoomPlayerBet::updateOrCreate([
-                'game_room_id' => $params['room_id'],
-                'user_id' => $params['user_id'],
-            ], [
-                'bet' => $bets,
-                'round' => $gameRoom->round,
-            ]);
-
-            broadcast(new CallEvent($params['room_id'], $params['user_id'], $bets, $account));
+            GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index'] == $gameRoom->parameters->players_count - 1 ? 0 : $params['user_action_index'] + 1);
+            $this->nextRound($params['room_id'], $params['user_id']);
+            GameRoomCache::setBet($params['room_id'], $params['user_id'], $previouslyBet);
+            broadcast(new GameRoomPlayEvent($params['room_id'], $previouslyBet));
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -174,13 +169,13 @@ class GameService extends ParentGameService
             DB::beginTransaction();
             $account = Account::where('user_id', $params['user_id'])->first();
             $gameRoom = GameRoom::where('id', $params['room_id'])->first();
-            $gameRoomPlayerBet = GameRoomPlayerBet::where('round',$gameRoom->round)->orderBy('id', 'desc')->first()->bet;
-            $twiceBet = $gameRoomPlayerBet * 2;
-            $account->decrement('balance', abs($twiceBet));
+            $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
+            $bet = $previouslyBet * 2;
+            $account->decrement('balance', abs($bet));
 
             AccountTransaction::create([
                 'account_id' => $account->id,
-                'amount' => -$twiceBet,
+                'amount' => -$bet,
                 'balance' => $account->balance,
                 'transactionable_type' => CasinoHoldem::class,
                 'transactionable_id' => 1,
@@ -190,11 +185,15 @@ class GameService extends ParentGameService
                 'game_room_id' => $params['room_id'],
                 'user_id' => $params['user_id'],
             ], [
-                'bet' => $twiceBet,
+                'bet' => $bet,
                 'round' => $gameRoom->round,
             ]);
 
-            broadcast(new RaiseEvent($params['room_id'], $params['user_id'], $twiceBet,$account));
+            GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index'] == $gameRoom->parameters->players_count - 1 ? 0 : $params['user_action_index'] + 1);
+            $this->nextRound($params['room_id'], $params['user_id']);
+            GameRoomCache::setBet($params['room_id'], $params['user_id'], $bet);
+            GameRoomCache::setPreviouslyBet($params['room_id'], $bet);
+            broadcast(new GameRoomPlayEvent($params['room_id'], $bet));
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -295,7 +294,6 @@ class GameService extends ParentGameService
             ->whereIn('bet', [null, 0])
             ->first();
         if (!$playerCanAction) { // finish round
-            $gameRoom->update(['round' => $gameRoom->round + 1]);
             $playerCanAction = GameRoomPlayerBet::where('game_room_id', $params['room_id'])
                 ->whereNotIn('user_id', $playerIdsFold)
                 ->first();
@@ -341,5 +339,20 @@ class GameService extends ParentGameService
                 ]);
             }
         }
+    }
+
+    private function nextRound($roomId, $playerId)
+    {
+        $round = GameRoomCache::getRound($roomId);
+        if ($round == 1 || $round == 2) {
+            if (in_array($playerId, [GameRoomCache::getBigBlind($roomId)])) {
+                GameRoomCache::setRound($roomId, GameRoomCache::getRound($roomId) + 1);
+            }
+        } else {
+            if (in_array($playerId, [GameRoomCache::getSmallBlind($roomId), GameRoomCache::getDealer($roomId)])) {
+                GameRoomCache::setRound($roomId, GameRoomCache::getRound($roomId) + 1);
+            }
+        }
+
     }
 }
