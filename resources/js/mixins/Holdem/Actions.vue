@@ -63,7 +63,7 @@ export default {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
         user_id: this.user.id,
-        user_action_index: this.getPlayerActionIndex(user.id)
+        user_action_index: this.getPlayerActionIndex(this.user.id)
       });
     },
     onCall() {
@@ -71,7 +71,7 @@ export default {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
         user_id: this.user.id,
-        user_action_index: this.getPlayerActionIndex(user.id)
+        user_action_index: this.getPlayerActionIndex(this.user.id)
       });
     },
     onRaise() {
@@ -79,7 +79,7 @@ export default {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
         user_id: this.user.id,
-        user_action_index: this.getPlayerActionIndex(user.id)
+        user_action_index: this.getPlayerActionIndex(this.user.id)
       });
     },
     onCheck() {
@@ -87,7 +87,7 @@ export default {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
         user_id: this.user.id,
-        user_action_index: this.getPlayerActionIndex(user.id)
+        user_action_index: this.getPlayerActionIndex(this.user.id)
       });
     },
     onBet() {
@@ -95,7 +95,7 @@ export default {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
         user_id: this.user.id,
-        user_action_index: this.getPlayerActionIndex(user.id)
+        user_action_index: this.getPlayerActionIndex(this.user.id)
       });
     },
     getPlayerActionIndex(playerId) {

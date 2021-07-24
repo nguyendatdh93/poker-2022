@@ -13,5 +13,13 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://0.0.0.0:3306/poker</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="Staging" uuid="e480b608-e489-4a59-95e4-d8f4407096e7">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <remarks>^Fdu@1ILxbqfcBjP  | zero_crypto</remarks>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/zero_crypto</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
