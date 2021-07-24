@@ -101,7 +101,7 @@ class GameRoomStartEvent implements ShouldBroadcast
 
         GameRoomCache::setRound($this->roomId,  1);
 
-        GameRoomCache::setPlayers($this->roomId, $this->players->pluck('user_id'));
+        GameRoomCache::setPlayers($this->roomId, $this->players->pluck('user_id')->toArray());
 
         GameRoomCache::setActionIndex($this->roomId, $this->players->count() <= 3 ? 0 : 3);
 

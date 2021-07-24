@@ -21,8 +21,9 @@ export default {
               console.log('GameRoomStartEvent', data);
               this.$store.dispatch('game-room/setGameRoom', data.game_room);
           }).listen('GameRoomPlayEvent', data => {
-            console.log('GameRoomPlayEvent', data);
-            this.$store.dispatch('game-room/setGameRoom', data.game_room);
+            let gameRoom = JSON.parse(data.game_room);
+            console.log('GameRoomPlayEvent', gameRoom);
+            this.$store.dispatch('game-room/setGameRoom', gameRoom);
           });
     },
   },
@@ -37,10 +38,14 @@ export default {
     },
     getPlayerActionIndex(playerId) {
       if (this.gameRoom.players) {
-        return this.gameRoom.players.findIndex((player) => {
+        let players = Object.values(this.gameRoom.players);
+        console.log('this.gameRoom.players', players);
+        return players.findIndex((player) => {
           return player == playerId;
         })
       }
+
+      return -1;
     }
   }
 }

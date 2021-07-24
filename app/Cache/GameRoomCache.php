@@ -110,7 +110,7 @@ class GameRoomCache
         return Cache::get("players:$roomId");
     }
 
-    public function removePlayer($roomId, $playerId)
+    public static function removePlayer($roomId, $playerId)
     {
         $playerIds = self::getPlayers($roomId);
         foreach ($playerIds ?? [] as $key => $id) {
@@ -119,7 +119,7 @@ class GameRoomCache
             }
         }
 
-        self::setPlayers($playerIds);
+        self::setPlayers($roomId, $playerIds);
     }
 
     /**

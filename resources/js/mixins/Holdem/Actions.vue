@@ -1,29 +1,29 @@
 <template>
   <div class="d5-flex justify-center flex-wrap mt-10" id="player_actions">
     <v-btn
-        :disabled="!provablyFairGame.hash || foldPlayers[user.id]"
+        :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]"
         class="mx-1 my-2 my-lg-0"
         small
         @click="onFold()"
     > Fold
     </v-btn>
     <v-btn
-        :disabled="!provablyFairGame.hash || foldPlayers[user.id]"
+        :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]"
         class="mx-1 my-2 my-lg-0"
         small
         @click="onCall()"
     > Call
     </v-btn>
     <v-btn
-        :disabled="!provablyFairGame.hash || foldPlayers[user.id]"
+        :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]"
         class="mx-1 my-2 my-lg-0"
         small
         @click="onRaise()"
     > Raise
     </v-btn>
     <v-btn
+        :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]"
         v-if="gameRoom.round == 2 && user.id == gameRoom.small_blind"
-        :disabled="!provablyFairGame.hash"
         class="mx-1 my-2 my-lg-0"
         small
         @click="onBet()"
@@ -84,10 +84,13 @@ export default {
     },
     getPlayerActionIndex(playerId) {
       if (this.gameRoom.players) {
-        return this.gameRoom.players.findIndex((player) => {
+        let players = Object.values(this.gameRoom.players);
+        return players.findIndex((player) => {
           return player == playerId;
         })
       }
+
+      return -1;
     }
   }
 }

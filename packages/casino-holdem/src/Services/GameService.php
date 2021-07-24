@@ -115,9 +115,10 @@ class GameService extends ParentGameService
     {
         $gameRoom = GameRoom::where('id', $params['room_id'])->first();
         $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
-        GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index'] == $gameRoom->parameters->players_count - 1 ? 0 : $params['user_action_index'] + 1);
+        GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index']);
         $this->nextRound($params['room_id'], $params['user_id']);
         GameRoomCache::setFoldPlayer($params['room_id'], $params['user_id']);
+        GameRoomCache::removePlayer($params['room_id'], $params['user_id']);
         broadcast(new GameRoomPlayEvent($params['room_id'], $previouslyBet));
         return $this;
     }
@@ -132,23 +133,8 @@ class GameService extends ParentGameService
     {
         try {
             DB::beginTransaction();
-            $account = Account::where('user_id', $params['user_id'])->first();
-            $gameRoom = GameRoom::where('id', $params['room_id'])->first();
             $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
-            $account->decrement('balance', abs($previouslyBet));
-
-            AccountTransaction::create([
-                'account_id' => $account->id,
-                'amount' => -$previouslyBet,
-                'balance' => $account->balance,
-                'transactionable_type' => CasinoHoldem::class,
-                'transactionable_id' => 1,
-            ]);
-
-            GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index'] == $gameRoom->parameters->players_count - 1 ? 0 : $params['user_action_index'] + 1);
-            $this->nextRound($params['room_id'], $params['user_id']);
-            GameRoomCache::setBet($params['room_id'], $params['user_id'], $previouslyBet);
-            broadcast(new GameRoomPlayEvent($params['room_id'], $previouslyBet));
+            $this->handleBetAction($params, $previouslyBet);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -167,39 +153,37 @@ class GameService extends ParentGameService
     {
         try {
             DB::beginTransaction();
-            $account = Account::where('user_id', $params['user_id'])->first();
-            $gameRoom = GameRoom::where('id', $params['room_id'])->first();
             $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
             $bet = $previouslyBet * 2;
-            $account->decrement('balance', abs($bet));
-
-            AccountTransaction::create([
-                'account_id' => $account->id,
-                'amount' => -$bet,
-                'balance' => $account->balance,
-                'transactionable_type' => CasinoHoldem::class,
-                'transactionable_id' => 1,
-            ]);
-
-            GameRoomPlayerBet::updateOrCreate([
-                'game_room_id' => $params['room_id'],
-                'user_id' => $params['user_id'],
-            ], [
-                'bet' => $bet,
-                'round' => $gameRoom->round,
-            ]);
-
-            GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index'] == $gameRoom->parameters->players_count - 1 ? 0 : $params['user_action_index'] + 1);
-            $this->nextRound($params['room_id'], $params['user_id']);
-            GameRoomCache::setBet($params['room_id'], $params['user_id'], $bet);
-            GameRoomCache::setPreviouslyBet($params['room_id'], $bet);
-            broadcast(new GameRoomPlayEvent($params['room_id'], $bet));
+            $this->handleBetAction($params, $bet);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
         }
 
         return $this;
+    }
+
+    private function handleBetAction($params, $bet)
+    {
+        $account = Account::where('user_id', $params['user_id'])->first();
+        $gameRoom = GameRoom::where('id', $params['room_id'])->first();
+        $account->decrement('balance', abs($bet));
+
+        AccountTransaction::create([
+            'account_id' => $account->id,
+            'amount' => -$bet,
+            'balance' => $account->balance,
+            'transactionable_type' => CasinoHoldem::class,
+            'transactionable_id' => 1,
+        ]);
+
+        $foldPlayers = GameRoomCache::getFoldPlayers($params['room_id']);
+        $activePlayersCount = $gameRoom->parameters->players_count - count($foldPlayers) - 1;
+        GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index'] == $activePlayersCount ? 0 : $params['user_action_index'] + 1);
+        $this->nextRound($params['room_id'], $params['user_id']);
+        GameRoomCache::setBet($params['room_id'], $params['user_id'], $bet);
+        broadcast(new GameRoomPlayEvent($params['room_id'], $bet));
     }
 
     public static function createRandomGame(User $user): void
