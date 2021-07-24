@@ -43,7 +43,7 @@
       <v-list two-line class="pa-0">
         <transition-group name="slide-x-transition" tag="div">
           <v-hover v-slot:default="{ hover }" v-for="(msg, index) in messages" :key="`message-${index}`">
-            <v-list-item :class="{ 'grey darken-2': hover }">
+            <v-list-item :class="{ 'grey darken-2': hover }" v-if="!msg.sys">
               <v-list-item-avatar size="50" v-if="msg.user && msg.user.avatar_url">
                 <user-avatar :user="msg.user" />
               </v-list-item-avatar>
@@ -79,6 +79,22 @@
                       </template>
                     </user-profile-modal>
                   </template>
+                  {{ msg.message }}
+                </p>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item :class="{ 'grey darken-2': hover }" v-else>
+              <v-list-item-content>
+                <v-list-item-title class="subtitle-2">
+                  <user-profile-modal :user="msg.user">
+                    <template v-slot="{ on }">
+                      <span class="text--primary link" v-on="on">
+                        Dealer
+                      </span>
+                    </template>
+                  </user-profile-modal>
+                </v-list-item-title>
+                <p class="text--secondary mb-0">
                   {{ msg.message }}
                 </p>
               </v-list-item-content>
@@ -287,16 +303,7 @@ export default {
           this.usersCount--
         })
         // new message
-        .listen('ChatMessageSent', message => this.addMessage(message))
-        .listen('TurnToPlay', data => {
-          this.addMessage({
-            user: {
-              name: 'Dealer',
-            },
-            recipients: [],
-            message: data.message,
-          })
-        })
+        .listen('ChatMessageSent', message => this.addMessage(message));
     },
 
     leaveRoom (room) {

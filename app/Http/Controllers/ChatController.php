@@ -71,11 +71,7 @@ class ChatController extends Controller
             $message->recipients()->attach(array_unique($request->recipients));
         }
 
-        if ($request->get('turn_to_play') ?? 0) {
-            broadcast(new ActionEvent($room,  $message->message, $request->get('turn_to_play') ?? 0));
-        } else {
-            broadcast(new ChatMessageSent($room, $message));
-        }
+        broadcast(new ChatMessageSent($room, $message));
 
         return [
             'success' => TRUE

@@ -37,7 +37,7 @@ class ChatMessageSent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('chat.' . $this->room->id);
+        return new PresenceChannel('chat.' . $this->room->room_id);
     }
 
     /**
@@ -48,7 +48,7 @@ class ChatMessageSent implements ShouldBroadcast
     public function broadcastWith()
     {
         return array_merge(
-            $this->message->only('message', 'created_at', 'created_ago'),
+            $this->message->only('message', 'sys', 'created_at', 'created_ago'),
             ['user' => $this->message->user->only('id', 'name', 'avatar_url')],
             [
                 'recipients' => $this->message->recipients

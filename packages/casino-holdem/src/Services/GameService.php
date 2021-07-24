@@ -18,6 +18,8 @@ use App\Helpers\Games\Poker;
 use App\Helpers\Games\PokerPlayer;
 use App\Models\Account;
 use App\Models\AccountTransaction;
+use App\Models\ChatMessage;
+use App\Models\ChatRoom;
 use App\Models\Game;
 use App\Models\GameRoom;
 use App\Models\GameRoomCommunityCard;
@@ -28,6 +30,7 @@ use App\Models\GameRoomPlayerFold;
 use App\Models\User;
 use App\Services\AccountService;
 use App\Services\GameService as ParentGameService;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Packages\CasinoHoldem\Helpers\PokerHand;
@@ -113,7 +116,6 @@ class GameService extends ParentGameService
      */
     public function fold($params): GameService
     {
-        $gameRoom = GameRoom::where('id', $params['room_id'])->first();
         $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
         GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index']);
         $this->nextRound($params['room_id'], $params['user_id']);
@@ -224,6 +226,13 @@ class GameService extends ParentGameService
         $this->nextRound($params['room_id'], $params['user_id']);
         GameRoomCache::setBet($params['room_id'], $params['user_id'], $bet);
         broadcast(new GameRoomPlayEvent($params['room_id'], $bet));
+        $nextActionUserId = GameRoomCache::getPlayers($params['room_id'])[GameRoomCache::getActionIndex($params['room_id'])] ?? null;
+        if ($nextActionUserId !== null) {
+            $user = User::where('id', $nextActionUserId)->first() ?? null;
+            if ($user) {
+                $this->sendChatMessage($params['room_id'], $params['user_id'], "It is $user->name turn, you have 30 seconds to act");
+            }
+        }
     }
 
     public static function createRandomGame(User $user): void
@@ -371,12 +380,27 @@ class GameService extends ParentGameService
         if ($round == 1 || $round == 2) {
             if (in_array($playerId, [GameRoomCache::getBigBlind($roomId)])) {
                 GameRoomCache::setRound($roomId, GameRoomCache::getRound($roomId) + 1);
+                $this->sendChatMessage($roomId, $playerId, 'Next to round '. GameRoomCache::getRound($roomId));
             }
         } else {
             if (in_array($playerId, [GameRoomCache::getSmallBlind($roomId), GameRoomCache::getDealer($roomId)])) {
                 GameRoomCache::setRound($roomId, GameRoomCache::getRound($roomId) + 1);
+                $this->sendChatMessage($roomId, $playerId, 'Next to round '. GameRoomCache::getRound($roomId));
             }
         }
+    }
 
+    private function sendChatMessage($roomId, $userId, $message)
+    {
+        // store message
+        $chatRoom = ChatRoom::where('room_id', $roomId)->first();
+        $chatMessage = ChatMessage::create([
+            'room_id' => $chatRoom->id,
+            'user_id' => $userId,
+            'message' => $message,
+            'sys' => 1,
+        ]);
+
+        broadcast(new ChatMessageSent($chatRoom, $chatMessage));
     }
 }

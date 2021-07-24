@@ -10,6 +10,8 @@ class ChatMessage extends Model
     use StandardDateFormat;
     use PeriodScope;
 
+    protected $guarded = [];
+
     protected $appends = ['created_ago'];
 
     public function room()
