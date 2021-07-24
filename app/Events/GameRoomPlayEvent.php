@@ -57,6 +57,7 @@ class GameRoomPlayEvent implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
+            'bet' => $this->bet,
             'game_room' => json_encode(GameRoomCache::getGameRoomCache($this->roomId))
         ];
     }
