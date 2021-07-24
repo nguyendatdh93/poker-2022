@@ -142,6 +142,25 @@ class GameService extends ParentGameService
 
         return $this;
     }
+
+    /**
+     * Call
+     *
+     * @return GameService
+     * @throws \Exception
+     */
+    public function check($params): GameService
+    {
+        try {
+            DB::beginTransaction();
+            $this->handleBetAction($params, 0);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
+
+        return $this;
+    }
     
     /**
      * Call
@@ -150,6 +169,27 @@ class GameService extends ParentGameService
      * @throws \Exception
      */
     public function raise($params): GameService
+    {
+        try {
+            DB::beginTransaction();
+            $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
+            $bet = $previouslyBet * 2;
+            $this->handleBetAction($params, $bet);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Call
+     *
+     * @return GameService
+     * @throws \Exception
+     */
+    public function bet($params): GameService
     {
         try {
             DB::beginTransaction();

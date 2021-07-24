@@ -29,6 +29,14 @@
         @click="onBet()"
     > Bet
     </v-btn>
+    <v-btn
+        :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]"
+        v-if="gameRoom.round == 2 && user.id != gameRoom.small_blind"
+        class="mx-1 my-2 my-lg-0"
+        small
+        @click="onCheck()"
+    > check
+    </v-btn>
   </div>
 </template>
 
@@ -74,8 +82,16 @@ export default {
         user_action_index: this.getPlayerActionIndex(user.id)
       });
     },
+    onCheck() {
+      axios.post('/api/games/casino-holdem/check', {
+        hash: this.provablyFairGame.hash,
+        room_id: this.room.id,
+        user_id: this.user.id,
+        user_action_index: this.getPlayerActionIndex(user.id)
+      });
+    },
     onBet() {
-      axios.post('/api/games/casino-holdem/raise', {
+      axios.post('/api/games/casino-holdem/bet', {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
         user_id: this.user.id,

@@ -39,11 +39,28 @@ class GameController extends Controller
             ->call($request->only(['bet', 'room_id', 'user_id', 'user_action_index']))
             ->getGame();
     }
+
+    public function bet(Raise $request, GameService $gameService)
+    {
+        return $gameService
+            ->loadProvablyFairGame($request->hash)
+            ->bet($request->only(['bet', 'room_id', 'user_id', 'user_action_index']))
+            ->getGame();
+    }
+
     public function raise(Raise $request, GameService $gameService)
     {
         return $gameService
             ->loadProvablyFairGame($request->hash)
             ->raise($request->only(['bet', 'room_id', 'user_id', 'user_action_index']))
+            ->getGame();
+    }
+
+    public function check(Raise $request, GameService $gameService)
+    {
+        return $gameService
+            ->loadProvablyFairGame($request->hash)
+            ->check($request->only(['bet', 'room_id', 'user_id', 'user_action_index']))
             ->getGame();
     }
 
