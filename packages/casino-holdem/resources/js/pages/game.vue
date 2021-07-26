@@ -62,6 +62,14 @@
           </template>
         </playing-card>
       </div>
+      <div id="pot" class="d-flex justify-space-around mt-2">
+        <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
+          <p v-if="gameRoom.pot > 0">
+            <span class="coin">{{ gameRoom.pot }}</span>
+            <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
+          </p>
+        </div>
+      </div>
       <actions v-if="room && gameRoom && gameRoom.players && gameRoom.action_index == getPlayerActionIndex(user.id)" :room="room" :provably-fair-game="provablyFairGame" :user="user"></actions>
 
     </template>

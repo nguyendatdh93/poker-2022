@@ -139,6 +139,22 @@ class GameRoomCache
     }
 
     /**
+     * @param mixed $dealer
+     */
+    public static function setPot($roomId, $pot): void
+    {
+        Cache::put("pot:$roomId", $pot);
+    }
+
+    /**
+     * @param mixed $round
+     */
+    public static function getPot($roomId)
+    {
+        return Cache::get("pot:$roomId");
+    }
+
+    /**
      * @param mixed
      */
     public static function setCommunityCard($roomId, $cards)
@@ -208,6 +224,7 @@ class GameRoomCache
             'action_index' => self::getActionIndex($roomId),
             'previously_bet' => self::getPreviouslyBet($roomId),
             'fold_players' => self::getFoldPlayers($roomId),
+            'pot' => self::getPot($roomId),
         ];
     }
 }
