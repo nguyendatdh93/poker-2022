@@ -380,15 +380,36 @@ class GameService extends ParentGameService
         $round = GameRoomCache::getRound($roomId);
         if ($round == 1 || $round == 2) {
             if (in_array($playerId, [GameRoomCache::getBigBlind($roomId)])) {
-                GameRoomCache::setRound($roomId, GameRoomCache::getRound($roomId) + 1);
-                $this->sendChatMessage($roomId, $playerId, 'Next to round '. GameRoomCache::getRound($roomId));
+                $this->handleForNextRound($roomId, $playerId);
             }
         } else {
             if (in_array($playerId, [GameRoomCache::getSmallBlind($roomId), GameRoomCache::getDealer($roomId)])) {
-                GameRoomCache::setRound($roomId, GameRoomCache::getRound($roomId) + 1);
-                $this->sendChatMessage($roomId, $playerId, 'Next to round '. GameRoomCache::getRound($roomId));
+                $this->handleForNextRound($roomId, $playerId);
             }
         }
+    }
+
+    private function handleForNextRound($roomId, $playerId)
+    {
+        $round = GameRoomCache::getRound($roomId);
+        GameRoomCache::setRound($roomId, $round + 1);
+        if (in_array($round, [3,4])) {
+            $communityCard = GameRoomCache::getCommunityCard($roomId);
+            $communityCard[] = $this->addCommunityCard();
+            GameRoomCache::setCommunityCard($roomId, $communityCard);
+        }
+
+        $this->sendChatMessage($roomId, $playerId, 'Next to round '. GameRoomCache::getRound($roomId));
+    }
+
+    private function addCommunityCard()
+    {
+        $deck = new CardDeck(explode(',', $this->getProvablyFairGame()->secret));
+        $deck->cut($this->getProvablyFairGame()->shift_value % 52);
+        $poker = new Poker($deck);
+        $poker->deal(2, 1)->play();
+
+        return $poker->getCommunityCards()->map->code->first();
     }
 
     private function sendChatMessage($roomId, $userId, $message)
