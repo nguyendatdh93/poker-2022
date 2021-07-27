@@ -68,6 +68,7 @@ export default {
     height: 7em;
     transform-style: preserve-3d;
     transition: all 0.5s ease-out;
+    height: 85px;
 
     &.inactive {
       opacity: 0.4;

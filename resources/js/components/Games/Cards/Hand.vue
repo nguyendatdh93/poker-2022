@@ -124,36 +124,86 @@ export default {
     position: relative;
   }
 }
+// #opponent_1 {
+//     transform:translate(520px, 0px);
+// }
+// div#opponent_2 {
+//     transform: translate(180px, 100px);
+// }
+// div#opponent_3 {
+//     transform: translate(4px, 240px);
+// }
+// div#opponent_4 {
+//     transform: translate(-2px, 340px);
+// }
+// div#opponent_5 {
+//     transform: translate(10px, 340px);
+// }
+// div#opponent_6 {
+//     transform: translate(22px, 340px);
+// }
+// div#opponent_7{
+//     transform: translate(-20px, 220px);
+// }
+// div#opponent_8 {
+//     transform: translate(-201px, 100px);
+// }
+// div#opponent_9 {
+//     transform: translate(-530px, 0px);
+// }
 #opponent_1 {
-    transform:translate(520px, 0px);
+    position: absolute;
+    top: 5%;
 }
-div#opponent_2 {
-    transform: translate(180px, 100px);
+#opponent_2 {
+  position: absolute;
+  top: 40%;
+  left: 10%;
 }
-div#opponent_3 {
-    transform: translate(4px, 240px);
+#opponent__2 {
+  position: absolute;
+  left: 38%;
+  top: 10%;
 }
-div#opponent_4 {
-    transform: translate(-2px, 340px);
+#opponent_3 {
+  position: absolute;
+  top: 40%;
+  right: 10%;
 }
-div#opponent_5 {
-    transform: translate(10px, 340px);
+#opponent_4 {
+  position: absolute;
+  top: 5%;
+  left: 18%;
 }
-div#opponent_6 {
-    transform: translate(22px, 340px);
+#opponent_5 {
+   position: absolute;
+  top: 5%;
+  right: 18%;
 }
-div#opponent_7{
-    transform: translate(-20px, 220px);
-}
-div#opponent_8 {
-    transform: translate(-201px, 100px);
-}
-div#opponent_9 {
-    transform: translate(-530px, 0px);
-}
+
+// #opponent_6 {
+//   position: absolute;
+//   top: 12%;
+//   left: 25%;
+// }
+// #opponent_7 {
+//   position: absolute;
+//   top: 12%;
+//   right: 25%;
+// }
+// #opponent_8 {
+//   position: absolute;
+//   bottom: 15%;
+//   right: 25%;
+// }
+// #opponent__9 {
+//   position: absolute;
+//   left: 52%;
+//   top: 10%;
+// }
 #primary_user{
  position: absolute;
-  bottom: -2%;
+  bottom: 3%;
 }
 
 .deal-enter-active {

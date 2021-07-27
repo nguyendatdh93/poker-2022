@@ -423,8 +423,21 @@ export default {
 }
 #player_actions{
     position: absolute;
-    bottom: 2%;
+    bottom: -2%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+#community-card{
+position: absolute;
+top: 40%;
+left: 50%;
+transform: translate(-50%, 0);
+}
+#pot {
+    position: absolute;
+    top: 33%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 9;
 }
 </style>
