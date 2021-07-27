@@ -31,7 +31,7 @@
     </v-btn>
     <v-btn
         :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]"
-        v-if="gameRoom.round == 2 && user.id != gameRoom.small_blind"
+        v-if="gameRoom.round >= 2 && user.id != gameRoom.small_blind"
         class="mx-1 my-2 my-lg-0"
         small
         @click="onCheck()"
