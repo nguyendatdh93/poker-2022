@@ -58,7 +58,7 @@
           </template>
         </hand>
       </div>
-      <div id="community-card" class="d-flex justify-space-around mt-2" v-if="gameRoom.community_card && gameRoom.round >= 2">
+      <div id="community-card" class="d-flex justify-center mt-2" v-if="gameRoom.community_card && gameRoom.round >= 2">
         <playing-card
             v-for="(card, i) in gameRoom.community_card"
             :key="`card-${i}`"

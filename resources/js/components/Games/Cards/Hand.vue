@@ -152,7 +152,8 @@ div#opponent_9 {
     transform: translate(-530px, 0px);
 }
 #primary_user{
-  transform: translate(10px, 340px)!important;
+ position: absolute;
+  bottom: -2%;
 }
 
 .deal-enter-active {
