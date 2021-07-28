@@ -155,7 +155,7 @@ return [
                 'interval' => 5, // seconds
                 'slides' => [
                     [
-                        'title' => 'Stake',
+                        'title' => 'ZeroCryptoPoker',
                         'subtitle' => 'Fair online casino games',
                         'image' => [
                             'url' => '/images/home/banner.jpg',

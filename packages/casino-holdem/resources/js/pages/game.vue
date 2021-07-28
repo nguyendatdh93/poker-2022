@@ -14,8 +14,8 @@
     <template v-if="room">
       <div id="pot" class="d-flex justify-space-around mt-2">
         <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-          <p v-if="gameRoom.pot > 0">
-            <span class="coin">{{ gameRoom.pot }}</span>
+          <p v-if="gameRoom.pot > 0" class="bet_bg">
+             <span class="coin">Pot : {{ gameRoom.pot }}</span>
             <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
           </p>
         </div>
@@ -50,7 +50,7 @@
           </template>
           <template v-slot:bottom>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              <p v-if="gameRoom.bets && gameRoom.bets[opponent.user_id] > 0">
+              <p v-if="gameRoom.bets && gameRoom.bets[opponent.user_id] > 0" class="bet_bg bet_bg_player">
                 <span class="coin">{{ gameRoom.bets[opponent.user_id] }}</span>
                 <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
               </p>
@@ -132,6 +132,7 @@ export default {
       ],
       time: null,
       intervalId: null,
+      primaryUserIndex:false
     }
   },
 
@@ -210,9 +211,16 @@ export default {
     createId(index,opponent) {
       let id = "opponent_";
       if(opponent.user_id == this.user.id){
+        this.primaryUserIndex = index;
         return "primary_user";
       }
-      return id + index;
+      if(this.thisPlayerWasPrimary && this.thisPlayerWasPrimary < index){
+      const decrementIndex = Number(index)-1;
+      id =id+decrementIndex
+      }else{
+      id =id+index;
+      }
+      return id;
     },
     isBigBlind(playerId) {
       if (this.players.length >= 3) {
@@ -439,5 +447,21 @@ transform: translate(-50%, 0);
     left: 50%;
     transform: translate(-50%, 0);
     z-index: 9;
+}
+.bet_bg{
+  background: white;
+  border-radius: 20px;
+  padding: 0 5px;
+  span{
+    color:black;
+    font-size: 13px;
+  }
+  .coin-icon{
+    color: black;
+    font-size: 20px;
+  }
+}
+.bet_bg_player{
+display: inline;
 }
 </style>
