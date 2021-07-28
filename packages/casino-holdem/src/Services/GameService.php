@@ -226,6 +226,7 @@ class GameService extends ParentGameService
         $this->nextRound($params['room_id'], $params['user_id']);
         GameRoomCache::setBet($params['room_id'], $params['user_id'], $bet);
         GameRoomCache::setPot($params['room_id'], GameRoomCache::getPot($params['room_id']) + $bet);
+        GameRoomCache::setPreviouslyBet($params['room_id'], $bet);
         broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $bet));
         $nextActionUserId = GameRoomCache::getPlayers($params['room_id'])[GameRoomCache::getActionIndex($params['room_id'])] ?? null;
         if ($nextActionUserId !== null) {
