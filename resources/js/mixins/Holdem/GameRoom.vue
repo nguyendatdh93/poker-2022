@@ -24,7 +24,9 @@ export default {
             let gameRoom = JSON.parse(data.game_room);
             console.log('GameRoomPlayEvent', gameRoom);
             this.$store.dispatch('game-room/setGameRoom', gameRoom);
-            this.updateUserAccountBalance(this.account.balance - data.bet);
+            if (data.user_id == this.user.id) {
+              this.updateUserAccountBalance(this.account.balance - data.bet);
+            }
           });
     },
   },

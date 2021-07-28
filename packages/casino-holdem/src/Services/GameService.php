@@ -121,7 +121,7 @@ class GameService extends ParentGameService
         $this->nextRound($params['room_id'], $params['user_id']);
         GameRoomCache::setFoldPlayer($params['room_id'], $params['user_id']);
         GameRoomCache::removePlayer($params['room_id'], $params['user_id']);
-        broadcast(new GameRoomPlayEvent($params['room_id'], $previouslyBet));
+        broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $previouslyBet));
         return $this;
     }
 
@@ -226,7 +226,7 @@ class GameService extends ParentGameService
         $this->nextRound($params['room_id'], $params['user_id']);
         GameRoomCache::setBet($params['room_id'], $params['user_id'], $bet);
         GameRoomCache::setPot($params['room_id'], GameRoomCache::getPot($params['room_id']) + $bet);
-        broadcast(new GameRoomPlayEvent($params['room_id'], $bet));
+        broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $bet));
         $nextActionUserId = GameRoomCache::getPlayers($params['room_id'])[GameRoomCache::getActionIndex($params['room_id'])] ?? null;
         if ($nextActionUserId !== null) {
             $user = User::where('id', $nextActionUserId)->first() ?? null;
