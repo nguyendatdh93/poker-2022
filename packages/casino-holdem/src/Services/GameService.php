@@ -33,6 +33,7 @@ use App\Services\GameService as ParentGameService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Packages\CasinoHoldem\Helpers\PokerHand;
 use Packages\CasinoHoldem\Models\CasinoHoldem;
 
@@ -384,9 +385,10 @@ class GameService extends ParentGameService
                 $this->handleForNextRound($roomId, $playerId);
             }
         } else {
-            $playerIds = GameRoomCache::getPlayers($roomId) ?? [];
-            $lastPlayerId = end($playerIds);
-            if (in_array($playerId, [$lastPlayerId])) {
+//            $playerIds = GameRoomCache::getPlayers($roomId) ?? [];
+//            $lastPlayerId = end($playerIds);
+//            Log::info('nextRound', [$playerId, $lastPlayerId, GameRoomCache::getDealer($roomId), GameRoomCache::getSmallBlind($roomId)]);
+            if (in_array($playerId, [GameRoomCache::getBigBlind($roomId)])) {
                 $this->handleForNextRound($roomId, $playerId);
             }
         }
