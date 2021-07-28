@@ -384,7 +384,9 @@ class GameService extends ParentGameService
                 $this->handleForNextRound($roomId, $playerId);
             }
         } else {
-            if (in_array($playerId, [GameRoomCache::getSmallBlind($roomId), GameRoomCache::getDealer($roomId)])) {
+            $playerIds = GameRoomCache::getPlayers($roomId) ?? [];
+            $lastPlayerId = end($playerIds);
+            if (in_array($playerId, [$lastPlayerId])) {
                 $this->handleForNextRound($roomId, $playerId);
             }
         }
