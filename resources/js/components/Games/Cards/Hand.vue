@@ -124,33 +124,6 @@ export default {
     position: relative;
   }
 }
-// #opponent_1 {
-//     transform:translate(520px, 0px);
-// }
-// div#opponent_2 {
-//     transform: translate(180px, 100px);
-// }
-// div#opponent_3 {
-//     transform: translate(4px, 240px);
-// }
-// div#opponent_4 {
-//     transform: translate(-2px, 340px);
-// }
-// div#opponent_5 {
-//     transform: translate(10px, 340px);
-// }
-// div#opponent_6 {
-//     transform: translate(22px, 340px);
-// }
-// div#opponent_7{
-//     transform: translate(-20px, 220px);
-// }
-// div#opponent_8 {
-//     transform: translate(-201px, 100px);
-// }
-// div#opponent_9 {
-//     transform: translate(-530px, 0px);
-// }
 #opponent_1 {
     position: absolute;
     top: 5%;
@@ -180,27 +153,80 @@ export default {
   top: 5%;
   right: 18%;
 }
+@media screen and (max-width:1900px){
+#opponent_1 {
+    position: absolute;
+    top: 4%;
+}
+#opponent_2 {
+    position: absolute;
+    top: 40%;
+    left: 10%;
+}
+#opponent_3 {
+    position: absolute;
+    top: 40%;
+    right: 12%;
+}
+#opponent_4 {
+    position: absolute;
+    top: 15%;
+    left: 18%;
+}
+#opponent_5 {
+    position: absolute;
+    top: 15%;
+    display: block;
+    right: 18%;
+}
+div#opponent_6 {
+    display: block !important;
+    top: 63%;
+    left: 19%;
+    position: absolute;
+}
+div#opponent_7 {
+    display: block;
+    position: absolute;
+    top: 63%;
+    right: 16.5%;
+}
+div#opponent_8 {
+    display: block;
+    position: absolute;
+    bottom: 6%;
+    right: 33%;
+}
+#primary_user {
+    position: absolute;
+    bottom: 6%;
+    left: 45%;
+}
 
-// #opponent_6 {
-//   position: absolute;
-//   top: 12%;
-//   left: 25%;
-// }
-// #opponent_7 {
-//   position: absolute;
-//   top: 12%;
-//   right: 25%;
-// }
-// #opponent_8 {
-//   position: absolute;
-//   bottom: 15%;
-//   right: 25%;
-// }
-// #opponent__9 {
-//   position: absolute;
-//   left: 52%;
-//   top: 10%;
-// }
+}
+@media screen and (max-width:1262px){
+.playing-card-container {
+    margin: 0px 15px !important;
+}
+
+}
+@media screen and (max-width:768px){
+#opponent_1 {
+    position: absolute;
+    top: 15%;
+}
+#primary_user {
+    position: absolute;
+    bottom: 13%;
+    left: 45%;
+}
+div#opponent_8 {
+    display: block;
+    position: absolute;
+    bottom: 13%;
+    right: 33%;
+}
+}
 #primary_user{
  position: absolute;
   bottom: 3%;

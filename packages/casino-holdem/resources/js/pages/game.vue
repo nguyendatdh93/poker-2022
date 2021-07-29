@@ -190,6 +190,9 @@ export default {
     this.$nextTick(() => {
       this.bonusBet = this.defaultBonusBet
     });
+       //do not remove , would need it in future
+      // const descEl = document.querySelector('head meta[name="viewport"]');
+      // descEl.setAttribute('content', "width=1024");
   },
 
   methods: {
