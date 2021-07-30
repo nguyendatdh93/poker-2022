@@ -348,6 +348,7 @@ class GameService extends ParentGameService
         ])->where('game_room_id', $params['room_id'])->orderBy('id', 'asc')->get();
         foreach ($players as $key => $player) {
             $players[$key]['cards'] = $player->gameRoomPlayerCards->first()->cards;
+            $players[$key]['name'] = $player->user->name;
         }
 
         return $players;

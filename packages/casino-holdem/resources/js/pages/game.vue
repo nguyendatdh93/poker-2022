@@ -34,7 +34,7 @@
             :id="createId(Number(i)+1,opponent)"
         >
           <template v-slot:title>
-            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
+            <div class="font-weight-thin text-center ml-n10" id="dealer_or_player">
               {{ isDealer(opponent.id) ? 'Dealer' : opponent.name }}
               <v-progress-circular
                   v-show="isOpponentTurn(opponent)"
@@ -217,7 +217,7 @@ export default {
         this.primaryUserIndex = index;
         return "primary_user";
       }
-      if(this.thisPlayerWasPrimary && this.thisPlayerWasPrimary < index){
+      if(this.primaryUserIndex && Number(this.primaryUserIndex) < Number(index)){
       const decrementIndex = Number(index)-1;
       id =id+decrementIndex
       }else{
