@@ -230,7 +230,7 @@ class GameService extends ParentGameService
         GameRoomCache::setPreviouslyBet($params['room_id'], $bet);
         broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $bet));
         $nextActionUserId = GameRoomCache::getPlayers($params['room_id'])[GameRoomCache::getActionIndex($params['room_id'])] ?? null;
-        if ($nextActionUserId !== null) {
+        if ($nextActionUserId !== null && GameRoomCache::getRound($params['room_id']) <= 4) {
             $user = User::where('id', $nextActionUserId)->first() ?? null;
             if ($user) {
                 $this->sendChatMessage($params['room_id'], $params['user_id'], "It is $user->name turn, you have 30 seconds to act");
@@ -384,7 +384,7 @@ class GameService extends ParentGameService
             if (in_array($playerId, [GameRoomCache::getBigBlind($roomId)])) {
                 $this->handleForNextRound($roomId, $playerId);
             }
-        } else {
+        } elseif($round <= 4) {
 //            $playerIds = GameRoomCache::getPlayers($roomId) ?? [];
 //            $lastPlayerId = end($playerIds);
 //            Log::info('nextRound', [$playerId, $lastPlayerId, GameRoomCache::getDealer($roomId), GameRoomCache::getSmallBlind($roomId)]);
@@ -392,6 +392,26 @@ class GameService extends ParentGameService
                 $this->handleForNextRound($roomId, $playerId);
             }
         }
+    }
+
+    private function handleWinnerCards($roomId)
+    {
+        $playerIds = GameRoomCache::getPlayers($roomId);
+        $playersCards = GameRoomPlayerCard::where('game_room_id', $roomId)->whereIn('user_id', $playerIds)->get();
+        $winnerIndex = 0;
+        $winner = new PokerHand(collect($playersCards[$winnerIndex]->cards), collect(GameRoomCache::getCommunityCard($roomId)));
+        for ($i = 1; $i < $playersCards->count(); $i++) {
+            $competitor = new PokerHand(collect($playersCards[$i]->cards), collect(GameRoomCache::getCommunityCard($roomId)));
+            if ($winner->compare($competitor) == -1) {
+                $winner = $competitor;
+                $winnerIndex = $i;
+            }
+        }
+
+        GameRoomCache::setWinner($roomId, $playersCards[$winnerIndex]->user_id);
+        GameRoomCache::setWinnerCards($roomId, $playersCards[$winnerIndex]->cards);
+        $user = User::where('id', $playersCards[$winnerIndex]->user_id)->first();
+        $this->sendChatMessage($roomId, $playersCards[$winnerIndex]->user_id, "Winner is $user->name");
     }
 
     private function handleForNextRound($roomId, $playerId)
@@ -404,7 +424,11 @@ class GameService extends ParentGameService
             GameRoomCache::setCommunityCard($roomId, $communityCard);
         }
 
-        $this->sendChatMessage($roomId, $playerId, 'Next to round '. GameRoomCache::getRound($roomId));
+        if ($round + 1 <= 4) {
+            $this->sendChatMessage($roomId, $playerId, 'Next to round '. GameRoomCache::getRound($roomId));
+        } else {
+            $this->handleWinnerCards($roomId);
+        }
     }
 
     private function addCommunityCard()
