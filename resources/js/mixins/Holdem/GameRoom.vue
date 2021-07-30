@@ -49,6 +49,14 @@ export default {
       }
 
       return -1;
+    },
+    getCards(userId) {
+      console.log('getCards', userId);
+      if (this.gameRoom.winner && this.gameRoom.winner == userId) {
+          return this.gameRoom.winner_cards;
+      }
+
+      return [null, null];
     }
   }
 }

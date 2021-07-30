@@ -170,6 +170,38 @@ class GameRoomCache
         return Cache::get("previously:bet:$roomId");
     }
 
+    /**
+     * @param mixed
+     */
+    public static function setWinner($roomId, $playerId)
+    {
+        Cache::put("winner:$roomId", $playerId);
+    }
+
+    /**
+     * @param mixed $round
+     */
+    public static function getWinner($roomId)
+    {
+        return Cache::get("winner:$roomId");
+    }
+
+    /**
+     * @param mixed
+     */
+    public static function setWinnerCards($roomId, $cards)
+    {
+        Cache::put("winner:cards:$roomId", $cards);
+    }
+
+    /**
+     * @param mixed $round
+     */
+    public static function getWinnerCards($roomId)
+    {
+        return Cache::get("winner:cards:$roomId");
+    }
+
 
     /**
      * @param mixed
@@ -211,6 +243,7 @@ class GameRoomCache
         return $players;
     }
 
+
     public static function getGameRoomCache($roomId)
     {
         return [
@@ -225,6 +258,8 @@ class GameRoomCache
             'previously_bet' => self::getPreviouslyBet($roomId),
             'fold_players' => self::getFoldPlayers($roomId),
             'pot' => self::getPot($roomId),
+            'winner' => self::getWinner($roomId),
+            'winner_cards' => self::getWinnerCards($roomId),
         ];
     }
 }

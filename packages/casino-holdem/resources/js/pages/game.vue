@@ -25,7 +25,7 @@
         <hand
             v-for="(opponent, i) in players"
             :key="i"
-            :cards="opponent.user_id == user.id ? opponent.cards : [null, null]"
+            :cards="opponent.user_id == user.id ? opponent.cards : getCards(opponent.user_id)"
             :score="opponent.score"
             :result="opponent.score > 0 && !playing ? resultMessage(opponent) : opponent.result"
             :result-class="resultClass(opponent)"
@@ -70,7 +70,7 @@
           </template>
         </playing-card>
       </div>
-      <actions v-if="room && gameRoom && gameRoom.players && gameRoom.action_index == getPlayerActionIndex(user.id)" :room="room" :provably-fair-game="provablyFairGame" :user="user"></actions>
+      <actions v-if="room && gameRoom && gameRoom.players && gameRoom.action_index == getPlayerActionIndex(user.id) && !gameRoom.round <= 4" :room="room" :provably-fair-game="provablyFairGame" :user="user"></actions>
 
     </template>
 
