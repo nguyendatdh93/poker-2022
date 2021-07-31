@@ -467,4 +467,10 @@ transform: translate(-50%, 0);
 .bet_bg_player{
 display: inline;
 }
+#dealer_or_player{
+margin-left: 15px!important;
+}
+#primary_user > #dealer_or_player{
+margin-left: -12px!important;
+}
 </style>
