@@ -62,7 +62,7 @@ export default {
   },
   computed: {
     suitColor () {
-      if (['C', 'S'].includes(this.suit)) return 'white--text'
+      if (['C', 'S'].includes(this.suit)) return 'black--text'
       return 'red--text'
     }
   }

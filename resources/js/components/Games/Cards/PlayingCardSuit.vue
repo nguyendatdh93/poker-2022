@@ -1,7 +1,7 @@
 <template>
   <div class="suit">
     <svg style="display: none;">
-      <symbol id="suit-C" viewBox="0 0 45.33 50.5" fill="currentColor" class="white--text">
+      <symbol id="suit-C" viewBox="0 0 45.33 50.5" fill="currentColor" class="black--text">
         <circle cx="32.49" cy="29.52" r="11.69" opacity="0.5"/>
         <circle cx="22.5" cy="12.06" r="11.69" opacity="0.5"/>
         <circle cx="12.51" cy="29.52" r="11.69" opacity="0.5"/>
@@ -16,7 +16,7 @@
         <circle cx="34" cy="11.33" r="11.33" opacity="0.7"/>
         <polygon points="22.66 50 45.17 11.46 0.16 11.46 22.66 50" opacity="0.7"/>
       </symbol>
-      <symbol id="suit-S" viewBox="0 0 45.33 50.5" fill="currentColor" class="white--text">
+      <symbol id="suit-S" viewBox="0 0 45.33 50.5" fill="currentColor" class="black--text">
         <circle cx="32.33" cy="34.2" r="10" opacity="0.5"/>
         <circle cx="12.33" cy="34.2" r="10" opacity="0.5"/>
         <polygon points="22.33 0 2.38 34.17 42.29 34.17 22.33 0" opacity="0.5"/>

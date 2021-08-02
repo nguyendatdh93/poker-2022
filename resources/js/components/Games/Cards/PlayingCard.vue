@@ -86,7 +86,7 @@ export default {
     }
 
     .front {
-      background-color: var(--v-secondary-lighten1);
+      background-color: var(--v-accent-lighten5);
     }
 
     .back {
