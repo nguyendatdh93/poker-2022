@@ -411,6 +411,7 @@ class GameService extends ParentGameService
 
         GameRoomCache::setWinner($roomId, $playersCards[$winnerIndex]->user_id);
         GameRoomCache::setWinnerCards($roomId, $playersCards[$winnerIndex]->cards);
+        GameRoomCache::setPlayersCards($roomId, $playersCards->keyBy('user_id'));
         $user = User::where('id', $playersCards[$winnerIndex]->user_id)->first();
         $pot = GameRoomCache::getPot($roomId);
         $this->sendChatMessage($roomId, $playersCards[$winnerIndex]->user_id, "$user->name wins pot($pot) with high card king");

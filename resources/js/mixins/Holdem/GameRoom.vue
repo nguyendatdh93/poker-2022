@@ -51,9 +51,8 @@ export default {
       return -1;
     },
     getCards(userId) {
-      console.log('getCards', userId);
-      if (this.gameRoom.winner && this.gameRoom.winner == userId) {
-          return this.gameRoom.winner_cards;
+      if (this.gameRoom.winner && this.gameRoom.player_cards && this.gameRoom.player_cards[userId]) {
+        return this.gameRoom.player_cards[userId].cards;
       }
 
       return [null, null];
