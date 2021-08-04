@@ -441,20 +441,12 @@ class GameService extends ParentGameService
     {
         $playerCanCheck = GameRoomCache::getPlayerCanCheck($params['room_id']);
         $players = GameRoomCache::getPlayers($params['room_id']);
-//        var_dump($playerCanCheck);
-//        var_dump(end($players));
-//        var_dump($players);
-//        var_dump("===========");
         if (array_search($playerCanCheck, $players) == count($players) - 1) {
-            var_dump(11111);
-            var_dump($players[0]);
             $playerCanCheck = $players[0];
         } else {
             $playerCanCheck = $players[array_search($playerCanCheck, $players) + 1];
         }
-//        var_dump($playerCanCheck);
-//        var_dump(end($players));
-//        var_dump($players);
+
         GameRoomCache::setPlayerCanCheck($params['room_id'], $playerCanCheck);
     }
 
@@ -463,9 +455,9 @@ class GameService extends ParentGameService
         $players = GameRoomCache::getPlayers($roomId);
         $playersCount = count($players);
         if ($playersCount == 2) {
-            $playerCanCheck = $players[1];
+            $playerCanCheck = $players[0];
         } elseif ($playersCount == 3) {
-            $playerCanCheck = $players[2];
+            $playerCanCheck = $players[0];
         } else {
             $playerCanCheck = $players[3];
         }

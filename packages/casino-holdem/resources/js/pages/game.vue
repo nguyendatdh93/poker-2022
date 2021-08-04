@@ -70,7 +70,7 @@
           </template>
         </playing-card>
       </div>
-      <actions v-if="room && gameRoom && gameRoom.players && gameRoom.action_index == getPlayerActionIndex(user.id) && !gameRoom.round <= 4" :room="room" :provably-fair-game="provablyFairGame" :user="user"></actions>
+      <actions v-if="room && gameRoom && gameRoom.players && gameRoom.round <= 4 && gameRoom.action_index == getPlayerActionIndex(user.id)" :room="room" :provably-fair-game="provablyFairGame" :user="user"></actions>
 
     </template>
 
