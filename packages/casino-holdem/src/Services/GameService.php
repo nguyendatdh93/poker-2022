@@ -382,18 +382,18 @@ class GameService extends ParentGameService
     private function nextRound($roomId, $playerId)
     {
         $round = GameRoomCache::getRound($roomId);
-        if ($round == 1 || $round == 2) {
-            if (in_array($playerId, [GameRoomCache::getBigBlind($roomId)])) {
-                $this->handleForNextRound($roomId, $playerId);
-            }
-        } elseif($round <= 4) {
-//            $playerIds = GameRoomCache::getPlayers($roomId) ?? [];
-//            $lastPlayerId = end($playerIds);
-//            Log::info('nextRound', [$playerId, $lastPlayerId, GameRoomCache::getDealer($roomId), GameRoomCache::getSmallBlind($roomId)]);
-            if (in_array($playerId, [GameRoomCache::getBigBlind($roomId)])) {
-                $this->handleForNextRound($roomId, $playerId);
-            }
+//        if ($round == 1 || $round == 2) {
+        if (in_array($playerId, [GameRoomCache::getBigBlind($roomId)])) {
+            $this->handleForNextRound($roomId, $playerId);
         }
+//        } elseif($round <= 4) {
+////            $playerIds = GameRoomCache::getPlayers($roomId) ?? [];
+////            $lastPlayerId = end($playerIds);
+////            Log::info('nextRound', [$playerId, $lastPlayerId, GameRoomCache::getDealer($roomId), GameRoomCache::getSmallBlind($roomId)]);
+//            if (in_array($playerId, [GameRoomCache::getBigBlind($roomId)])) {
+//                $this->handleForNextRound($roomId, $playerId);
+//            }
+//        }
     }
 
     private function handleWinnerCards($roomId)
@@ -422,7 +422,7 @@ class GameService extends ParentGameService
     {
         $round = GameRoomCache::getRound($roomId);
         GameRoomCache::setRound($roomId, $round + 1);
-        if (in_array($round, [3,4])) {
+        if (in_array($round + 1, [3,4])) {
             $communityCard = GameRoomCache::getCommunityCard($roomId);
             $communityCard[] = $this->addCommunityCard();
             GameRoomCache::setCommunityCard($roomId, $communityCard);
