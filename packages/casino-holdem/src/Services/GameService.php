@@ -122,7 +122,7 @@ class GameService extends ParentGameService
         $this->nextRound($params['room_id'], $params['user_id']);
         GameRoomCache::setFoldPlayer($params['room_id'], $params['user_id']);
         GameRoomCache::removePlayer($params['room_id'], $params['user_id']);
-        broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $previouslyBet));
+        broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], 0));
         return $this;
     }
 
