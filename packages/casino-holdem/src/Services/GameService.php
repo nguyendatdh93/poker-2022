@@ -117,11 +117,13 @@ class GameService extends ParentGameService
      */
     public function fold($params): GameService
     {
+//        var_dump($params['user_action_index']);die;
 //        $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
-        GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index']);
-        $this->nextRound($params['room_id'], $params['user_id']);
         GameRoomCache::setFoldPlayer($params['room_id'], $params['user_id']);
         GameRoomCache::removePlayer($params['room_id'], $params['user_id']);
+        $activePlayersCount = count(GameRoomCache::getPlayers($params['room_id']));
+        GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index'] == $activePlayersCount ? 0 : $params['user_action_index'] + 1);
+        $this->nextRound($params['room_id'], $params['user_id']);
         broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], 0));
         return $this;
     }
@@ -222,8 +224,7 @@ class GameService extends ParentGameService
                 'transactionable_id' => 1,
             ]);
 
-            $foldPlayers = GameRoomCache::getFoldPlayers($params['room_id']);
-            $activePlayersCount = count(GameRoomCache::getPlayers($params['room_id'])) - count($foldPlayers) - 1;
+            $activePlayersCount = count(GameRoomCache::getPlayers($params['room_id'])) - 1;
             GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index'] == $activePlayersCount ? 0 : $params['user_action_index'] + 1);
             $this->nextRound($params['room_id'], $params['user_id']);
             GameRoomCache::setBet($params['room_id'], $params['user_id'], $bet);

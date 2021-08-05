@@ -4,6 +4,7 @@
 namespace App\Cache;
 
 
+use App\Models\GameRoomPlayer;
 use Illuminate\Support\Facades\Cache;
 
 class GameRoomCache
@@ -248,7 +249,7 @@ class GameRoomCache
      */
     public static function getFoldPlayers($roomId)
     {
-        $playerIds = self::getPlayers($roomId);
+        $playerIds = GameRoomPlayer::where('game_room_id', $roomId)->get()->pluck('user_id');
         $players = [];
         foreach ($playerIds ?? [] as $playerId) {
             if ($player = Cache::get("fold:$roomId:player:$playerId")) {
