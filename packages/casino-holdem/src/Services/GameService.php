@@ -117,7 +117,7 @@ class GameService extends ParentGameService
      */
     public function fold($params): GameService
     {
-        $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
+//        $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
         GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index']);
         $this->nextRound($params['room_id'], $params['user_id']);
         GameRoomCache::setFoldPlayer($params['room_id'], $params['user_id']);
@@ -210,33 +210,38 @@ class GameService extends ParentGameService
 
     private function handleBetAction($params, $bet)
     {
-        $account = Account::where('user_id', $params['user_id'])->first();
-        $gameRoom = GameRoom::where('id', $params['room_id'])->first();
-        $account->decrement('balance', abs($bet));
+        try {
+            $account = Account::where('user_id', $params['user_id'])->first();
+            $account->decrement('balance', abs($bet));
 
-        AccountTransaction::create([
-            'account_id' => $account->id,
-            'amount' => -$bet,
-            'balance' => $account->balance,
-            'transactionable_type' => CasinoHoldem::class,
-            'transactionable_id' => 1,
-        ]);
+            AccountTransaction::create([
+                'account_id' => $account->id,
+                'amount' => -$bet,
+                'balance' => $account->balance,
+                'transactionable_type' => CasinoHoldem::class,
+                'transactionable_id' => 1,
+            ]);
 
-        $foldPlayers = GameRoomCache::getFoldPlayers($params['room_id']);
-        $activePlayersCount = $gameRoom->parameters->players_count - count($foldPlayers) - 1;
-        GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index'] == $activePlayersCount ? 0 : $params['user_action_index'] + 1);
-        $this->nextRound($params['room_id'], $params['user_id']);
-        GameRoomCache::setBet($params['room_id'], $params['user_id'], $bet);
-        GameRoomCache::setPot($params['room_id'], GameRoomCache::getPot($params['room_id']) + $bet);
-        GameRoomCache::setPreviouslyBet($params['room_id'], $bet);
-        broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $bet));
-        $nextActionUserId = GameRoomCache::getPlayers($params['room_id'])[GameRoomCache::getActionIndex($params['room_id'])] ?? null;
-        if ($nextActionUserId !== null && GameRoomCache::getRound($params['room_id']) <= 4) {
-            $user = User::where('id', $nextActionUserId)->first() ?? null;
-            if ($user) {
-                $this->sendChatMessage($params['room_id'], $params['user_id'], "It is $user->name turn, you have 30 seconds to act");
+            $foldPlayers = GameRoomCache::getFoldPlayers($params['room_id']);
+            $activePlayersCount = count(GameRoomCache::getPlayers($params['room_id'])) - count($foldPlayers) - 1;
+            GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index'] == $activePlayersCount ? 0 : $params['user_action_index'] + 1);
+            $this->nextRound($params['room_id'], $params['user_id']);
+            GameRoomCache::setBet($params['room_id'], $params['user_id'], $bet);
+            GameRoomCache::setPot($params['room_id'], GameRoomCache::getPot($params['room_id']) + $bet);
+            GameRoomCache::setPreviouslyBet($params['room_id'], $bet);
+            broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $bet));
+            $nextActionUserId = GameRoomCache::getPlayers($params['room_id'])[GameRoomCache::getActionIndex($params['room_id'])] ?? null;
+            if ($nextActionUserId !== null && GameRoomCache::getRound($params['room_id']) <= 4) {
+                $user = User::where('id', $nextActionUserId)->first() ?? null;
+                if ($user) {
+                    $this->sendChatMessage($params['room_id'], $params['user_id'], "It is $user->name turn, you have 30 seconds to act");
+                }
             }
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+            Log::error("handleBetAction: $message", [$e->getTraceAsString()]);
         }
+
     }
 
     public static function createRandomGame(User $user): void
@@ -452,7 +457,7 @@ class GameService extends ParentGameService
 
     private function setPlayerCanCheck($roomId)
     {
-        $players = GameRoomCache::getPlayers($roomId);
+        $players = array_values(GameRoomCache::getPlayers($roomId));
         $playersCount = count($players);
         if ($playersCount == 2) {
             $playerCanCheck = $players[0];

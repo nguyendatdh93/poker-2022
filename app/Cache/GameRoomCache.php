@@ -244,6 +244,22 @@ class GameRoomCache
     }
 
     /**
+     * @param mixed $round
+     */
+    public static function getFoldPlayers($roomId)
+    {
+        $playerIds = self::getPlayers($roomId);
+        $players = [];
+        foreach ($playerIds ?? [] as $playerId) {
+            if ($player = Cache::get("fold:$roomId:player:$playerId")) {
+                $players[$playerId] = $player;
+            }
+        }
+
+        return $players;
+    }
+
+    /**
      * @param $roomId
      * @return mixed
      */
@@ -260,23 +276,6 @@ class GameRoomCache
     {
         Cache::put("player:can:check:$roomId", $index);
     }
-
-    /**
-     * @param mixed $round
-     */
-    public static function getFoldPlayers($roomId)
-    {
-        $playerIds = self::getPlayers($roomId);
-        $players = [];
-        foreach ($playerIds ?? [] as $playerId) {
-            if ($player = Cache::get("fold:$roomId:player:$playerId")) {
-                $players[$playerId] = $player;
-            }
-        }
-
-        return $players;
-    }
-
 
     public static function getGameRoomCache($roomId)
     {
