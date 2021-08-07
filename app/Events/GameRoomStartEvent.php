@@ -95,6 +95,7 @@ class GameRoomStartEvent implements ShouldBroadcast
     {
         GameRoomCache::setSmallBlind($this->roomId, $this->players[$smallBlindIndex]->user_id);
         GameRoomCache::setBigBlind($this->roomId, $this->players[$bigBlindIndex]->user_id);
+        GameRoomCache::setEndPlayer($this->roomId, $this->players[$bigBlindIndex]->user_id);
         if ($smallBlindIndex > 0) {
             GameRoomCache::setDealer($this->roomId, $this->players[0]->user_id);
         }

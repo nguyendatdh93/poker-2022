@@ -118,11 +118,39 @@ class GameService extends ParentGameService
     public function fold($params): GameService
     {
         GameRoomCache::setFoldPlayer($params['room_id'], $params['user_id']);
-//        GameRoomCache::removePlayer($params['room_id'], $params['user_id']);
         GameRoomCache::setActionIndex($params['room_id'], $this->getNextActionIndex($params));
+        $endPlayer = GameRoomCache::getEndPlayer($params['room_id']);
+        if ($params['user_id'] == $endPlayer) {
+            GameRoomCache::setEndPlayer($params['room_id'], $this->changeEndPlayer($params));
+        }
+
         $this->nextRound($params['room_id'], $params['user_id']);
         broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], 0));
         return $this;
+    }
+
+    private function changeEndPlayer($params)
+    {
+        $players = GameRoomCache::getPlayers($params['room_id']);
+        $foldPlayers = GameRoomCache::getFoldPlayers($params['room_id']);
+        $playerId = $params['user_id'];
+        $currentIndex = array_search($playerId, $players);
+        $rotatePlayer = null;
+        for ($i=count($players) - 1; $i>=0; $i--) {
+            if (in_array($players[$i], $foldPlayers)) {
+                continue;
+            }
+
+            if (!$rotatePlayer) {
+                $rotatePlayer = $players[$i];
+            }
+
+            if ($currentIndex > $i) {
+                return $players[$i];
+            }
+        }
+
+        return $rotatePlayer;
     }
 
     private function getNextActionIndex($params)
@@ -320,7 +348,14 @@ class GameService extends ParentGameService
         $player = $params['player'];
         GameRoomPlayer::where('user_id', $player['id'])->delete();
         $players = $this->getRoomPlayers($params);
-        broadcast(new OnPlayersEvent($players->toJson(), $params['room_id']));
+        if (GameRoomPlayer::where('game_room_id', $params['room_id'])->count() <= 1) {
+            GameRoomCache::clearGameRoomCache($params['room_id']);
+        }
+
+        GameRoomCache::clearBet($params['room_id'], $player['id']);
+        GameRoomCache::clearFoldPlayer($params['room_id'], $player['id']);
+
+        broadcast(new OnPlayersEvent($players->toJson(), $player['id']));
         return $this;
     }
 
@@ -407,19 +442,10 @@ class GameService extends ParentGameService
 
     private function nextRound($roomId, $playerId)
     {
-        $round = GameRoomCache::getRound($roomId);
-//        if ($round == 1 || $round == 2) {
-        if (in_array($playerId, [GameRoomCache::getBigBlind($roomId)])) {
+        $endPlayer = GameRoomCache::getEndPlayer($roomId);
+        if ($playerId == $endPlayer) {
             $this->handleForNextRound($roomId, $playerId);
         }
-//        } elseif($round <= 4) {
-////            $playerIds = GameRoomCache::getPlayers($roomId) ?? [];
-////            $lastPlayerId = end($playerIds);
-////            Log::info('nextRound', [$playerId, $lastPlayerId, GameRoomCache::getDealer($roomId), GameRoomCache::getSmallBlind($roomId)]);
-//            if (in_array($playerId, [GameRoomCache::getBigBlind($roomId)])) {
-//                $this->handleForNextRound($roomId, $playerId);
-//            }
-//        }
     }
 
     private function handleWinnerCards($roomId)

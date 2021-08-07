@@ -81,6 +81,11 @@ class GameRoomCache
         Cache::put("bet:$roomId:player:$playerId", $bet);
     }
 
+    public static function clearBet($roomId, $playerId)
+    {
+        Cache::forget("bet:$roomId:player:$playerId");
+    }
+
     /**
      * @param mixed $round
      */
@@ -121,6 +126,11 @@ class GameRoomCache
         }
 
         self::setPlayers($roomId, $playerIds);
+    }
+
+    public static function clearPlayers($roomId)
+    {
+        self::setEndPlayer($roomId, null);
     }
 
     /**
@@ -244,6 +254,11 @@ class GameRoomCache
         Cache::put("fold:$roomId:player:$playerId", $playerId);
     }
 
+    public static function clearFoldPlayer($roomId, $playerId)
+    {
+        Cache::forget("fold:$roomId:player:$playerId");
+    }
+
     /**
      * @param mixed $round
      */
@@ -278,6 +293,24 @@ class GameRoomCache
         Cache::put("player:can:check:$roomId", $index);
     }
 
+    /**
+     * @param $roomId
+     * @return mixed
+     */
+    public static function getEndPlayer($roomId)
+    {
+        return Cache::get("end:player:$roomId");
+    }
+
+    /**
+     * @param $roomId
+     * @param $index
+     */
+    public static function setEndPlayer($roomId, $playerId)
+    {
+        Cache::put("end:player:$roomId", $playerId);
+    }
+
     public static function getGameRoomCache($roomId)
     {
         return [
@@ -296,6 +329,22 @@ class GameRoomCache
             'winner_cards' => self::getWinnerCards($roomId),
             'player_cards' => self::getPlayersCards($roomId),
             'player_can_check' => self::getPlayerCanCheck($roomId),
+            'end_player' => self::getEndPlayer($roomId),
         ];
+    }
+
+    public static function clearGameRoomCache($roomId)
+    {
+        self::clearPlayers($roomId);
+        self::setBigBlind($roomId, null);
+        self::setSmallBlind($roomId, null);
+        self::setDealer($roomId, null);
+        self::setRound($roomId, null);
+        self::setCommunityCard($roomId, null);
+        self::setActionIndex($roomId, null);
+        self::setPreviouslyBet($roomId, null);
+        self::setPlayersCards($roomId, null);
+        self::setWinnerCards($roomId, null);
+        self::setEndPlayer($roomId, null);
     }
 }
