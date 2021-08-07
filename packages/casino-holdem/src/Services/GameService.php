@@ -117,15 +117,36 @@ class GameService extends ParentGameService
      */
     public function fold($params): GameService
     {
-//        var_dump($params['user_action_index']);die;
-//        $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
         GameRoomCache::setFoldPlayer($params['room_id'], $params['user_id']);
-        GameRoomCache::removePlayer($params['room_id'], $params['user_id']);
-        $activePlayersCount = count(GameRoomCache::getPlayers($params['room_id']));
-        GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index'] == $activePlayersCount ? 0 : $params['user_action_index'] + 1);
+//        GameRoomCache::removePlayer($params['room_id'], $params['user_id']);
+        GameRoomCache::setActionIndex($params['room_id'], $this->getNextActionIndex($params));
         $this->nextRound($params['room_id'], $params['user_id']);
         broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], 0));
         return $this;
+    }
+
+    private function getNextActionIndex($params)
+    {
+        $players = GameRoomCache::getPlayers($params['room_id']);
+        $foldPlayers = GameRoomCache::getFoldPlayers($params['room_id']);
+        $playerId = $params['user_id'];
+        $currentIndex = array_search($playerId, $players);
+        $rotatePlayer = null;
+        foreach ($players as $key => $player) {
+            if (in_array($player, $foldPlayers)) {
+                continue;
+            }
+
+            if (!$rotatePlayer) {
+                $rotatePlayer = $player;
+            }
+
+            if ($currentIndex < $key) {
+                return $player;
+            }
+        }
+
+        return $rotatePlayer;
     }
 
     /**
@@ -224,14 +245,13 @@ class GameService extends ParentGameService
                 'transactionable_id' => 1,
             ]);
 
-            $activePlayersCount = count(GameRoomCache::getPlayers($params['room_id'])) - 1;
-            GameRoomCache::setActionIndex($params['room_id'], $params['user_action_index'] == $activePlayersCount ? 0 : $params['user_action_index'] + 1);
+            GameRoomCache::setActionIndex($params['room_id'], $this->getNextActionIndex($params));
             $this->nextRound($params['room_id'], $params['user_id']);
             GameRoomCache::setBet($params['room_id'], $params['user_id'], $bet);
             GameRoomCache::setPot($params['room_id'], GameRoomCache::getPot($params['room_id']) + $bet);
             GameRoomCache::setPreviouslyBet($params['room_id'], $bet);
             broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $bet));
-            $nextActionUserId = GameRoomCache::getPlayers($params['room_id'])[GameRoomCache::getActionIndex($params['room_id'])] ?? null;
+            $nextActionUserId = GameRoomCache::getActionIndex($params['room_id']);
             if ($nextActionUserId !== null && GameRoomCache::getRound($params['room_id']) <= 4) {
                 $user = User::where('id', $nextActionUserId)->first() ?? null;
                 if ($user) {
