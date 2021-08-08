@@ -125,6 +125,7 @@ class GameService extends ParentGameService
         }
 
         $this->nextRound($params['room_id'], $params['user_id']);
+        $this->setPlayerCanCheck($params['room_id']);
         broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], 0));
         return $this;
     }
@@ -187,6 +188,7 @@ class GameService extends ParentGameService
     {
         try {
             DB::beginTransaction();
+            $this->setPlayerCanCheck($params['room_id']);
             $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
             $this->handleBetAction($params, $previouslyBet);
             DB::commit();
@@ -207,8 +209,8 @@ class GameService extends ParentGameService
     {
         try {
             DB::beginTransaction();
+            GameRoomCache::setPlayerCanCheck($params['room_id'], $this->getNextPlayerCanCheck($params));
             $this->handleBetAction($params, 0);
-            $this->handleNextCheckAction($params);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -227,6 +229,7 @@ class GameService extends ParentGameService
     {
         try {
             DB::beginTransaction();
+            $this->setPlayerCanCheck($params['room_id']);
             $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
             $bet = $previouslyBet * 2;
             $this->handleBetAction($params, $bet);
@@ -248,6 +251,7 @@ class GameService extends ParentGameService
     {
         try {
             DB::beginTransaction();
+            $this->setPlayerCanCheck($params['room_id']);
             $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
             $bet = $previouslyBet * 2;
             $this->handleBetAction($params, $bet);
@@ -486,35 +490,37 @@ class GameService extends ParentGameService
             $this->handleWinnerCards($roomId);
         }
 
-        $this->setPlayerCanCheck($roomId);
+//        $this->setPlayerCanCheck($roomId);
     }
 
-    private function handleNextCheckAction($params)
+    private function getNextPlayerCanCheck($params)
     {
-        $playerCanCheck = GameRoomCache::getPlayerCanCheck($params['room_id']);
         $players = GameRoomCache::getPlayers($params['room_id']);
-        if (array_search($playerCanCheck, $players) == count($players) - 1) {
-            $playerCanCheck = $players[0];
-        } else {
-            $playerCanCheck = $players[array_search($playerCanCheck, $players) + 1];
+        $foldPlayers = GameRoomCache::getFoldPlayers($params['room_id']);
+        $playerId = $params['user_id'];
+        $currentIndex = array_search($playerId, $players);
+        $rotatePlayer = null;
+        foreach ($players as $key => $player) {
+            if (in_array($player, $foldPlayers)) {
+                continue;
+            }
+
+            if (!$rotatePlayer) {
+                $rotatePlayer = $player;
+            }
+
+            if ($currentIndex < $key) {
+                return $player;
+            }
         }
 
-        GameRoomCache::setPlayerCanCheck($params['room_id'], $playerCanCheck);
+        return $rotatePlayer;
     }
 
     private function setPlayerCanCheck($roomId)
     {
-        $players = array_values(GameRoomCache::getPlayers($roomId));
-        $playersCount = count($players);
-        if ($playersCount == 2) {
-            $playerCanCheck = $players[0];
-        } elseif ($playersCount == 3) {
-            $playerCanCheck = $players[0];
-        } else {
-            $playerCanCheck = $players[3];
-        }
-
-        GameRoomCache::setPlayerCanCheck($roomId, $playerCanCheck);
+        $players = GameRoomCache::getPlayers($roomId);
+        GameRoomCache::setPlayerCanCheck($roomId, count($players) <= 3 ? GameRoomCache::getBigBlind($roomId) : $players[3]);
     }
 
     private function addCommunityCard()
