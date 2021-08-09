@@ -84,12 +84,19 @@ class GameRoomController extends Controller
     {
         try {
             DB::beginTransaction();
+            $parameters = ['stakes'=>$request->stakes,
+            'buy_in'=>$request->buy_in,
+            'games_type'=>$request->games_type,
+            'players_count'=>$request->players_count,
+            'bet'=>$request->bet
+        ];
+       
             $room = new GameRoom();
             $room->owner()->associate($request->user());
             $room->name = $request->name;
             $room->gameable_type = $packageManager->get($packageId)->model;
             $room->status = GameRoom::STATUS_OPEN;
-            $room->parameters = $request->parameters;
+            $room->parameters = $request->parameters??$parameters;
             $room->save();
 
             // create new chat room
@@ -168,6 +175,6 @@ class GameRoomController extends Controller
         $player->user()->associate($user);
         $player->save();
 
-        return $this->successResponse(['room' => $room]);
+        return $this->successResponse(['room' => $room,'message'=>'New room created successfully']);
     }
 }

@@ -112,6 +112,10 @@ export default [
     ]
   },
 
+ //rooms 
+  { path: '/admin/rooms', name: 'admin.rooms.index', component: page('admin/rooms/index') },
+  { path: '/admin/rooms/create', name: 'admin.rooms.create', component: page('admin/rooms/create') },
+
   { path: '/admin/users', name: 'admin.users.index', component: page('admin/users/index') },
   { path: '/admin/users/:id', name: 'admin.users.show', component: page('admin/users/show'), props: true },
   { path: '/admin/users/:id/edit', name: 'admin.users.edit', component: page('admin/users/edit'), props: true },

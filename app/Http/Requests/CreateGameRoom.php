@@ -39,11 +39,11 @@ class CreateGameRoom extends FormRequest
         ];
 
         // add custom game room parameters validation
-        foreach (config($this->packageId . '.parameters') as $parameter) {
-            if ($parameter['validation']) {
-                $rules['parameters.' . $parameter['id']] = $parameter['validation'];
-            }
-        }
+        // foreach (config($this->packageId . '.parameters') as $parameter) {
+        //     if ($parameter['validation']) {
+        //         $rules['parameters.' . $parameter['id']] = $parameter['validation'];
+        //     }
+        // }
 
         return $rules;
     }

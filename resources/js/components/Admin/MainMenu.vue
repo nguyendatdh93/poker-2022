@@ -22,6 +22,7 @@ export default {
     menu () {
       return [
         { route: 'admin.dashboard.index', icon: 'mdi-view-dashboard', title: this.$t('Dashboard'), enabled: true },
+        { route: 'admin.rooms.index', icon: 'mdi-google-classroom', title: 'Rooms', enabled: true },
         { route: 'admin.users.index', icon: 'mdi-account-multiple', title: this.$t('Users'), enabled: true },
         { route: 'admin.accounts.index', icon: 'mdi-account-cash', title: this.$t('Accounts'), enabled: true },
         { route: 'admin.deposits.index', icon: 'mdi-cash-plus', title: this.$t('Deposits'), enabled: this.paymentsPackageEnabled },

@@ -76,6 +76,10 @@ export default {
       type: String,
       required: true
     },
+    apiType:{
+        type:String,
+        required:false
+    },
     filters: {
       type: Array,
       required: false,
@@ -196,10 +200,12 @@ export default {
           ...this.options.filters
         }
       })
-
       this.items = data.items
       this.itemsTotal = data.count
-
+      if(this.apiType==='GET_ROOMS'){
+      this.items = data.rooms
+      this.itemsTotal = data.count
+      }
       this.loading = false
     }
   }
