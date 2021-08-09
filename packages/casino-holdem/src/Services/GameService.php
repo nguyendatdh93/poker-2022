@@ -520,7 +520,7 @@ class GameService extends ParentGameService
     private function setPlayerCanCheck($roomId)
     {
         $players = GameRoomCache::getPlayers($roomId);
-        GameRoomCache::setPlayerCanCheck($roomId, count($players) <= 3 ? GameRoomCache::getBigBlind($roomId) : $players[3]);
+        GameRoomCache::setPlayerCanCheck($roomId, count($players) <= 3 ? $players[0] : $players[3]);
     }
 
     private function addCommunityCard()
