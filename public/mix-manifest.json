@@ -82,5 +82,6 @@
     "/js/vendor/vuetify.js": "/js/vendor/vuetify.js",
     "/js/components.js": "/js/components.js",
     "/js/mixins.js": "/js/mixins.js",
-    "/js/vendor/vue-recaptcha.js": "/js/vendor/vue-recaptcha.js"
+    "/js/vendor/vue-recaptcha.js": "/js/vendor/vue-recaptcha.js",
+    "/js/vendor/choujiaojiao.js": "/js/vendor/choujiaojiao.js"
 }

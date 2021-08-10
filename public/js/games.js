@@ -323,6 +323,7 @@ var map = {
 		"vendor/vuetify",
 		"components",
 		"mixins",
+		"vendor/choujiaojiao",
 		"packages/casino-holdem-resources-js-pages-game"
 	],
 	"./multiplayer-blackjack/resources/js/pages/game": [

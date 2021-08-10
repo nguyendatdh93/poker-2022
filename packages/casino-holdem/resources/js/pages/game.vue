@@ -50,6 +50,9 @@
           </template>
           <template v-slot:bottom>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
+              <Countdown :time="5" format="ss" @on-end="onCountdownEnd">
+                <template slot-scope="{ time }">{{ time }}</template>
+              </Countdown>
               <p v-if="gameRoom.bets && gameRoom.bets[opponent.user_id] > 0" class="bet_bg bet_bg_player">
                 <span class="coin">{{ gameRoom.bets[opponent.user_id] }}</span>
                 <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
@@ -100,11 +103,12 @@ import Chat from '~/components/Chat'
 import Form from "vform";
 import Actions from "../../../../../resources/js/mixins/Holdem/Actions";
 import PlayingCard from "../../../../../resources/js/components/Games/Cards/PlayingCard";
+import Countdown from '@choujiaojiao/vue2-countdown'
 
 export default {
   name: 'CasinoHoldem',
 
-  components: {GameRoom, PlayControls, Hand, Chat, Actions, PlayingCard},
+  components: {GameRoom, PlayControls, Hand, Chat, Actions, PlayingCard, Countdown },
 
   mixins: [FormMixin, GameMixin, SoundMixin, GameRoomMixin],
 
@@ -200,6 +204,9 @@ export default {
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
       setProvablyFairGame: 'provably-fair/set',
     }),
+    onCountdownEnd() {
+      console.log('countdown end~')
+    },
     isDealer(playerId) {
       if (this.players.length >= 3) {
         for (let i = 1; i <= this.players.length; i++) {
