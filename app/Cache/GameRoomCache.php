@@ -174,14 +174,6 @@ class GameRoomCache
     }
 
     /**
-     * @param mixed $round
-     */
-    public static function getPreviouslyBet($roomId)
-    {
-        return Cache::get("previously:bet:$roomId");
-    }
-
-    /**
      * @param mixed
      */
     public static function setWinner($roomId, $playerId)
@@ -236,6 +228,14 @@ class GameRoomCache
     public static function setPreviouslyBet($roomId, $bet)
     {
         Cache::put("previously:bet:$roomId", $bet);
+    }
+
+    /**
+     * @param mixed $round
+     */
+    public static function getPreviouslyBet($roomId)
+    {
+        return Cache::get("previously:bet:$roomId");
     }
 
     /**
