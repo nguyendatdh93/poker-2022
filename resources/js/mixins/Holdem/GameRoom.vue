@@ -7,7 +7,9 @@ import axios from "axios";
 
 export default {
   data() {
-    return {}
+    return {
+      gamePlay: false,
+    }
   },
   computed: {
     ...mapState('game-room', ['players', 'gameRoom']),
@@ -16,7 +18,7 @@ export default {
     room(room) {
       this.echo.join(`game.${room.id}`)
           .listen('OnPlayersEvent', data => {
-            this.$store.dispatch('game-room/setPlayers', JSON.parse(data.players))
+              this.$store.dispatch('game-room/setPlayers', JSON.parse(data.players))
           }).listen('GameRoomStartEvent', data => {
               console.log('GameRoomStartEvent', data);
               this.$store.dispatch('game-room/setGameRoom', data.game_room);
@@ -24,6 +26,7 @@ export default {
             let gameRoom = JSON.parse(data.game_room);
             console.log('GameRoomPlayEvent', gameRoom);
             this.$store.dispatch('game-room/setGameRoom', gameRoom);
+            this.gamePlay = true;
             if (data.user_id == this.user.id) {
               this.updateUserAccountBalance(this.account.balance - data.bet);
             }
@@ -34,6 +37,14 @@ export default {
     ...mapActions({
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
     }),
+    async onCountdownEnd(player) {
+      await axios.post('/api/games/casino-holdem/fold', {
+        hash: this.provablyFairGame.hash,
+        room_id: this.room.id,
+        user_id: player.user_id,
+        user_action_index: this.getPlayerActionIndex(this.user.id)
+      });
+    },
     updatePlayerHand(player, values) {
       Object.keys(values).forEach(key => {
         player[key] = values[key]

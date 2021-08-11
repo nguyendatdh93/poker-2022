@@ -50,8 +50,27 @@
           </template>
           <template v-slot:bottom>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              <Countdown :time="5" format="ss" @on-end="onCountdownEnd">
-                <template slot-scope="{ time }">{{ time }}</template>
+              <Countdown v-if="opponent.user_id == gameRoom.action_index" :time="20" format="ss" @on-end="onCountdownEnd(opponent)">
+                <template slot-scope="{ time }">
+                  <v-progress-linear
+                      color="light-blue"
+                      height="10"
+                      buffer-value="60"
+                      :value="time * 3"
+                      striped
+                  ></v-progress-linear>
+                </template>
+              </Countdown>
+              <Countdown v-else :time="0" format="ss" @on-end="onCountdownEnd">
+                <template slot-scope="{ time }">
+                  <v-progress-linear
+                      color="light-blue"
+                      height="10"
+                      buffer-value="60"
+                      :value="time * 3"
+                      striped
+                  ></v-progress-linear>
+                </template>
               </Countdown>
               <p v-if="gameRoom.bets && gameRoom.bets[opponent.user_id] > 0" class="bet_bg bet_bg_player">
                 <span class="coin">{{ gameRoom.bets[opponent.user_id] }}</span>
@@ -204,9 +223,6 @@ export default {
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
       setProvablyFairGame: 'provably-fair/set',
     }),
-    onCountdownEnd() {
-      console.log('countdown end~')
-    },
     isDealer(playerId) {
       if (this.players.length >= 3) {
         for (let i = 1; i <= this.players.length; i++) {

@@ -290,7 +290,7 @@ class GameService extends ParentGameService
             if ($nextActionUserId !== null && GameRoomCache::getRound($params['room_id']) <= 4) {
                 $user = User::where('id', $nextActionUserId)->first() ?? null;
                 if ($user) {
-                    $this->sendChatMessage($params['room_id'], $params['user_id'], "It is $user->name turn, you have 30 seconds to act");
+                    $this->sendChatMessage($params['room_id'], $params['user_id'], "It is $user->name turn, you have 20 seconds to act");
                 }
             }
         } catch (\Exception $e) {
