@@ -127,6 +127,7 @@ class GameService extends ParentGameService
         $this->nextRound($params['room_id'], $params['user_id']);
         $this->setPlayerCanCheck($params['room_id']);
         broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], 0));
+        $this->sendNextPlayerActionMessage($params);
         return $this;
     }
 
@@ -286,13 +287,7 @@ class GameService extends ParentGameService
             }
             
             broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $bet));
-            $nextActionUserId = GameRoomCache::getActionIndex($params['room_id']);
-            if ($nextActionUserId !== null && GameRoomCache::getRound($params['room_id']) <= 4) {
-                $user = User::where('id', $nextActionUserId)->first() ?? null;
-                if ($user) {
-                    $this->sendChatMessage($params['room_id'], $params['user_id'], "It is $user->name turn, you have 20 seconds to act");
-                }
-            }
+            $this->sendNextPlayerActionMessage($params);
         } catch (\Exception $e) {
             $message = $e->getMessage();
             Log::error("handleBetAction: $message", [$e->getTraceAsString()]);
@@ -406,6 +401,17 @@ class GameService extends ParentGameService
 
         broadcast(new ActionEvent($params['room_id'], $playerCanAction));
         return $this;
+    }
+
+    private function sendNextPlayerActionMessage($params)
+    {
+        $nextActionUserId = GameRoomCache::getActionIndex($params['room_id']);
+        if ($nextActionUserId !== null && GameRoomCache::getRound($params['room_id']) <= 4) {
+            $user = User::where('id', $nextActionUserId)->first() ?? null;
+            if ($user) {
+                $this->sendChatMessage($params['room_id'], $params['user_id'], "It is $user->name turn, you have 20 seconds to act");
+            }
+        }
     }
 
     private function getRoomPlayers($params)
