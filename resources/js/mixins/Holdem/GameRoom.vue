@@ -37,11 +37,11 @@ export default {
     ...mapActions({
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
     }),
-    async onCountdownEnd(player) {
+    async finishCountdown() {
       await axios.post('/api/games/casino-holdem/fold', {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
-        user_id: player.user_id,
+        user_id: this.gameRoom.action_index,
         user_action_index: this.getPlayerActionIndex(this.user.id)
       });
     },

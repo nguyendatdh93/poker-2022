@@ -50,28 +50,25 @@
           </template>
           <template v-slot:bottom>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              <Countdown v-if="opponent.user_id == gameRoom.action_index" :time="20" format="ss" @on-end="onCountdownEnd(opponent)">
-                <template slot-scope="{ time }">
+              <countdown v-if="opponent.user_id == gameRoom.action_index" :left-time="20000" @finish="finishCountdown">
+                <template slot="process" slot-scope="{ timeObj }">
                   <v-progress-linear
                       color="light-blue"
                       height="10"
                       buffer-value="60"
-                      :value="time * 3"
+                      :value="timeObj.ceil.s * 3"
                       striped
                   ></v-progress-linear>
                 </template>
-              </Countdown>
-              <Countdown v-else :time="0" format="ss" @on-end="onCountdownEnd">
-                <template slot-scope="{ time }">
-                  <v-progress-linear
-                      color="light-blue"
-                      height="10"
-                      buffer-value="60"
-                      :value="time * 3"
-                      striped
-                  ></v-progress-linear>
-                </template>
-              </Countdown>
+              </countdown>
+              <v-progress-linear
+                  v-else
+                  color="light-blue"
+                  height="10"
+                  buffer-value="60"
+                  :value="0"
+                  striped
+              ></v-progress-linear>
               <p v-if="gameRoom.bets && gameRoom.bets[opponent.user_id] > 0" class="bet_bg bet_bg_player">
                 <span class="coin">{{ gameRoom.bets[opponent.user_id] }}</span>
                 <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
@@ -122,12 +119,13 @@ import Chat from '~/components/Chat'
 import Form from "vform";
 import Actions from "../../../../../resources/js/mixins/Holdem/Actions";
 import PlayingCard from "../../../../../resources/js/components/Games/Cards/PlayingCard";
-import Countdown from '@choujiaojiao/vue2-countdown'
+// import Countdown from '@choujiaojiao/vue2-countdown'
+// import vueAwesomeCountdown from 'vue-awesome-countdown'
 
 export default {
   name: 'CasinoHoldem',
 
-  components: {GameRoom, PlayControls, Hand, Chat, Actions, PlayingCard, Countdown },
+  components: {GameRoom, PlayControls, Hand, Chat, Actions, PlayingCard},
 
   mixins: [FormMixin, GameMixin, SoundMixin, GameRoomMixin],
 
@@ -158,7 +156,6 @@ export default {
       primaryUserIndex:false
     }
   },
-
   computed: {
     ...mapState('broadcasting', ['echo']),
     ...mapState('auth', ['account', 'user']),
@@ -213,9 +210,6 @@ export default {
     this.$nextTick(() => {
       this.bonusBet = this.defaultBonusBet
     });
-       //do not remove , would need it in future
-      // const descEl = document.querySelector('head meta[name="viewport"]');
-      // descEl.setAttribute('content', "width=1024");
   },
 
   methods: {
