@@ -32,6 +32,8 @@
     "/js/admin-games-show.js": "/js/admin-games-show.js",
     "/js/admin-license.js": "/js/admin-license.js",
     "/js/admin-maintenance.js": "/js/admin-maintenance.js",
+    "/js/admin-rooms.js": "/js/admin-rooms.js",
+    "/js/admin-rooms-create.js": "/js/admin-rooms-create.js",
     "/js/admin-settings.js": "/js/admin-settings.js",
     "/js/admin-users.js": "/js/admin-users.js",
     "/js/admin-users-delete.js": "/js/admin-users-delete.js",

@@ -84,8 +84,7 @@ class GameRoomController extends Controller
     {
         try {
             DB::beginTransaction();
-            $parameters = ['stakes'=>$request->stakes,
-            'buy_in'=>$request->buy_in,
+            $parameters = [
             'games_type'=>$request->games_type,
             'players_count'=>$request->players_count,
             'bet'=>$request->bet
@@ -96,7 +95,8 @@ class GameRoomController extends Controller
             $room->name = $request->name;
             $room->gameable_type = $packageManager->get($packageId)->model;
             $room->status = GameRoom::STATUS_OPEN;
-            $room->parameters = $request->parameters??$parameters;
+            $room->parameters = $parameters;
+            $room->stakes = $request->stakes;
             $room->save();
 
             // create new chat room
@@ -106,10 +106,10 @@ class GameRoomController extends Controller
             $chatRoom->save();
 
             DB::commit();
-            return $this->joinGameRoom($room, $request->user());
+            return $this->successResponse(['room' => $room,'message'=>'New room created successfully']);
         } catch (\Exception $e) {
             DB::rollBack();
-            var_dump($e->getMessage());
+           return $e->getMessage();
         }
     }
 
@@ -120,7 +120,7 @@ class GameRoomController extends Controller
      * @param GameRoom $gameRoom
      * @return array
      */
-    public function join(JoinGameRoom $request, $packageId)
+    public function join(Request $request, $packageId)
     {
         $room = GameRoom::find($request->room_id);
         $gameable = new CasinoHoldem();
@@ -176,5 +176,32 @@ class GameRoomController extends Controller
         $player->save();
 
         return $this->successResponse(['room' => $room,'message'=>'New room created successfully']);
+    }
+
+    //search for room 
+    public function search(GetGameRooms $request, $packageId, PackageManager $packageManager)
+    {
+        $rooms = GameRoom::where('gameable_type', $packageManager->get($packageId)->model)
+        ->with('players')
+        ->withCount('players')
+        ->where('stakes',$request->stakes)
+        ->orderBy('id', 'desc')
+        ->get();
+       
+
+        if($rooms && count($rooms)>0){
+            $room = $rooms
+            ->filter(function ($room) use ($request) {
+                return $room->parameters->players_count == $request->players_count;
+            })->first();
+        
+        }else{
+        return $this->errorResponse('Room not found with selected stakes');
+        }
+        if($room->players_count < $request->players_count){
+        return $this->successResponse(['room' => $room,'message'=>'Room found']);
+        }else{
+        return $this->errorResponse('Matched Room is full currently');
+        }
     }
 }

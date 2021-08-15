@@ -41,20 +41,7 @@
                     outlined
                     @change="setBuyInRange(forms.create.stakes)"
                   ></v-combobox>
-                  <v-text-field
-                    v-model="forms.create.buy_in"
-                    :label="$t('Buy-In')"
-                    :rules="[
-                      validationRequired,
-                      v  =>  buyInMin < Number(v) || 'buy in should greater than'+ buyInMin,
-                      v  =>  buyInMax > Number(v) || 'buy in should less than'+ buyInMax
-                    ]"
-                    :error="forms.create.errors.has('buy_in')"
-                    :error-messages="forms.create.errors.get('buy_in')"
-                    outlined
-                    :disabled="forms.create.busy"
-                    @keydown="clearFormErrors($event, 'buy_in', forms.create)"
-                  />
+              
                    <v-text-field
                     v-model="forms.create.players_count"
                     :label="$t('Maximum players')"
@@ -191,13 +178,10 @@ export default {
         ],
       },
      selectedStakes:[],
-     buyInMin:0,
-     buyInMax:0,
       forms: {
         create: new Form({
           name: null,
           stakes: null,
-          buy_in: null,
           games_type: null,
           players_count:2,
           bet:null
@@ -223,7 +207,7 @@ export default {
         this.selectedStakes = this.allStakes[gameType];
     },
     transformStakes(){
-        return [...this.selectedStakes.map(stake=>`${stake.small}Z/${stake.big}Z    (min ${stake.min}Z - max ${stake.max}Z)`)]
+        return [...this.selectedStakes.map(stake=>`${stake.small}Z/${stake.big}Z (min ${stake.min}Z - max ${stake.max}Z)`)]
     },
     setBuyInRange(selectedStake){
         const firstHalf = selectedStake.split('(')[0];
@@ -234,20 +218,7 @@ export default {
            }
         });
         if(foundStake){
-            this.buyInMin = foundStake.min;
-            this.buyInMax =foundStake.max;
             this.forms.create.bet = foundStake;
-        }
-        if(!foundStake){
-        const secondHalf = selectedStake.split('(')[1];
-        const seconfHalfSplit = secondHalf.split('-');
-        const extractNumbers =  seconfHalfSplit.map(value=>{
-            return str.match(/(\d+)/)[0];
-        })
-
-            this.buyInMin = extractNumbers[0];
-            this.buyInMax = extractNumbers[1];
-
         }
     },
   },

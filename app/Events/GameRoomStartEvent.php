@@ -107,9 +107,9 @@ class GameRoomStartEvent implements ShouldBroadcast
         GameRoomCache::setActionIndex($this->roomId, $this->players->count() <= 3 ? $this->players[0]->user_id : $this->players[3]->user_id);
         GameRoomCache::setPlayerCanCheck($this->roomId, $this->players->count() <= 3 ? $this->players[0]->user_id : $this->players[3]->user_id);
 
-        GameRoomCache::setBet($this->roomId, $this->players[$smallBlindIndex]->user_id, $this->gameRoom->parameters->bet);
-        GameRoomCache::setBet($this->roomId, $this->players[$bigBlindIndex]->user_id, $this->gameRoom->parameters->bet * 2);
-        GameRoomCache::setPreviouslyBet($this->roomId,$this->gameRoom->parameters->bet * 2);
-        GameRoomCache::setPot($this->roomId, $this->gameRoom->parameters->bet * 3);
+        GameRoomCache::setBet($this->roomId, $this->players[$smallBlindIndex]->user_id, $this->gameRoom->parameters->bet->small);
+        GameRoomCache::setBet($this->roomId, $this->players[$bigBlindIndex]->user_id, $this->gameRoom->parameters->bet->big);
+        GameRoomCache::setPreviouslyBet($this->roomId,$this->gameRoom->parameters->bet->big);
+        GameRoomCache::setPot($this->roomId, ($this->gameRoom->parameters->bet->small + $this->gameRoom->parameters->bet->big));
     }
 }

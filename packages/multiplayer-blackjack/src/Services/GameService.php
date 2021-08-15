@@ -91,7 +91,7 @@ class GameService extends MultiplayerGameService
         $score = $this->calculateScore($cards);
 
         $hands->put($this->getUser()->id, [
-            'bet'           => (int) $this->getRoom()->parameters->bet,
+            'bet'           => (int) $this->getRoom()->parameters->bet->big,
             'cards'         => $cards,
             'score'         => $score,
             'win'           => 0,
@@ -219,7 +219,7 @@ class GameService extends MultiplayerGameService
         }
 
         $win = $winningHands->count() > 0
-            ? round($room->parameters->bet * $hands->count() * (1 - $this->fee / 100) / $winningHands->count(), 2)
+            ? round($room->parameters->bet->big * $hands->count() * (1 - $this->fee / 100) / $winningHands->count(), 2)
             : 0;
 
         $hands->each(function ($hand, $userId) use ($room, $hands, $winningHands, $win) {

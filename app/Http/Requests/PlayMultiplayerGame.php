@@ -37,7 +37,7 @@ class PlayMultiplayerGame extends FormRequest
     public function withValidator($validator)
     {
         $user = $this->user();
-        $bet = $this->room->parameters->bet;
+        $bet = $this->room->parameters->bet->min; //check minimum balance required to play game
 
         // check balance
         $validator->after(function ($validator) use ($user, $bet) {
