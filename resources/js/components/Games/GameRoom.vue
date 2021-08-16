@@ -8,7 +8,7 @@
       <v-icon>mdi-map-marker</v-icon>
       <span>{{ room.name }}</span>
       <v-icon class="ml-2">mdi-cash</v-icon>
-      <span>{{ room.parameters.bet }}</span>
+      <span>{{ room.parameters.bet.small }}</span>
       <v-icon class="ml-2">mdi-account-multiple</v-icon>
       <span>{{ $t('{0}/{1}', [playersCount, room.parameters.players_count]) }}</span>
       <v-spacer />
@@ -17,76 +17,71 @@
       </v-btn>
     </v-system-bar>
     <template v-else>
-      <v-container v-if="rooms" fluid class="align-self-start">
+      <v-container v-if="!room" fluid class="align-self-start">
         <v-row align="center" justify="center">
           <v-col cols="12" md="8">
             <v-card>
               <v-toolbar>
                 <v-toolbar-title>
-                  {{ $t('Game rooms') }}
+                  {{ $t('Join Game rooms') }}
                 </v-toolbar-title>
               </v-toolbar>
               <v-card-text>
                 <v-row>
-                  <v-col cols="12" md="6" class="pr-md-5">
-                    <h2 class="headline mb-5">
-                      {{ $t('Join an existing room') }}
-                    </h2>
+                  <v-col cols="12" class="pr-md-5">
+                    <template v-if="!room">
+                       
+                <v-form @submit.prevent="searchRoom">
+                  <v-combobox
+                    v-model="forms.create.games_limit_type"
+                    :items="games_limit_type_list"
+                    label="Select Game"
+                    auto-select-first
+                    outlined
+                  
+                  ></v-combobox>
 
-                    <template v-if="rooms.length">
-                      <v-form @submit.prevent="joinRoom">
-                        <v-select
-                          v-model="forms.joinOrLeave.room_id"
-                          :items="rooms"
-                          item-value="id"
-                          :item-text="room => room.name + ' - ' + $t('{0}/{1} players', [room.players_count, room.parameters.players_count])"
-                          :error="forms.joinOrLeave.errors.has('room_id')"
-                          :error-messages="forms.joinOrLeave.errors.get('room_id')"
-                          :label="$t('Game room')"
-                          outlined
-                          :disabled="forms.joinOrLeave.busy"
-                        />
-
-                        <v-btn type="submit" color="primary" :disabled="!forms.joinOrLeave.room_id || forms.joinOrLeave.busy" :loading="forms.joinOrLeave.busy">
+                  <v-combobox
+                    v-model="forms.create.stakes"
+                    :items="transformStakes()"
+                    label="Select stakes"
+                    outlined
+                    @change="setBuyInRange(forms.create.stakes)"
+                  ></v-combobox>
+                  <v-text-field
+                    v-model="forms.create.buy_in"
+                    :label="$t('Buy-In')"
+                    :rules="[
+                      validationRequired,
+                      v  =>  buyInMin <= Number(v) || 'buy in should greater than '+ buyInMin,
+                      v  =>  buyInMax >= Number(v) || 'buy in should less than '+ buyInMax
+                    ]"
+                    :error="forms.create.errors.has('buy_in')"
+                    :error-messages="forms.create.errors.get('buy_in')"
+                    outlined
+                    :disabled="forms.create.busy"
+                    @keydown="clearFormErrors($event, 'buy_in', forms.create)"
+                  />
+                   <v-text-field
+                    v-model="forms.create.players_count"
+                    :label="$t('Maximum players')"
+                    :rules="[
+                      validationRequired,
+                      v  => Number(v) > 1 || 'buy in should greater than'+ 1,
+                      v  => Number(v) < 10 || 'buy in should less than'+ 10
+                    ]"
+                    :error="forms.create.errors.has('players_count')"
+                    :error-messages="forms.create.errors.get('players_count')"
+                    outlined
+                    :disabled="forms.create.busy"
+                    @keydown="clearFormErrors($event, 'players_count', forms.create)"
+                  />
+           
+                        <v-btn type="submit" color="primary" :disabled="forms.joinOrLeave.busy" :loading="forms.joinOrLeave.busy">
                           {{ $t('Join') }}
                         </v-btn>
                       </v-form>
                     </template>
-                    <p v-else>
-                      {{ $t('There are no rooms available to join') }}
-                    </p>
-                  </v-col>
-                  <v-col cols="12" md="6" class="pl-md-5 border-left">
-                    <h2 class="headline mb-5">
-                      {{ $t('Create a new room') }}
-                    </h2>
-
-                    <v-form @submit.prevent="createRoom">
-                      <v-text-field
-                        v-model="forms.create.name"
-                        :label="$t('Name')"
-                        :rules="[validationRequired, v => validationMinLength(v, 3), v => validationMaxLength(v, 50)]"
-                        :error="forms.create.errors.has('name')"
-                        :error-messages="forms.create.errors.get('name')"
-                        outlined
-                        :disabled="forms.create.busy"
-                        @keydown="clearFormErrors($event, 'name', forms.create)"
-                      />
-
-                      <form-parameter
-                        v-for="parameter in parameters"
-                        :key="parameter.id"
-                        v-model="forms.create.parameters[parameter.id]"
-                        :parameter="parameter"
-                        :form="forms.create"
-                        form-key="parameters"
-                        :disabled="forms.create.busy"
-                      />
-
-                      <v-btn type="submit" color="primary" :disabled="!forms.create.name || forms.create.busy" :loading="forms.create.busy">
-                        {{ $t('Create') }}
-                      </v-btn>
-                    </v-form>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -134,10 +129,102 @@ export default {
           room_id: null
         }),
         create: new Form({
-          name: null,
-          parameters: {}
+          stakes: `${1}Z/${2}Z (min ${100}Z - max ${200}Z)`,
+          buy_in: 100,
+          games_limit_type: "No Limit Holdem",
+          players_count:2,
         })
-      }
+      },
+      games_limit_type_list: ["No Limit Holdem", "Limit holdem"],
+      allStakes: {
+        micro: [
+          {
+            small: 1,
+            big: 2,
+            min: 100,
+            max: 200,
+          },
+          {
+            small: 2,
+            big: 5,
+            min: 200,
+            max: 500,
+          },
+          {
+            small: 5,
+            big: 10,
+            min: 400,
+            max: 1000,
+          },
+          {
+            small: 8,
+            big: 16,
+            min: 500,
+            max: 1500,
+          },
+        ],
+
+        low: [
+          { small: 10, big: 20, min: 500, max: 2500 },
+          {
+            small: 25,
+            big: 50,
+            min: 1000,
+            max: 4000,
+          },
+          {
+            small: 35,
+            big: 70,
+            min: 1500,
+            max: 6000,
+          },
+        ],
+        medium: [
+          {
+            small: 50,
+            big: 100,
+            min: 2500,
+            max: 10000,
+          },
+          { small: 100, big: 200, min: 4000, max: 15000 },
+          {
+            small: 250,
+            big: 500,
+            min: 10000,
+            max: 20000,
+          },
+        ],
+        high: [
+          { small: 500, big: 1000, min: 50000, max: 100000 },
+          {
+            small: 1000,
+            big: 2000,
+            min: 80000,
+            max: 200000,
+          },
+          {
+            small: 2500,
+            big: 5000,
+            min: 100000,
+            max: 500000,
+          },
+          {
+            small: 5000,
+            big: 10000,
+            min: 300000,
+            max: 800000,
+          },
+          {
+            small: 10000,
+            big: 20000,
+            min: 700000,
+            max: 1500000,
+          },
+        ],
+      },
+     selectedStakes:[],
+     buyInMin:100,
+     buyInMax:200,
     }
   },
 
@@ -151,6 +238,10 @@ export default {
     },
     playersCount () {
       return this.players ? this.players.length : 0
+    },
+    flatStakesList(){
+      const values = Object.values(this.allStakes);
+      return values.flat();
     }
   },
 
@@ -195,6 +286,8 @@ export default {
         })
       }
     })
+  this.selectedStakes = this.flatStakesList;
+
   },
 
   beforeDestroy () {
@@ -206,6 +299,38 @@ export default {
   },
 
   methods: {
+    transformStakes(){
+      console.log(this.selectedStakes);
+        return [...this.selectedStakes.map(stake=>`${stake.small}Z/${stake.big}Z (min ${stake.min}Z - max ${stake.max}Z)`)]
+    },
+    setBuyInRange(selectedStake){
+        const firstHalf = selectedStake.split('(')[0];
+        const foundStake = this.selectedStakes.find(stake=>{
+           const combineSmallAndBigBlind = `${stake.small}Z/${stake.big}Z`;
+           if(firstHalf.trim()==combineSmallAndBigBlind){
+               return stake;
+           }
+        });
+        if(foundStake){
+            this.buyInMin = foundStake.min;
+            this.buyInMax =foundStake.max;
+            this.forms.create.bet = foundStake;
+        }
+        if(!foundStake){
+        const secondHalf = selectedStake.split('(')[1];
+        const seconfHalfSplit = secondHalf.split('-');
+        const extractNumbers =  seconfHalfSplit.map(value=>{
+            return str.match(/(\d+)/)[0];
+        })
+
+            this.buyInMin = extractNumbers[0];
+            this.buyInMax = extractNumbers[1];
+
+        }
+        if(this.forms.create.buy_in >= this.buyInMin === false || this.forms.create.buy_in <= this.buyInMin ===false){
+          this.forms.create.buy_in = this.buyInMin
+        }
+    },
     async fetchRooms () {
       const { data } = await axios.get(`/api/games/${this.gamePackageId}/rooms`)
 
@@ -214,10 +339,18 @@ export default {
         this.forms.joinOrLeave.room_id = data.room.id
 
         if (data.game) {
-          this.game = data.game
+          this.game = data.game;
         }
-      } else {
-        this.rooms = data.rooms
+      }
+
+    },
+    async searchRoom () {
+      const { data } = await this.forms.create.post(`/api/games/${this.gamePackageId}/rooms/search`)
+      if (data.success) {
+        this.forms.joinOrLeave.room_id = data.room.id
+        await this.joinRoom();
+      }else{
+       this.$store.dispatch('message/' + (data.success ? 'success' : 'error'), { text: data.message })
       }
     },
     async joinRoom () {
@@ -234,12 +367,6 @@ export default {
       if (data.success) {
         this.room = null
       }
-    },
-    async createRoom () {
-      const { data } = await this.forms.create.post(`/api/games/${this.gamePackageId}/rooms`)
-
-      this.room = data.room
-      this.forms.joinOrLeave.room_id = data.room.id
     },
     subscribe (room) {
       if (!this.echo || !room) {
