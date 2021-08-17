@@ -68,7 +68,7 @@ class GameRoomController extends Controller
                     })
                     ->values()
                     ->map
-                    ->only(['id', 'name', 'parameters', 'players_count'])
+                    ->only(['id', 'name', 'parameters', 'players_count','stakes'])
             ];
     }
 
@@ -204,4 +204,14 @@ class GameRoomController extends Controller
         return $this->errorResponse('Matched Room is full currently');
         }
     }
+        //delete  room 
+        public function deleteRoom(Request $request)
+        {
+            $deleted = GameRoom::find($request->room_id)->delete();
+            if($deleted){
+            return $this->successResponse(['message'=>'Room Deleted Successfully']);
+            }else{
+            return $this->errorResponse('Some error occured while deleting the room');
+            }
+        }
 }

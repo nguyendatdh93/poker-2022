@@ -142,6 +142,7 @@ Route::middleware(['cookies', 'auth:sanctum', 'maintenance', 'verified', 'active
         Route::get('games/{packageId}/rooms', [GameRoomController::class, 'index']);
         Route::post('games/{packageId}/rooms', [GameRoomController::class, 'create']);
         Route::post('games/{packageId}/rooms/search', [GameRoomController::class, 'search']);
+        Route::delete('games/{packageId}/room/delete/{room_id}', [GameRoomController::class, 'deleteRoom']);
         Route::post('games/{packageId}/rooms/join', [GameRoomController::class, 'join'])->middleware('room.lock');
         Route::post('games/{packageId}/rooms/leave', [GameRoomController::class, 'leave'])->middleware('room.lock');
     });

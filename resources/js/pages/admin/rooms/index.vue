@@ -18,23 +18,26 @@
       :search="true"
       :search-placeholder="$t('Room Name')"
       apiType="GET_ROOMS"
+      ref="childComponentRef"
+
     >
-      <!-- <template v-slot:item.name="{ item: { account: { user } } }">
-        <user-link :user="user" />
-      </template>
-      <template v-slot:item.status="{ item }">
-        <span :class="getStatusClass(item)">{{ item.status_title }}</span>
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <affiliate-commission-menu :id="item.id" small />
-      </template> -->
+     <template v-slot:item.actions="{ item }">
+            <v-btn
+              type="button"
+              small
+              color="error"
+              @click="deleteRoom(item.id)"
+            >
+              Delete
+            </v-btn>
+          </template>
     </data-table>
   </v-container>
 </template>
 
 <script>
-import Form from 'vform'
 import DataTable from '~/components/DataTable'
+import axios from "axios";
 
 export default {
   components: { DataTable},
@@ -48,9 +51,27 @@ export default {
       return [
         { text: this.$t('ID'), value: 'id' },
         { text: this.$t('Name'), value: 'name', sortable: false },
+        { text: this.$t('Stakes'), value: 'stakes', sortable: false },
+         {
+          text: this.$t("Action"),
+          value: "actions",
+          sortable: false,
+        },
       ]
     }
   },
+  methods:{
+      async deleteRoom(id) {
+        const IsConfirm = window.confirm("Are you sure you want to delete this room?")
+        if(IsConfirm){
+      const { data } = await axios.delete(`/api/games/casino-holdem/room/delete/${id}`);
+      this.$store.dispatch("message/" + (data.success ? "success" : "error"), {
+        text: data.message,
+      });
+      this.$refs.childComponentRef.fetchData();
+        }
+    },
+  }
 
 }
 </script>
