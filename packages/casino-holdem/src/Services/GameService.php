@@ -357,7 +357,7 @@ class GameService extends ParentGameService
         GameRoomCache::clearBet($params['room_id'], $player['id']);
         GameRoomCache::clearFoldPlayer($params['room_id'], $player['id']);
 
-        broadcast(new OnPlayersEvent($players->toJson(), $player['id']));
+        broadcast(new OnPlayersEvent($players->toJson(), $params['room_id']));
         return $this;
     }
 
