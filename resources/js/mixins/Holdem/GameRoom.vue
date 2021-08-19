@@ -67,6 +67,9 @@ export default {
       }
 
       return [null, null];
+    },
+    isFoldPlayer(userId) {
+      return this.gameRoom.fold_players && this.gameRoom.fold_players[userId] ? true : false;
     }
   }
 }

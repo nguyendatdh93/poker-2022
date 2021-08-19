@@ -35,7 +35,7 @@
         >
           <template v-slot:title>
             <div class="font-weight-thin text-center ml-n10" id="dealer_or_player">
-              {{ isDealer(opponent.id) ? 'Dealer' : opponent.name }}
+              {{ isFoldPlayer(opponent.user_id) ? 'Fold' : (isDealer(opponent.user_id) ? 'Dealer' : opponent.name) }}
               <v-progress-circular
                   v-show="isOpponentTurn(opponent)"
                   :rotate="360"
