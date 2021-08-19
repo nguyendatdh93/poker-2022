@@ -35,7 +35,7 @@
         >
           <template v-slot:title>
             <div class="font-weight-thin text-center ml-n10" id="dealer_or_player">
-              {{ isFoldPlayer(opponent.user_id) ? 'Fold' : (isDealer(opponent.user_id) ? 'Dealer' : opponent.name) }}
+              {{ isFoldPlayer(opponent.user_id) ? 'Fold' : (isDealer(opponent.user_id) ? <img src="/images/dealer.png" id="dealer_img"/> : opponent.name) }}              
               <v-progress-circular
                   v-show="isOpponentTurn(opponent)"
                   :rotate="360"
@@ -489,5 +489,9 @@ margin-left: 15px!important;
 }
 #primary_user > #dealer_or_player{
 margin-left: -12px!important;
+}
+#dealer_img{
+  height: 30px;
+  transform: rotate(351deg);
 }
 </style>
