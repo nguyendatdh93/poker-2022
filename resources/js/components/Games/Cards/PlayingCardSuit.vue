@@ -45,4 +45,10 @@ export default {
   width: 1.5em;
   height: 1.5em;
 }
+.black--text{
+  color:black;
+}
+.red--text{
+  color:red;
+}
 </style>
