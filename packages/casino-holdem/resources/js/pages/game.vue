@@ -38,7 +38,10 @@
               <span v-if="isFoldPlayer(opponent.user_id)">
                   Fold
               </span>
-              <img v-else-if="isDealer(opponent.id)" src="/images/dealer.png" id="dealer_img"/>
+              <span v-else-if="isDealer(opponent.id)" class="dealer_opponent">
+              <img  src="/images/dealer.png" id="dealer_img"/> - 
+              <span>{{ opponent.name }}</span>
+              </span>
               <span v-else>{{ opponent.name }}</span>
               <v-progress-circular
                   v-show="isOpponentTurn(opponent)"
@@ -495,7 +498,16 @@ margin-left: 15px!important;
 margin-left: -12px!important;
 }
 #dealer_img{
-  height: 30px;
+  height: 25px;
   transform: rotate(351deg);
+}
+.dealer_opponent{
+      display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    img{
+          padding-right: 5px;
+    }
 }
 </style>
