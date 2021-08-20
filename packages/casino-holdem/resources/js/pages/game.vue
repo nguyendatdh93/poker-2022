@@ -35,7 +35,11 @@
         >
           <template v-slot:title>
             <div class="font-weight-thin text-center ml-n10" id="dealer_or_player">
-              {{ isFoldPlayer(opponent.user_id) ? 'Fold' : (isDealer(opponent.user_id) ? <img src="/images/dealer.png" id="dealer_img"/> : opponent.name) }}              
+              <span v-if="isFoldPlayer(opponent.user_id)">
+                  Fold
+              </span>
+              <img v-else-if="isDealer(opponent.id)" src="/images/dealer.png" id="dealer_img"/>
+              <span v-else>{{ opponent.name }}</span>
               <v-progress-circular
                   v-show="isOpponentTurn(opponent)"
                   :rotate="360"
