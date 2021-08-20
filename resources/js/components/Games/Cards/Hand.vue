@@ -131,17 +131,17 @@ export default {
 #opponent_2 {
   position: absolute;
   top: 40%;
-  left: 10%;
+  left: 7%;
 }
 #opponent__2 {
   position: absolute;
   left: 38%;
-  top: 10%;
+  top: 7%;
 }
 #opponent_3 {
   position: absolute;
   top: 40%;
-  right: 10%;
+  right: 7%;
 }
 #opponent_4 {
   position: absolute;
