@@ -32,22 +32,22 @@
                     <template v-if="!room">
                        
                 <v-form @submit.prevent="searchRoom">
-                  <v-combobox
+                  <v-select
                     v-model="forms.create.games_limit_type"
                     :items="games_limit_type_list"
                     label="Select Game"
                     auto-select-first
                     outlined
                   
-                  ></v-combobox>
+                  ></v-select>
 
-                  <v-combobox
+                  <v-select
                     v-model="forms.create.stakes"
                     :items="transformStakes()"
                     label="Select stakes"
                     outlined
                     @change="setBuyInRange(forms.create.stakes)"
-                  ></v-combobox>
+                  ></v-select>
                   <v-text-field
                     v-model="forms.create.buy_in"
                     :label="$t('Buy-In')"
@@ -61,6 +61,7 @@
                     outlined
                     :disabled="forms.create.busy"
                     @keydown="clearFormErrors($event, 'buy_in', forms.create)"
+                    @keyup="onBuyInChange(forms.create.buy_in)"
                   />
                    <v-text-field
                     v-model="forms.create.players_count"
@@ -224,7 +225,7 @@ export default {
       },
      selectedStakes:[],
      buyInMin:100,
-     buyInMax:200,
+     buyInMax:1500000,
     }
   },
 
@@ -312,25 +313,25 @@ export default {
            }
         });
         if(foundStake){
-            this.buyInMin = foundStake.min;
-            this.buyInMax =foundStake.max;
             this.forms.create.bet = foundStake;
         }
-        if(!foundStake){
-        const secondHalf = selectedStake.split('(')[1];
-        const seconfHalfSplit = secondHalf.split('-');
-        const extractNumbers =  seconfHalfSplit.map(value=>{
-            return str.match(/(\d+)/)[0];
-        })
 
-            this.buyInMin = extractNumbers[0];
-            this.buyInMax = extractNumbers[1];
-
-        }
-        if(this.forms.create.buy_in >= this.buyInMin === false || this.forms.create.buy_in <= this.buyInMin ===false){
-          this.forms.create.buy_in = this.buyInMin
-        }
+          this.forms.create.buy_in = foundStake.min
     },
+    onBuyInChange(buyIn){
+
+      if(buyIn > this.buyInMax === false || buyIn < this.buyInMin === false){
+        let matchedStake='';
+      [...this.selectedStakes].forEach(stake=>
+      {
+        if(stake.min <= buyIn && stake.max >=buyIn && !matchedStake){
+       matchedStake = `${stake.small}Z/${stake.big}Z (min ${stake.min}Z - max ${stake.max}Z)`;
+        }
+      })
+      this.forms.create.stakes=matchedStake;
+      }
+    },
+
     async fetchRooms () {
       const { data } = await axios.get(`/api/games/${this.gamePackageId}/rooms`)
 
