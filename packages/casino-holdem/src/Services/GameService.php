@@ -117,6 +117,10 @@ class GameService extends ParentGameService
      */
     public function fold($params): GameService
     {
+        if (GameRoomCache::getFoldPlayer($params['room_id'], $params['user_id'])) {
+            return $this;
+        }
+
         GameRoomCache::setFoldPlayer($params['room_id'], $params['user_id']);
         GameRoomCache::setActionIndex($params['room_id'], $this->getNextActionIndex($params));
         $endPlayer = GameRoomCache::getEndPlayer($params['room_id']);

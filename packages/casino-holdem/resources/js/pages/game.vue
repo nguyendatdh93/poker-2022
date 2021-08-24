@@ -57,7 +57,7 @@
           </template>
           <template v-slot:bottom>
             <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              <countdown v-if="opponent.user_id == gameRoom.action_index" :left-time="20000" @finish="finishCountdown">
+              <countdown v-if="opponent.user_id == gameRoom.action_index && gameRoom.round <= 4" :left-time="20000" @finish="finishCountdown">
                 <template slot="process" slot-scope="{ timeObj }">
                   <v-progress-linear
                       color="light-blue"

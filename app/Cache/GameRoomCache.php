@@ -254,9 +254,23 @@ class GameRoomCache
         Cache::put("fold:$roomId:player:$playerId", $playerId);
     }
 
+    public static function getFoldPlayer($roomId, $playerId)
+    {
+        return Cache::get("fold:$roomId:player:$playerId");
+    }
+
     public static function clearFoldPlayer($roomId, $playerId)
     {
         Cache::forget("fold:$roomId:player:$playerId");
+    }
+
+    public static function clearFoldPlayers($roomId)
+    {
+        $playerIds = GameRoomPlayer::where('game_room_id', $roomId)->get()->pluck('user_id');
+        $players = [];
+        foreach ($playerIds ?? [] as $playerId) {
+            Cache::forget("fold:$roomId:player:$playerId");
+        }
     }
 
     /**
@@ -346,5 +360,6 @@ class GameRoomCache
         self::setPlayersCards($roomId, null);
         self::setWinnerCards($roomId, null);
         self::setEndPlayer($roomId, null);
+        self::clearFoldPlayers($roomId);
     }
 }
