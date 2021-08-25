@@ -39,9 +39,9 @@
                   Fold
               </span>
               <span v-else-if="isDealer(opponent.id)" class="dealer_opponent">
-              <img  src="/images/dealer.png" id="dealer_img"/> - 
-              <span>{{ opponent.name }}</span>
+               {{ opponent.name }}
               </span>
+              <img src="/images/dealer.png" id="dealer_img"/>
               <span v-else>{{ opponent.name }}</span>
               <v-progress-circular
                   v-show="isOpponentTurn(opponent)"
