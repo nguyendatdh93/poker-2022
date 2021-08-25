@@ -42,7 +42,6 @@
                {{ opponent.name }}
               </span>
               <img src="/images/dealer.png" id="dealer_img"/>
-              <span v-else>{{ opponent.name }}</span>
               <v-progress-circular
                   v-show="isOpponentTurn(opponent)"
                   :rotate="360"
