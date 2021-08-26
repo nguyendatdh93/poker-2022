@@ -24,11 +24,14 @@ export default {
               this.$store.dispatch('game-room/setGameRoom', data.game_room);
           }).listen('GameRoomPlayEvent', data => {
             let gameRoom = JSON.parse(data.game_room);
-            console.log('GameRoomPlayEvent', gameRoom);
+            console.log('GameRoomPlayEvent',gameRoom);
             this.$store.dispatch('game-room/setGameRoom', gameRoom);
             this.gamePlay = true;
             if (data.user_id == this.user.id) {
               this.updateUserAccountBalance(this.account.balance - data.bet);
+            }
+            if(gameRoom.winner && gameRoom.winner_cards && gameRoom.winner_amount){
+              this.gameCompleted();
             }
           });
     },
@@ -70,7 +73,16 @@ export default {
     },
     isFoldPlayer(userId) {
       return this.gameRoom.fold_players && this.gameRoom.fold_players[userId] ? true : false;
-    }
+    },
+      gameCompleted() {
+        if(this.user.id == this.gameRoom.winner){
+      this.updateUserAccountBalance(this.account.balance +  Number(this.gameRoom.winner_amount));
+        }
+      axios.post('/api/games/casino-holdem/game-completed', {
+        hash: this.provablyFairGame.hash,
+        room_id: this.room.id,
+      });
+    },
   }
 }
 </script>

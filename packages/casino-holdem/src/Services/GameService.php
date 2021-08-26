@@ -182,6 +182,24 @@ class GameService extends ParentGameService
 
         return $rotatePlayer;
     }
+    /**
+     * gameCompleted
+     *
+     * @return GameService
+     * @throws \Exception
+     */
+    public function gameCompleted($params): GameService
+    {
+        try {
+            GameRoomCache::setWinnerCards($params['room_id'],null);
+            GameRoomCache::setWinner($params['room_id'],null);
+            GameRoomCache::setWinnerAmount($params['room_id'],null);
+
+        } catch (\Exception $e) {
+        }
+
+        return $this;
+    }
 
     /**
      * Call
@@ -485,6 +503,23 @@ class GameService extends ParentGameService
         $user = User::where('id', $playersCards[$winnerIndex]->user_id)->first();
         $pot = GameRoomCache::getPot($roomId);
         $this->sendChatMessage($roomId, $playersCards[$winnerIndex]->user_id, "$user->name wins pot($pot) with high card king");
+        
+        // calculate winners amount and other players stake
+        $adminPercentage = 2.5;
+        $winnersPercentage = 97.5;
+        $winnersAmount = ($winnersPercentage/100)*$pot;
+        GameRoomCache::setWinnerAmount($roomId, $winnersAmount);
+        //add winning amount to users account
+        $account = Account::where('user_id', $user->id)->first();
+        $account->increment('balance', abs($winnersAmount));
+
+        AccountTransaction::create([
+            'account_id' => $account->id,
+            'amount' => $winnersAmount,
+            'balance' => $account->balance,
+            'transactionable_type' => CasinoHoldem::class,
+            'transactionable_id' => 1,
+        ]);
     }
 
     private function handleForNextRound($roomId, $playerId)

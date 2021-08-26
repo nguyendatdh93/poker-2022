@@ -301,7 +301,6 @@ export default {
 
   methods: {
     transformStakes(){
-      console.log(this.selectedStakes);
         return [...this.selectedStakes.map(stake=>`${stake.small}Z/${stake.big}Z (min ${stake.min}Z - max ${stake.max}Z)`)]
     },
     setBuyInRange(selectedStake){

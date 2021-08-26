@@ -6,14 +6,13 @@ use App\Events\OnPlayersEvent;
 use App\Http\Controllers\Controller;
 use App\Models\GameRoom;
 use App\Models\GameRoomPlayer;
-use Http\Client\Request;
 use Packages\CasinoHoldem\Http\Requests\Action;
 use Packages\CasinoHoldem\Http\Requests\Play;
 use Packages\CasinoHoldem\Http\Requests\Fold;
 use Packages\CasinoHoldem\Http\Requests\Call;
 use Packages\CasinoHoldem\Http\Requests\Raise;
 use Packages\CasinoHoldem\Services\GameService;
-
+use Illuminate\Http\Request;
 class GameController extends Controller
 {
     public function play(Play $request, GameRoom $room, GameService $gameService)
@@ -93,6 +92,13 @@ class GameController extends Controller
         return $gameService
             ->loadProvablyFairGame($request->hash)
             ->action($request->only(['room_id']))
+            ->getGame();
+    }
+    public function gameCompleted(Request $request, GameService $gameService)
+    {
+        return $gameService
+            ->loadProvablyFairGame($request->hash)
+            ->gameCompleted($request->only(['room_id']))
             ->getGame();
     }
 }
