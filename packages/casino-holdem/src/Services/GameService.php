@@ -301,9 +301,9 @@ class GameService extends ParentGameService
             ]);
 
             GameRoomCache::setActionIndex($params['room_id'], $this->getNextActionIndex($params));
-            $this->nextRound($params['room_id'], $params['user_id']);
             GameRoomCache::setBet($params['room_id'], $params['user_id'], $bet);
             GameRoomCache::setPot($params['room_id'], GameRoomCache::getPot($params['room_id']) + $bet);
+            $this->nextRound($params['room_id'], $params['user_id']);
             if ($bet) {
                 GameRoomCache::setPreviouslyBet($params['room_id'], $bet);
             }
