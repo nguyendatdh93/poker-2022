@@ -1,5 +1,6 @@
 <template>
   <div class="d-flex flex-column fill-height">
+
     <game-room
         :playing="playing"
         @room="onRoomChange($event.room)"
@@ -22,66 +23,70 @@
       </div>
       <img src="/images/table.png" class="poker_table"/>
       <div id="opponent-hands" class="d-flex justify-space-around mt-2">
-        <hand
-            v-for="(opponent, i) in players"
-            :key="i"
-            :cards="opponent.user_id == user.id ? opponent.cards : getCards(opponent.user_id)"
-            :score="opponent.score"
-            :result="opponent.score > 0 && !playing ? resultMessage(opponent) : opponent.result"
-            :result-class="resultClass(opponent)"
-            :bet="opponent.bet"
-            :win="opponent.win"
-            :id="createId(Number(i)+1,opponent)"
-        >
-          <template v-slot:title>
-            <div class="font-weight-thin text-center ml-n10" id="dealer_or_player">
-              <span v-if="isFoldPlayer(opponent.user_id)">
-                  Fold
-              </span>
-              <span v-else-if="isDealer(opponent.id)" class="dealer_opponent">
-               {{ opponent.name }}
-              </span>
-              <img src="/images/dealer.png" id="dealer_img"/>
-              <v-progress-circular
-                  v-show="isOpponentTurn(opponent)"
-                  :rotate="360"
-                  :size="25"
-                  :width="2"
-                  :value="isOpponentTurn(opponent) ? Math.round(100 * (opponent.action_end - time) / actionDuration) : 0"
-                  color="primary"
-              >
-                {{ opponent.action_end - time }}
-              </v-progress-circular>
-            </div>
-          </template>
-          <template v-slot:bottom>
-            <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-              <countdown v-if="opponent.user_id == gameRoom.action_index && gameRoom.round <= 4" :left-time="20000" @finish="finishCountdown">
-                <template slot="process" slot-scope="{ timeObj }">
-                  <v-progress-linear
-                      color="light-blue"
-                      height="10"
-                      buffer-value="60"
-                      :value="timeObj.ceil.s * 3"
-                      striped
-                  ></v-progress-linear>
-                </template>
-              </countdown>
-              <v-progress-linear
-                  v-else
-                  color="light-blue"
-                  height="10"
-                  buffer-value="60"
-                  :value="0"
-                  striped
-              ></v-progress-linear>
-              <p v-if="gameRoom.bets && gameRoom.bets[opponent.user_id] > 0" class="bet_bg bet_bg_player">
-                <span class="coin">{{ gameRoom.bets[opponent.user_id] }}</span>
-                <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
-              </p>
-            </div>
-          </template>
-        </hand>
+        <div class="position-player">
+          <hand
+              v-for="(opponent, i) in players"
+              :key="i"
+              :cards="opponent.user_id == user.id ? opponent.cards : getCards(opponent.user_id)"
+              :score="opponent.score"
+              :result="opponent.score > 0 && !playing ? resultMessage(opponent) : opponent.result"
+              :result-class="resultClass(opponent)"
+              :bet="opponent.bet"
+              :win="opponent.win"
+              :class="`room-${players.length}-players position_player_${getPlayerPosition(players, opponent, i+1)}`"
+          >
+            <template v-slot:title>
+              <div class="font-weight-thin text-center ml-n10 dealer_or_player">
+                <span v-if="isFoldPlayer(opponent.user_id)">
+                    Fold
+                </span>
+                <img v-else-if="isDealer(opponent.id)" src="/images/dealer.png" class="dealer_img"/>
+                <span v-else>
+                 {{ opponent.name }}
+                </span>
+                <v-progress-circular
+                    v-show="isOpponentTurn(opponent)"
+                    :rotate="360"
+                    :size="25"
+                    :width="2"
+                    :value="isOpponentTurn(opponent) ? Math.round(100 * (opponent.action_end - time) / actionDuration) : 0"
+                    color="primary"
+                >
+                  {{ opponent.action_end - time }}
+                </v-progress-circular>
+              </div>
+            </template>
+            <template v-slot:bottom>
+              <div>
+                <countdown v-if="opponent.user_id == gameRoom.action_index && gameRoom.round <= 4" :left-time="20000" @finish="finishCountdown">
+                  <template slot="process" slot-scope="{ timeObj }">
+                    <v-progress-linear
+                        class="progress-bar"
+                        color="light-blue"
+                        height="10"
+                        buffer-value="100"
+                        :value="timeObj.ceil.s * 5"
+                        striped
+                    ></v-progress-linear>
+                  </template>
+                </countdown>
+                <v-progress-linear
+                    v-else
+                    class="progress-bar"
+                    color="light-blue"
+                    height="10"
+                    buffer-value="100"
+                    :value="0"
+                    striped
+                ></v-progress-linear>
+                <p v-if="gameRoom.bets && gameRoom.bets[opponent.user_id] > 0" class="bet_bg bet_bg_player">
+                  <span class="coin">{{ gameRoom.bets[opponent.user_id] }}</span>
+                  <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
+                </p>
+              </div>
+            </template>
+          </hand>
+        </div>
       </div>
       <div id="community-card" class="d-flex justify-center mt-2" v-if="gameRoom.community_card && gameRoom.round >= 2">
         <playing-card
@@ -96,7 +101,6 @@
         </playing-card>
       </div>
       <actions v-if="room && gameRoom && gameRoom.players && gameRoom.round <= 4 && user.id == gameRoom.action_index" :room="room" :provably-fair-game="provablyFairGame" :user="user"></actions>
-
     </template>
 
     <chat v-if="room" v-model="chatDrawer" :room-id="room.id" class="chat"/>
@@ -490,13 +494,13 @@ transform: translate(-50%, 0);
 .bet_bg_player{
 display: inline;
 }
-#dealer_or_player{
+.dealer_or_player{
 margin-left: 15px!important;
 }
 #primary_user > #dealer_or_player{
 margin-left: -12px!important;
 }
-#dealer_img{
+.dealer_img{
   height: 25px;
   transform: rotate(351deg);
 }
@@ -508,5 +512,222 @@ margin-left: -12px!important;
     img{
           padding-right: 5px;
     }
+}
+
+.progress-bar {
+  width: 90%;
+  display: block;
+  height: 10px;
+}
+
+//  position player
+.poker_table {
+  //background: red;
+  border-radius: 60%;
+  display: block;
+  width: 600px !important;
+  height: 400px !important;
+}
+
+.position-player {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  height: 600px;
+  //background: #ff000042;
+}
+
+// 1 player
+.room-1-players.position_player_1 {
+  position: absolute;
+  bottom: 16px;
+  left: 410px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+// 2 player
+.room-2-players.position_player_1 {
+  position: absolute;
+  bottom: 16px;
+  left: 410px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-2-players.position_player_2 {
+  position: absolute;
+  left: 400px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+// 3 players
+.room-3-players.position_player_1 {
+  position: absolute;
+  bottom: 16px;
+  left: 410px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-3-players.position_player_2 {
+  position: absolute;
+  left: 40px;
+  top: 100px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-3-players.position_player_3 {
+  position: absolute;
+  right: 6px;
+  top: 100px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+// 4 players
+.room-4-players.position_player_1 {
+  position: absolute;
+  bottom: 16px;
+  left: 410px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-4-players.position_player_2 {
+  position: absolute;
+  left: 20px;
+  top: 230px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-4-players.position_player_3 {
+  position: absolute;
+  top: 5px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+  left: 440px;
+}
+
+.room-4-players.position_player_4 {
+  position: absolute;
+  right: 20px;
+  top: 230px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+// 5 players
+.room-5-players.position_player_1 {
+  position: absolute;
+  bottom: 16px;
+  left: 410px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-5-players.position_player_2 {
+  position: absolute;
+  top: 300px;
+  left: 20px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-5-players.position_player_3 {
+  position: absolute;
+  top: 20px;
+  left: 165px;
+  display: block;
+  width: 200px;
+}
+
+.room-5-players.position_player_4 {
+  position: absolute;
+  right: 165px;
+  top: 10px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-5-players.position_player_5 {
+  position: absolute;
+  top: 300px;
+  right: 10px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+// 6 players
+.room-6-players.position_player_1 {
+  position: absolute;
+  bottom: 16px;
+  left: 410px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-6-players.position_player_2 {
+  position: absolute;
+  bottom: 70px;
+  left: 80px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-6-players.position_player_3 {
+  position: absolute;
+  top: 134px;
+  left: 80px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-6-players.position_player_4 {
+  position: absolute;
+  left: 410px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-6-players.position_player_5 {
+  position: absolute;
+  bottom: 70px;
+  right: 80px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-6-players.position_player_6 {
+  position: absolute;
+  top: 300px;
+  right: 10px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
 }
 </style>
