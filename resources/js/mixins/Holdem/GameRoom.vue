@@ -83,6 +83,18 @@ export default {
         room_id: this.room.id,
       });
     },
+    getPlayerPosition(players, player, currentPlayerPosition) {
+      if (player.user_id == this.user.id) {
+        return 1;
+      }
+
+      let currentUserPosition = players.findIndex((e) => e.user_id == this.user.id);
+      if (currentPlayerPosition > (currentUserPosition + 1)) {
+        return currentPlayerPosition - currentUserPosition;
+      } else {
+        return players.length - currentUserPosition + currentPlayerPosition;
+      }
+    }
   }
 }
 </script>
