@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\GamePlayed;
+use App\Events\ResultEvent;
 use App\Models\AffiliateCommission;
 use App\Services\AffiliateService;
 use Illuminate\Auth\Events\Registered;
@@ -18,6 +19,21 @@ class AffiliateEventSubscriber
         $affiliateService->createCommissions(
             $user,
             AffiliateCommission::TYPE_SIGN_UP
+        );
+    }
+
+    public function onResult(ResultEvent $event)
+    {
+        
+        
+        $user = $event->user;
+
+        $affiliateService = new AffiliateService($user->account);
+
+        $affiliateService->createCommissions(
+            $user,
+            AffiliateCommission::TYPE_GAME_WIN,
+            $event->roomId
         );
     }
 
@@ -60,6 +76,11 @@ class AffiliateEventSubscriber
         $events->listen(
             GamePlayed::class,
             self::class . '@gamePlayed'
+        );
+
+        $events->listen(
+            ResultEvent::class,
+            self::class . '@onResult'
         );
     }
 }

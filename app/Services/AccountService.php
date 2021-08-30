@@ -115,4 +115,19 @@ class AccountService
 
         return $account;
     }
+
+    public static function updateUserOrAdminAccount($amount,$userId=1) //default is admin Id
+    {
+        $admnAccount = Account::where('user_id', $userId)->first();
+        $admnAccount->increment('balance', $amount);
+
+      $isCreated =  AccountTransaction::create([
+            'account_id' => $admnAccount->id,
+            'amount' => $amount,
+            'balance' => $admnAccount->balance,
+            'transactionable_type' => CasinoHoldem::class,
+            'transactionable_id' => 1,
+        ]);
+        return $isCreated;
+    }
 }
