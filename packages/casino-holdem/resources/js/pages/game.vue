@@ -794,4 +794,160 @@ margin-left: -12px!important;
   display: block;
   width: 200px;
 }
+
+// 8 players
+.room-8-players.position_player_1 {
+  position: absolute;
+  bottom: 16px;
+  left: 410px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-8-players.position_player_2 {
+  position: absolute;
+  bottom: 45px;
+  left: 145px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-8-players.position_player_3 {
+  position: absolute;
+  top: 239px;
+  left: 34px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-8-players.position_player_4 {
+  position: absolute;
+  left: 167px;
+  top: 13px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-8-players.position_player_5 {
+  position: absolute;
+  top: -14px;
+  left: 422px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-8-players.position_player_6 {
+  position: absolute;
+  top: 13px;
+  right: 101px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-8-players.position_player_7 {
+  position: absolute;
+  top: 239px;
+  right: 10px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-8-players.position_player_8 {
+  position: absolute;
+  bottom: 45px;
+  right: 107px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+// 9 players
+.room-9-players.position_player_1 {
+  position: absolute;
+  bottom: 16px;
+  left: 410px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-9-players.position_player_2 {
+  position: absolute;
+  bottom: 45px;
+  left: 162px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-9-players.position_player_3 {
+  position: absolute;
+  bottom: 204px;
+  left: 34px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-9-players.position_player_4 {
+  position: absolute;
+  left: 40px;
+  top: 115px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-9-players.position_player_5 {
+  position: absolute;
+  top: 0px;
+  left: 289px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-9-players.position_player_6 {
+  position: absolute;
+  top: 0px;
+  right: 243px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-9-players.position_player_7 {
+  position: absolute;
+  top: 115px;
+  right: 10px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-9-players.position_player_8 {
+  position: absolute;
+  bottom: 204px;
+  right: 10px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
+.room-9-players.position_player_9 {
+  position: absolute;
+  bottom: 45px;
+  right: 130px;
+  margin: 0px auto;
+  display: block;
+  width: 200px;
+}
+
 </style>
