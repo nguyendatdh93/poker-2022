@@ -340,6 +340,22 @@ class GameRoomCache
         Cache::put("end:player:$roomId", $playerId);
     }
 
+    /**
+     * @param mixed
+     */
+    public static function setOtherPlayersStake($roomId, $amount)
+    {
+        Cache::put("other_players_stake:$roomId", $amount);
+    }
+
+    /**
+     * @param mixed $round
+     */
+    public static function getOtherPlayersStake($roomId)
+    {
+        return Cache::get("other_players_stake:$roomId");
+    }
+
     public static function getGameRoomCache($roomId)
     {
         return [
@@ -378,5 +394,7 @@ class GameRoomCache
         self::setEndPlayer($roomId, null);
         self::setWinnerAmount($roomId, null);
         self::clearFoldPlayers($roomId);
+        self::setOtherPlayersStake($roomId, null);
+
     }
 }

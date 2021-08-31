@@ -69,7 +69,7 @@ return [
             ],
             'game_win'  => [
                 'type'      => 'percentage',
-                'rates'     => json_decode(env('AFFILIATE_COMMISSIONS_GAME_WIN', json_encode([10, 5, 1]))),
+                'rates'     => json_decode(env('AFFILIATE_COMMISSIONS_GAME_WIN', json_encode([20, 10]))),
             ],
             'deposit'  => [
                 'type'      => 'percentage',

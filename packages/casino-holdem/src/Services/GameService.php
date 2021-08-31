@@ -5,7 +5,7 @@ namespace Packages\CasinoHoldem\Services;
 
 use App\Cache\GameRoomCache;
 use App\Events\ActionEvent;
-use App\Events\CallEvent;
+use App\Events\ResultEvent;
 use App\Events\GameRoomPlayEvent;
 use App\Events\RaiseEvent;
 use App\Events\ChatMessageSent;
@@ -194,6 +194,8 @@ class GameService extends ParentGameService
             GameRoomCache::setWinnerCards($params['room_id'],null);
             GameRoomCache::setWinner($params['room_id'],null);
             GameRoomCache::setWinnerAmount($params['room_id'],null);
+            GameRoomCache::setOtherPlayersStake($params['room_id'], null);
+
 
         } catch (\Exception $e) {
         }
@@ -505,21 +507,33 @@ class GameService extends ParentGameService
         $this->sendChatMessage($roomId, $playersCards[$winnerIndex]->user_id, "$user->name wins pot($pot) with high card king");
         
         // calculate winners amount and other players stake
-        $adminPercentage = 2.5;
-        $winnersPercentage = 97.5;
+        $winnersPercentage = 97.5; //todo- add this to env
         $winnersAmount = ($winnersPercentage/100)*$pot;
         GameRoomCache::setWinnerAmount($roomId, $winnersAmount);
         //add winning amount to users account
-        $account = Account::where('user_id', $user->id)->first();
-        $account->increment('balance', abs($winnersAmount));
+        AccountService::updateUserOrAdminAccount($winnersAmount,$user->id);
 
-        AccountTransaction::create([
-            'account_id' => $account->id,
-            'amount' => $winnersAmount,
-            'balance' => $account->balance,
-            'transactionable_type' => CasinoHoldem::class,
-            'transactionable_id' => 1,
-        ]);
+        //add remainings 70% of 2.5% to admin
+        $remainingPercentage = 2.5;
+        $remainingTotalAmount = ($remainingPercentage/100)*$pot;
+        $adminsStake = (70/100)*$remainingTotalAmount;
+        AccountService::updateUserOrAdminAccount($adminsStake);
+
+        // other players commission
+        //commision logic - level 1 referer of this user will get 20%/number of players on table
+        //  level 2 refrerr of this user will get 10%/number of players on table
+        // if  any level is mising add that amount to admin account
+        $players = User::whereIn('id', $playerIds)->get();
+        $playersCount = $players->count();
+        $commission = config('settings.affiliate.commissions.game_win.rates');
+        $tierlyCommission[] =  (($commission[0]/100)*$remainingTotalAmount)/$playersCount;
+        $tierlyCommission[] =  (($commission[1]/100)*$remainingTotalAmount)/$playersCount;
+        GameRoomCache::setOtherPlayersStake($roomId, $tierlyCommission);
+        // Log::debug("player to array",$players->toArray());
+        foreach ($players as $key => $player) {
+            event(new ResultEvent($player,$roomId));
+        }
+
     }
 
     private function handleForNextRound($roomId, $playerId)
