@@ -550,9 +550,19 @@ class GameService extends ParentGameService
             $this->sendChatMessage($roomId, $playerId, 'Next to round '. GameRoomCache::getRound($roomId));
         } else {
             $this->handleWinnerCards($roomId);
+            sleep(3);
+            $this->moveToNextGame($roomId, $playerId);
         }
 
 //        $this->setPlayerCanCheck($roomId);
+    }
+
+    private function moveToNextGame($roomId, $playerId)
+    {
+        // clear all current game
+        $this->sendChatMessage($roomId, $playerId, 'Continue to start new game');
+        GameRoomCache::clearGameRoomCache($roomId);
+        broadcast(new GameRoomStartEvent($roomId, $this->getProvablyFairGame()));
     }
 
     private function getNextPlayerCanCheck($params)
