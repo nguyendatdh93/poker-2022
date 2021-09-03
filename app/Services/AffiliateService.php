@@ -37,7 +37,7 @@ class AffiliateService
         // loop through tiers
         for ($tier = 0; $tier <= 1; $tier++) {
             // if current tier user has referrer
-            if ($tierUser->referrer) {
+            if ($tierUser->referrer && !$tierUser->referrer->is_admin) {
                 // create commission for the given tier account
                 $this->createCommission(
                     $commissionable, // game, user, deposit etc
