@@ -40,7 +40,10 @@
                 <span v-if="isFoldPlayer(opponent.user_id)">
                     Fold
                 </span>
-                <img v-else-if="isDealer(opponent.id)" src="/images/dealer.png" class="dealer_img"/>
+                <span v-else-if="isDealer(opponent.id)" class="dealer_opponent">
+              <img  src="/images/dealer.png" class="dealer_img"/> - 
+              <span>{{ opponent.name }}</span>
+              </span>
                 <span v-else>
                  {{ opponent.name }}
                 </span>
@@ -57,20 +60,20 @@
               </div>
             </template>
             <template v-slot:bottom>
-              <div>
+              <div class="bottom_section">
                 <countdown v-if="opponent.user_id == gameRoom.action_index && gameRoom.round <= 4" :left-time="20000" @finish="finishCountdown">
                   <template slot="process" slot-scope="{ timeObj }">
-                    <v-progress-linear
+                    <v-progress-circular
                         class="progress-bar"
                         color="light-blue"
                         height="10"
                         buffer-value="100"
                         :value="timeObj.ceil.s * 5"
                         striped
-                    ></v-progress-linear>
+                    ></v-progress-circular>
                   </template>
                 </countdown>
-                <v-progress-linear
+                <v-progress-circular
                     v-else
                     class="progress-bar"
                     color="light-blue"
@@ -78,11 +81,11 @@
                     buffer-value="100"
                     :value="0"
                     striped
-                ></v-progress-linear>
-                <p v-if="gameRoom.bets && gameRoom.bets[opponent.user_id] > 0" class="bet_bg bet_bg_player">
+                ></v-progress-circular>
+                <div v-if="gameRoom.bets && gameRoom.bets[opponent.user_id] > 0" class="bet_bg bet_bg_player">
                   <span class="coin">{{ gameRoom.bets[opponent.user_id] }}</span>
                   <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
-                </p>
+                </div>
               </div>
             </template>
           </hand>
@@ -492,7 +495,7 @@ transform: translate(-50%, 0);
   }
 }
 .bet_bg_player{
-display: inline;
+width: max-content;
 }
 .dealer_or_player{
 margin-left: 15px!important;
@@ -513,11 +516,18 @@ margin-left: -12px!important;
           padding-right: 5px;
     }
 }
-
+.bottom_section{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
 .progress-bar {
-  width: 90%;
+  width: 60%;
   display: block;
   height: 10px;
+  border-radius: 17px;
+  margin-bottom: 2px;
 }
 
 //  position player

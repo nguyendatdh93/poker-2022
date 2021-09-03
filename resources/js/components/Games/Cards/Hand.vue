@@ -14,6 +14,7 @@
         <playing-card
           v-for="(card, i) in cards"
           :key="`card-${i}`"
+          :cardclassindex="i"
           :card="card"
           :clickable="clickable"
           :inactive="inactiveCards.indexOf(card) > -1"
