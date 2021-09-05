@@ -18,6 +18,10 @@ export default {
     room(room) {
       this.echo.join(`game.${room.id}`)
           .listen('OnPlayersEvent', data => {
+              if (data.left_player_id == this.user.id) {
+                return window.location.href = '/';
+              }
+
               this.$store.dispatch('game-room/setPlayers', JSON.parse(data.players))
           }).listen('GameRoomStartEvent', data => {
               console.log('GameRoomStartEvent', data);
@@ -56,7 +60,6 @@ export default {
     getPlayerActionIndex(playerId) {
       if (this.gameRoom.players) {
         let players = Object.values(this.gameRoom.players);
-        console.log('this.gameRoom.players', players);
         return players.findIndex((player) => {
           return player == playerId;
         })
@@ -84,6 +87,7 @@ export default {
       });
     },
     getPlayerPosition(players, player, currentPlayerPosition) {
+      console.log('getPlayerPosition', player.user_id, currentPlayerPosition)
       if (player.user_id == this.user.id) {
         return 1;
       }

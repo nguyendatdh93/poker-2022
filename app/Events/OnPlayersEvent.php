@@ -20,16 +20,18 @@ class OnPlayersEvent implements ShouldBroadcast
 
     public $players;
     public $roomId;
+    public $leftPlayerId;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($players, $roomId)
+    public function __construct($players, $roomId, $leftPlayerId = 0)
     {
         $this->players = $players;
         $this->roomId = $roomId;
+        $this->leftPlayerId = $leftPlayerId;
     }
 
     /**
@@ -52,6 +54,7 @@ class OnPlayersEvent implements ShouldBroadcast
         return [
             'room_id' => $this->roomId,
             'players' => $this->players,
+            'left_player_id' => $this->leftPlayerId,
             'game_room' => GameRoomCache::getGameRoomCache($this->roomId)
         ];
     }

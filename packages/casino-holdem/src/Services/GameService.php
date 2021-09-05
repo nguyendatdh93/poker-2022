@@ -292,8 +292,16 @@ class GameService extends ParentGameService
     {
         try {
             $account = Account::where('user_id', $params['user_id'])->first();
-            $account->decrement('balance', abs($bet));
+            if ($account->balane - $bet < 0) {
+                return $this->left([
+                    'player' => [
+                        'id' => $params['user_id']
+                    ],
+                    'room_id' => $params['room_id']
+                ]);
+            }
 
+            $account->decrement('balance', abs($bet));
             AccountTransaction::create([
                 'account_id' => $account->id,
                 'amount' => -$bet,
@@ -381,7 +389,7 @@ class GameService extends ParentGameService
         GameRoomCache::clearBet($params['room_id'], $player['id']);
         GameRoomCache::clearFoldPlayer($params['room_id'], $player['id']);
 
-        broadcast(new OnPlayersEvent($players->toJson(), $params['room_id']));
+        broadcast(new OnPlayersEvent($players->toJson(), $params['room_id'], $player['id']));
         return $this;
     }
 
