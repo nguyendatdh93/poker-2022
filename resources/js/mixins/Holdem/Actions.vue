@@ -37,6 +37,26 @@
         @click="onCheck()"
     > check
     </v-btn>
+
+    <v-slider
+        v-model="sliderBet"
+        class="align-center"
+        :max="100"
+        :min="1"
+        hide-details
+        @end="onRaiseBet"
+    >
+      <template v-slot:append>
+        <v-text-field
+            v-model="sliderBet"
+            class="mt-0 pt-0"
+            hide-details
+            single-line
+            type="number"
+            style="width: 60px"
+        ></v-text-field>
+      </template>
+    </v-slider>
   </div>
 </template>
 
@@ -50,6 +70,12 @@ export default {
   computed: {
     ...mapState('broadcasting', ['echo']),
     ...mapState('game-room', ['foldPlayers', 'gameRoom']),
+  },
+  data() {
+    return {
+      sliderBet: 1,
+      raiseBet: 1,
+    }
   },
   created() {
     this.echo.join(`game.${this.room.id}`)
@@ -79,6 +105,7 @@ export default {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
         user_id: this.user.id,
+        bet: this.raiseBet,
         user_action_index: this.getPlayerActionIndex(this.user.id)
       });
     },
@@ -107,6 +134,9 @@ export default {
       }
 
       return -1;
+    },
+    onRaiseBet(bet) {
+      this.raiseBet = bet;
     }
   }
 }

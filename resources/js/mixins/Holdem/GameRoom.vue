@@ -87,7 +87,6 @@ export default {
       });
     },
     getPlayerPosition(players, player, currentPlayerPosition) {
-      console.log('getPlayerPosition', player.user_id, currentPlayerPosition)
       if (player.user_id == this.user.id) {
         return 1;
       }
