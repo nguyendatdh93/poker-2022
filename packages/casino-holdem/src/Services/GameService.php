@@ -293,7 +293,7 @@ class GameService extends ParentGameService
     {
         try {
             $account = Account::where('user_id', $params['user_id'])->first();
-            if ($account->balane - $bet < 0) {
+            if ($account->balance - $bet < 0) {
                 return $this->left([
                     'player' => [
                         'id' => $params['user_id']

@@ -39,10 +39,11 @@
     </v-btn>
 
     <v-slider
+        v-if="provablyFairGame.hash && !gameRoom.fold_players[user.id]"
         v-model="sliderBet"
         class="align-center"
         :max="100"
-        :min="1"
+        :min="getMinSlider()"
         hide-details
         @end="onRaiseBet"
     >
@@ -137,6 +138,9 @@ export default {
     },
     onRaiseBet(bet) {
       this.raiseBet = bet;
+    },
+    getMinSlider() {
+      return this.gameRoom.previously_bet * 2;
     }
   }
 }
