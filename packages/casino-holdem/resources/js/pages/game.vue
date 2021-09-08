@@ -231,15 +231,7 @@ export default {
       setProvablyFairGame: 'provably-fair/set',
     }),
     isDealer(playerId) {
-      if (this.players.length >= 3) {
-        for (let i = 1; i <= this.players.length; i++) {
-          if (this.players[i - 1].id == playerId && i == 1) {
-            return true;
-          }
-        }
-      }
-
-      return false;
+      return playerId == this.gameRoom.dealer;
     },
     createId(index,opponent) {
       let id = "opponent_";

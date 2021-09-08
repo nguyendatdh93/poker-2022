@@ -80,8 +80,9 @@ class GameRoomStartEvent implements ShouldBroadcast
 
     private function initPlayersBet()
     {
-        $smallBlindIndex = $this->players->count() == 2 ? 0 : 1;
-        $bigBlindIndex = $this->players->count() == 2 ? 1 : 2;
+        $previousSmallBlindIndex = GameRoomCache::getPreviousSmallBlindIndex($this->roomId);
+        $smallBlindIndex = $previousSmallBlindIndex === null ? ($this->players->count() == 2 ? 0 : 1) : $this->rotate($previousSmallBlindIndex);
+        $bigBlindIndex = $previousSmallBlindIndex === null ? ($this->players->count() == 2 ? 1 : 2) : $this->rotate($smallBlindIndex);
         $this->setGameRoomCache($smallBlindIndex, $bigBlindIndex);
 
         $deck = new CardDeck(explode(',', $this->provablyFairGame->secret));
@@ -91,13 +92,39 @@ class GameRoomStartEvent implements ShouldBroadcast
         GameRoomCache::setCommunityCard($this->roomId, $poker->getCommunityCards()->map->code);
     }
 
+    private function rotate($smallBlindIndex)
+    {
+        $players = $this->players->pluck('user_id')->toArray();
+        $rotateKey = null;
+        foreach ($players as $key => $player) {
+            if ($rotateKey === null) {
+                $rotateKey = $key;
+            }
+
+            if ($smallBlindIndex < $key) {
+                return $key;
+            }
+        }
+
+        return $rotateKey;
+    }
+
     private function setGameRoomCache($smallBlindIndex, $bigBlindIndex )
     {
+        GameRoomCache::setPreviousSmallBlindIndex($this->roomId, $smallBlindIndex);
         GameRoomCache::setSmallBlind($this->roomId, $this->players[$smallBlindIndex]->user_id);
         GameRoomCache::setBigBlind($this->roomId, $this->players[$bigBlindIndex]->user_id);
         GameRoomCache::setEndPlayer($this->roomId, $this->players[$bigBlindIndex]->user_id);
-        if ($smallBlindIndex > 0) {
-            GameRoomCache::setDealer($this->roomId, $this->players[0]->user_id);
+        if ($this->players->count() == 2) {
+            GameRoomCache::setDealer($this->roomId, $this->players[$smallBlindIndex]->user_id);
+        } else {
+            if ($smallBlindIndex > 0) {
+                $dealerIndex = $smallBlindIndex - 1;
+            } else {
+                $dealerIndex = $this->players->count() - 1;
+            }
+
+            GameRoomCache::setDealer($this->roomId, $this->players[$dealerIndex]->user_id);
         }
 
         GameRoomCache::setRound($this->roomId,  1);

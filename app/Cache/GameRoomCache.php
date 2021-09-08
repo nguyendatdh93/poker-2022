@@ -341,6 +341,24 @@ class GameRoomCache
     }
 
     /**
+     * @param $roomId
+     * @return mixed
+     */
+    public static function getPreviousSmallBlindIndex($roomId)
+    {
+        return Cache::get("previous:small:blind:$roomId");
+    }
+
+    /**
+     * @param $roomId
+     * @param $index
+     */
+    public static function setPreviousSmallBlindIndex($roomId, $index)
+    {
+        Cache::put("previous:small:blind:$roomId", $index);
+    }
+
+    /**
      * @param mixed
      */
     public static function setOtherPlayersStake($roomId, $amount)
