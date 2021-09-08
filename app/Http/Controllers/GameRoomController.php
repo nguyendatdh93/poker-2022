@@ -9,6 +9,7 @@ use App\Http\Requests\CreateGameRoom;
 use App\Http\Requests\GetGameRooms;
 use App\Http\Requests\JoinGameRoom;
 use App\Http\Requests\LeaveGameRoom;
+use App\Models\Account;
 use App\Models\ChatRoom;
 use App\Models\GameRoom;
 use App\Models\GameRoomPlayer;
@@ -199,6 +200,10 @@ class GameRoomController extends Controller
         return $this->errorResponse('Room not found with selected stakes');
         }
         if($room->players_count < $request->players_count){
+        $account = Account::where('user_id',$request->user()->id)->first();
+        $account->buy_in = $request->buy_in;
+        $account->balance = (float)$account->balance - (float)$request->buy_in;
+        $account->save();
         return $this->successResponse(['room' => $room,'message'=>'Room found']);
         }else{
         return $this->errorResponse('Matched Room is full currently');

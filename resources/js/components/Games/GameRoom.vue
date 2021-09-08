@@ -102,7 +102,7 @@ import Form from 'vform'
 import FormMixin from '~/mixins/Form'
 import SoundMixin from '~/mixins/Sound'
 import FormParameter from '~/components/FormParameter'
-import { mapState } from 'vuex'
+import {mapState, mapActions} from 'vuex'
 import UserJoinedSound from '~/../audio/common/user-joined.wav'
 import UserLeftSound from '~/../audio/common/user-left.wav'
 import BlockPreloader from '~/components/BlockPreloader'
@@ -231,6 +231,8 @@ export default {
 
   computed: {
     ...mapState('broadcasting', ['echo']),
+    ...mapState('auth', ['account', 'user']),
+
     gamePackageId () {
       return this.$route.params.game
     },
@@ -281,11 +283,11 @@ export default {
     this.$nextTick(() => {
       this.fetchRooms()
 
-      if (this.parameters) {
-        this.parameters.forEach(parameter => {
-          this.forms.create.parameters[parameter.id] = parameter.default
-        })
-      }
+      // if (this.parameters) {
+      //   this.parameters.forEach(parameter => {
+      //     this.forms.create.parameters[parameter.id] = parameter.default
+      //   })
+      // }
     })
   this.selectedStakes = this.flatStakesList;
 
@@ -300,6 +302,9 @@ export default {
   },
 
   methods: {
+        ...mapActions({
+      updateUserAccountBalance: 'auth/updateUserAccountBalance',
+    }),
     transformStakes(){
         return [...this.selectedStakes.map(stake=>`${stake.small}Z/${stake.big}Z (min ${stake.min}Z - max ${stake.max}Z)`)]
     },
@@ -347,7 +352,8 @@ export default {
     async searchRoom () {
       const { data } = await this.forms.create.post(`/api/games/${this.gamePackageId}/rooms/search`)
       if (data.success) {
-        this.forms.joinOrLeave.room_id = data.room.id
+        this.forms.joinOrLeave.room_id = data.room.id;
+        this.updateUserAccountBalance(this.account.balance - this.forms.create.buy_in);
         await this.joinRoom();
       }else{
        this.$store.dispatch('message/' + (data.success ? 'success' : 'error'), { text: data.message })
