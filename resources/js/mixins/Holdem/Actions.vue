@@ -42,7 +42,7 @@
         v-if="provablyFairGame.hash && !gameRoom.fold_players[user.id]"
         v-model="sliderBet"
         class="align-center"
-        :max="100"
+        :max="user.account.buy_in"
         :min="getMinSlider()"
         hide-details
         @end="onRaiseBet"
@@ -106,7 +106,7 @@ export default {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
         user_id: this.user.id,
-        bet: this.raiseBet,
+        bet: this.sliderBet,
         user_action_index: this.getPlayerActionIndex(this.user.id)
       });
     },

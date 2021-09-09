@@ -40,10 +40,10 @@
                 <span v-if="isFoldPlayer(opponent.user_id)">
                     Fold
                 </span>
-                <span v-else-if="isDealer(opponent.id)" class="dealer_opponent">
-              <img  src="/images/dealer.png" class="dealer_img"/> - 
-              <span>{{ opponent.name }}</span>
-              </span>
+                <span v-else-if="isDealer(opponent.user_id)" class="dealer_opponent">
+                  <img  src="/images/dealer.png" class="dealer_img"/> -
+                  <span>{{ opponent.name }}</span>
+                </span>
                 <span v-else>
                  {{ opponent.name }}
                 </span>
