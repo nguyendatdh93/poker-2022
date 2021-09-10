@@ -293,7 +293,7 @@ class GameService extends ParentGameService
     {
         try {
             $account = Account::where('user_id', $params['user_id'])->first();
-            if ($account->balance - $bet < 0) {
+            if ($account->buy_in - $bet < 0) {
                 return $this->left([
                     'player' => [
                         'id' => $params['user_id']
@@ -450,6 +450,7 @@ class GameService extends ParentGameService
     private function getRoomPlayers($params)
     {
         $players = GameRoomPlayer::with([
+            'user.account',
             'gameRoomPlayerCards' => function($query) use ($params) {
                 return $query->where('game_room_id', $params['room_id']);
             }

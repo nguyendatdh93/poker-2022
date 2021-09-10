@@ -86,6 +86,10 @@
                   <span class="coin">{{ gameRoom.bets[opponent.user_id] }}</span>
                   <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
                 </div>
+                <div v-if="opponent.user.account" class="bet_bg bet_bg_player">
+                  <span class="coin">{{ opponent.user.account.buy_in }}</span>
+                  <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
+                </div>
               </div>
             </template>
           </hand>
