@@ -515,10 +515,14 @@ class GameService extends ParentGameService
         $user = User::where('id', $playersCards[$winnerIndex]->user_id)->first();
         $pot = GameRoomCache::getPot($roomId);
         $this->sendChatMessage($roomId, $playersCards[$winnerIndex]->user_id, "$user->name wins pot($pot) with high card king");
-        
+
         // calculate winners amount and other players stake
         $winnersPercentage = 97.5; //todo- add this to env
-        $winnersAmount = ($winnersPercentage/100)*$pot;
+        $winnersAmount = ($winnersPercentage/100) * $pot;
+        Account::where('user_id',  $playersCards[$winnerIndex]->user_id)->update([
+            'buy_in' => DB::raw("buy_in + $winnersAmount")
+        ]);
+
         GameRoomCache::setWinnerAmount($roomId, $winnersAmount);
         //add winning amount to users account
         AccountService::updateUserOrAdminAccount($winnersAmount,$user->id);
@@ -543,7 +547,6 @@ class GameService extends ParentGameService
         foreach ($players as $key => $player) {
             event(new ResultEvent($player,$roomId));
         }
-
     }
 
     private function handleForNextRound($roomId, $playerId)
@@ -572,6 +575,10 @@ class GameService extends ParentGameService
         // clear all current game
         $this->sendChatMessage($roomId, $playerId, 'Continue to start new game');
         GameRoomCache::clearGameRoomCache($roomId);
+        $players = $this->getRoomPlayers([
+            'room_id' => $roomId
+        ]);
+        broadcast(new OnPlayersEvent($players->toJson(), $roomId));
         broadcast(new GameRoomStartEvent($roomId, $this->getProvablyFairGame()));
     }
 
