@@ -292,6 +292,7 @@ class GameService extends ParentGameService
     private function handleBetAction($params, $bet)
     {
         try {
+            DB::beginTransaction();
             $account = Account::where('user_id', $params['user_id'])->first();
             if ($account->buy_in - $bet < 0) {
                 return $this->left([
@@ -303,6 +304,13 @@ class GameService extends ParentGameService
             }
 
             $account->decrement('balance', abs($bet));
+            Account::where('user_id', $params['user_id'])->update([
+                'buy_in' => DB::raw("buy_in - $bet")
+            ]);
+
+            $players = $this->getRoomPlayers($params);
+            broadcast(new OnPlayersEvent($players->toJson(), $params['room_id']));
+
             AccountTransaction::create([
                 'account_id' => $account->id,
                 'amount' => -$bet,
@@ -321,7 +329,9 @@ class GameService extends ParentGameService
             
             broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $bet));
             $this->sendNextPlayerActionMessage($params);
+            DB::commit();
         } catch (\Exception $e) {
+            DB::rollBack();
             $message = $e->getMessage();
             Log::error("handleBetAction: $message", [$e->getTraceAsString()]);
         }
