@@ -382,9 +382,9 @@ class GameService extends ParentGameService
         }
 
         $this->getPlayersCard($params['room_id'], $players);
+        broadcast(new GameRoomStartEvent($params['room_id'], $this->getProvablyFairGame()));
         $players = $this->getRoomPlayers($params);
         broadcast(new OnPlayersEvent($players->toJson(), $params['room_id']));
-        broadcast(new GameRoomStartEvent($params['room_id'], $this->getProvablyFairGame()));
         return $this;
     }
 
@@ -585,11 +585,11 @@ class GameService extends ParentGameService
         // clear all current game
         $this->sendChatMessage($roomId, $playerId, 'Continue to start new game');
         GameRoomCache::clearGameRoomCache($roomId);
+        broadcast(new GameRoomStartEvent($roomId, $this->getProvablyFairGame()));
         $players = $this->getRoomPlayers([
             'room_id' => $roomId
         ]);
         broadcast(new OnPlayersEvent($players->toJson(), $roomId));
-        broadcast(new GameRoomStartEvent($roomId, $this->getProvablyFairGame()));
     }
 
     private function getNextPlayerCanCheck($params)

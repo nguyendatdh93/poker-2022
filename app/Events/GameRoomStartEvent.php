@@ -5,6 +5,7 @@ namespace App\Events;
 use App\Cache\GameRoomCache;
 use App\Helpers\Games\CardDeck;
 use App\Helpers\Games\Poker;
+use App\Models\Account;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
 use App\Models\GameRoom;
@@ -19,6 +20,7 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Support\Facades\DB;
 
 class GameRoomStartEvent implements ShouldBroadcast
 {
@@ -138,5 +140,19 @@ class GameRoomStartEvent implements ShouldBroadcast
         GameRoomCache::setBet($this->roomId, $this->players[$bigBlindIndex]->user_id, $this->gameRoom->parameters->bet->big);
         GameRoomCache::setPreviouslyBet($this->roomId,$this->gameRoom->parameters->bet->big);
         GameRoomCache::setPot($this->roomId, ($this->gameRoom->parameters->bet->small + $this->gameRoom->parameters->bet->big));
+        $this->deduceSmallAndBigBlindBuyIn($this->players[$smallBlindIndex]->user_id, $this->players[$bigBlindIndex]->user_id, $this->gameRoom->parameters->bet->big);
+    }
+
+    private function deduceSmallAndBigBlindBuyIn($smallUserId, $bigUserId, $bet)
+    {
+        Account::where('user_id', $smallUserId)->update([
+            'buy_in' => DB::raw("buy_in - $bet->small")
+        ]);
+
+        Account::where('user_id', $bigUserId)->update([
+            'buy_in' => DB::raw("buy_in - $bet->big")
+        ]);
+
+        broadcast(new OnPlayersEvent($this->players->toJson(), $this->roomId));
     }
 }
