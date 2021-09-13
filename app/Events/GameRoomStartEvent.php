@@ -144,7 +144,7 @@ class GameRoomStartEvent implements ShouldBroadcast
         GameRoomCache::setBet($this->roomId, $this->players[$bigBlindIndex]->user_id, $this->gameRoom->parameters->bet->big);
         GameRoomCache::setPreviouslyBet($this->roomId,$this->gameRoom->parameters->bet->big);
         GameRoomCache::setPot($this->roomId, ($this->gameRoom->parameters->bet->small + $this->gameRoom->parameters->bet->big));
-        $this->deduceSmallAndBigBlindBuyIn($this->players[$smallBlindIndex]->user_id, $this->players[$bigBlindIndex]->user_id, $this->gameRoom->parameters->bet->big);
+        $this->deduceSmallAndBigBlindBuyIn($this->players[$smallBlindIndex]->user_id, $this->players[$bigBlindIndex]->user_id, $this->gameRoom->parameters->bet);
     }
 
     private function deduceSmallAndBigBlindBuyIn($smallUserId, $bigUserId, $bet)
