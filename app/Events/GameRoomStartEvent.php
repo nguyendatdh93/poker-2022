@@ -61,6 +61,10 @@ class GameRoomStartEvent implements ShouldBroadcast
     {
         $this->gameRoom = GameRoom::where('id', $this->roomId)->first();
         $this->players = GameRoomPlayer::where('game_room_id', $this->roomId)->orderBy('id', 'asc')->get();
+        if ($this->gameRoom->parameters->players_count == $this->players->count()) {
+            GameRoomCache::clearGameRoomCache($this->roomId);
+        }
+
         return $this->gameRoom->parameters->players_count == $this->players->count();
     }
 
