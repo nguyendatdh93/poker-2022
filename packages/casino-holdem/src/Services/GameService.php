@@ -393,13 +393,21 @@ class GameService extends ParentGameService
         $player = $params['player'];
         GameRoomPlayer::where('user_id', $player['id'])->delete();
         $players = $this->getRoomPlayers($params);
+        if (GameRoomCache::getRound($params['room_id']) >= 1) {
+            Account::where('user_id', $player['id'])->update([
+                'balance' => DB::raw('balance + buy_in')
+            ]);
+            Account::where('user_id', $player['id'])->update([
+                'buy_in' => 0,
+            ]);
+        }
+
         if (GameRoomPlayer::where('game_room_id', $params['room_id'])->count() <= 1) {
             GameRoomCache::clearGameRoomCache($params['room_id']);
         }
 
         GameRoomCache::clearBet($params['room_id'], $player['id']);
         GameRoomCache::clearFoldPlayer($params['room_id'], $player['id']);
-
         broadcast(new OnPlayersEvent($players->toJson(), $params['room_id'], $player['id']));
         return $this;
     }

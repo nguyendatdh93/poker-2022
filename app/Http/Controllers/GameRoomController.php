@@ -165,6 +165,13 @@ class GameRoomController extends Controller
         GameRoomPlayer::where('game_room_id', $request->room_id)
             ->where('user_id', $request->user()->id)
             ->delete();
+        Account::where('user_id', $request->user()->id)->update([
+            'balance' => DB::raw('balance + buy_in')
+        ]);
+
+        Account::where('user_id', $request->user()->id)->update([
+            'buy_in' => 0,
+        ]);
 
         return $this->successResponse();
     }
