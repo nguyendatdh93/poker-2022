@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Cache\GameRoomCache;
+use App\Events\OnPlayersEvent;
 use App\Helpers\Games\CardDeck;
 use App\Helpers\Games\Poker;
 use App\Helpers\PackageManager;
@@ -18,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Packages\CasinoHoldem\Models\CasinoHoldem;
+use Packages\CasinoHoldem\Services\GameService;
 
 class GameRoomController extends Controller
 {
@@ -162,6 +165,7 @@ class GameRoomController extends Controller
      */
     public function leave(LeaveGameRoom $request, $packageId)
     {
+        $gameService = app(GameService::class);
         GameRoomPlayer::where('game_room_id', $request->room_id)
             ->where('user_id', $request->user()->id)
             ->delete();
@@ -173,6 +177,11 @@ class GameRoomController extends Controller
             'buy_in' => 0,
         ]);
 
+        $players = $gameService->getRoomPlayers([
+            'room_id' => $request->room_id,
+        ]);
+        GameRoomCache::removePlayer($request->room_id, $request->user()->id);
+        broadcast(new OnPlayersEvent($players->toJson(), $request->room_id, $request->user()->id));
         return $this->successResponse();
     }
 

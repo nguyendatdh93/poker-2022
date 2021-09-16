@@ -402,12 +402,7 @@ class GameService extends ParentGameService
             ]);
         }
 
-        if (GameRoomPlayer::where('game_room_id', $params['room_id'])->count() <= 1) {
-            GameRoomCache::clearGameRoomCache($params['room_id']);
-        }
-
-        GameRoomCache::clearBet($params['room_id'], $player['id']);
-        GameRoomCache::clearFoldPlayer($params['room_id'], $player['id']);
+        GameRoomCache::removePlayer($params['room_id'], $player['id']);
         broadcast(new OnPlayersEvent($players->toJson(), $params['room_id'], $player['id']));
         return $this;
     }
@@ -465,7 +460,7 @@ class GameService extends ParentGameService
         }
     }
 
-    private function getRoomPlayers($params)
+    public function getRoomPlayers($params)
     {
         $players = GameRoomPlayer::with([
             'user.account',
