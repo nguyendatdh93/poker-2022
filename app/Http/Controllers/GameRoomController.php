@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Cache\GameRoomCache;
+use App\Events\GameRoomPlayEvent;
 use App\Events\OnPlayersEvent;
 use App\Helpers\Games\CardDeck;
 use App\Helpers\Games\Poker;
@@ -19,6 +20,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Packages\CasinoHoldem\Models\CasinoHoldem;
 use Packages\CasinoHoldem\Services\GameService;
 
@@ -180,8 +182,23 @@ class GameRoomController extends Controller
         $players = $gameService->getRoomPlayers([
             'room_id' => $request->room_id,
         ]);
+        $params = [
+            'room_id' => $request->room_id,
+            'user_id' => $request->user()->id,
+        ];
+        GameRoomCache::setActionIndex($request->room_id, $gameService->getNextActionIndex($params));
         GameRoomCache::removePlayer($request->room_id, $request->user()->id);
+
+        $endPlayer = GameRoomCache::getEndPlayer($request->room_id);
+        if ($request->user()->id == $endPlayer) {
+            GameRoomCache::setEndPlayer($request->room_id, $gameService->changeEndPlayer($params));
+        }
+
+        $gameService->nextRound($params['room_id'], $params['user_id']);
+        $gameService->setPlayerCanCheck($params['room_id']);
         broadcast(new OnPlayersEvent($players->toJson(), $request->room_id, $request->user()->id));
+        broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], 0));
+        $gameService->sendNextPlayerActionMessage($params);
         return $this->successResponse();
     }
 

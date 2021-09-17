@@ -135,7 +135,7 @@ class GameService extends ParentGameService
         return $this;
     }
 
-    private function changeEndPlayer($params)
+    public function changeEndPlayer($params)
     {
         $players = GameRoomCache::getPlayers($params['room_id']);
         $foldPlayers = GameRoomCache::getFoldPlayers($params['room_id']);
@@ -159,7 +159,7 @@ class GameService extends ParentGameService
         return $rotatePlayer;
     }
 
-    private function getNextActionIndex($params)
+    public function getNextActionIndex($params)
     {
         $players = GameRoomCache::getPlayers($params['room_id']);
         $foldPlayers = GameRoomCache::getFoldPlayers($params['room_id']);
@@ -402,8 +402,23 @@ class GameService extends ParentGameService
             ]);
         }
 
+        $params = [
+            'room_id' => $params['room_id'],
+            'user_id' => $player['id'],
+        ];
+
+        GameRoomCache::setActionIndex($params['room_id'], $this->getNextActionIndex($params));
+        $endPlayer = GameRoomCache::getEndPlayer($params['room_id']);
+        if ($params['user_id'] == $endPlayer) {
+            GameRoomCache::setEndPlayer($params['room_id'], $this->changeEndPlayer($params));
+        }
+
+        $this->nextRound($params['room_id'], $params['user_id']);
+        $this->setPlayerCanCheck($params['room_id']);
         GameRoomCache::removePlayer($params['room_id'], $player['id']);
         broadcast(new OnPlayersEvent($players->toJson(), $params['room_id'], $player['id']));
+        broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], 0));
+        $this->sendNextPlayerActionMessage($params);
         return $this;
     }
 
@@ -449,7 +464,7 @@ class GameService extends ParentGameService
         return $this;
     }
 
-    private function sendNextPlayerActionMessage($params)
+    public function sendNextPlayerActionMessage($params)
     {
         $nextActionUserId = GameRoomCache::getActionIndex($params['room_id']);
         if ($nextActionUserId !== null && GameRoomCache::getRound($params['room_id']) <= 4) {
@@ -500,7 +515,7 @@ class GameService extends ParentGameService
         }
     }
 
-    private function nextRound($roomId, $playerId)
+    public function nextRound($roomId, $playerId)
     {
         $endPlayer = GameRoomCache::getEndPlayer($roomId);
         if ($playerId == $endPlayer) {
@@ -619,7 +634,7 @@ class GameService extends ParentGameService
         return $rotatePlayer;
     }
 
-    private function setPlayerCanCheck($roomId)
+    public function setPlayerCanCheck($roomId)
     {
         $players = GameRoomCache::getPlayers($roomId);
         GameRoomCache::setPlayerCanCheck($roomId, count($players) <= 3 ? $players[0] : $players[3]);
