@@ -182,6 +182,12 @@ class GameRoomController extends Controller
         $players = $gameService->getRoomPlayers([
             'room_id' => $request->room_id,
         ]);
+
+        if ($players->count() <= 1) {
+            GameRoomCache::clearGameRoomCache($request->room_id);
+            return $this->successResponse();
+        }
+
         $params = [
             'room_id' => $request->room_id,
             'user_id' => $request->user()->id,
