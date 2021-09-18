@@ -42,7 +42,7 @@
         v-if="provablyFairGame.hash && !gameRoom.fold_players[user.id]"
         v-model="sliderBet"
         class="align-center"
-        :max="user.account.buy_in"
+        :max="getMaxSlider()"
         :min="getMinSlider()"
         hide-details
         @end="onRaiseBet"
@@ -70,7 +70,7 @@ export default {
   props: ['room', 'provably-fair-game', 'user'],
   computed: {
     ...mapState('broadcasting', ['echo']),
-    ...mapState('game-room', ['foldPlayers', 'gameRoom']),
+    ...mapState('game-room', ['foldPlayers', 'gameRoom', 'players']),
   },
   data() {
     return {
@@ -141,6 +141,22 @@ export default {
     },
     getMinSlider() {
       return this.gameRoom.previously_bet + Math.floor(this.gameRoom.previously_bet/2);
+    },
+    getMaxSlider() {
+      console.log(this.players);
+      for (let i = 0; i < this.players.length; i++) {
+        if (this.players[i].user_id != this.user.id) {
+          continue;
+        }
+
+        if (!this.players[i].user.account.buy_in) {
+          return 0;
+        }
+
+        return this.players[i].user.account.buy_in;
+      }
+
+      return 500;
     }
   }
 }
