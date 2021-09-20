@@ -501,7 +501,6 @@ class GameService extends ParentGameService
         $deck->cut($provablyFairGame->shift_value % 52);
         $poker = new Poker($deck);
         $poker->addPlayers(count($players))->deal(2, 3)->play();;
-
         foreach ($players as $key => $player) {
             if (Auth::id() == $player['id']) {
                 $cards = $poker->getPlayer($key+1)->getPocketCards()->map->code;
@@ -512,6 +511,26 @@ class GameService extends ParentGameService
                     'cards' => $cards
                 ]);
             }
+        }
+    }
+
+    private function resetPlayersCard($roomID, $players)
+    {
+        $provablyFairGame = $this->getProvablyFairGame();
+        // load initially shuffled deck
+        $deck = new CardDeck(explode(',', $provablyFairGame->secret));
+        // cut the deck (provably fair)
+        foreach ($players as $key => $player) {
+            $deck->cut($provablyFairGame->shift_value % rand(1, 100));
+            $poker = new Poker($deck);
+            $poker->addPlayers(count($players))->deal(2, 3)->play();
+            $cards = $poker->getPlayer($key+1)->getPocketCards()->map->code;
+            GameRoomPlayerCard::updateOrCreate([
+                'game_room_id' => $roomID,
+                'user_id' => $player['id'],
+            ],[
+                'cards' => $cards
+            ]);
         }
     }
 
@@ -603,11 +622,17 @@ class GameService extends ParentGameService
         // clear all current game
         $this->sendChatMessage($roomId, $playerId, 'Continue to start new game');
         GameRoomCache::clearGameRoomCache($roomId);
-        broadcast(new GameRoomStartEvent($roomId, $this->getProvablyFairGame()));
         $players = $this->getRoomPlayers([
             'room_id' => $roomId
         ]);
+        $playerIdsNextGame = [];
+        foreach ($players as $player) {
+            $playerIdsNextGame[]['id'] = $player->user_id;
+        }
+
+        $this->resetPlayersCard($roomId, $playerIdsNextGame);
         broadcast(new OnPlayersEvent($players->toJson(), $roomId));
+        broadcast(new GameRoomStartEvent($roomId, $this->getProvablyFairGame()));
     }
 
     private function getNextPlayerCanCheck($params)
