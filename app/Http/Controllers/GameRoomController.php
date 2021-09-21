@@ -184,6 +184,10 @@ class GameRoomController extends Controller
         ]);
 
         if ($players->count() <= 1) {
+            if (GameRoomCache::getRound($request->room_id) >= 1) {
+                $gameService->handleWinnerCards($request->room_id);
+            }
+            
             GameRoomCache::clearGameRoomCache($request->room_id);
             return $this->successResponse();
         }

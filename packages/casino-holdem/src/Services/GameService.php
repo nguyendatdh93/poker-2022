@@ -417,6 +417,9 @@ class GameService extends ParentGameService
         $this->setPlayerCanCheck($params['room_id']);
         GameRoomCache::removePlayer($params['room_id'], $player['id']);
         broadcast(new OnPlayersEvent($players->toJson(), $params['room_id'], $player['id']));
+        if ($players->count() <= 1) {
+            return $this;
+        }
         broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], 0));
         $this->sendNextPlayerActionMessage($params);
         return $this;
@@ -542,7 +545,7 @@ class GameService extends ParentGameService
         }
     }
 
-    private function handleWinnerCards($roomId)
+    public function handleWinnerCards($roomId)
     {
         $playerIds = GameRoomCache::getPlayers($roomId);
         $playersCards = GameRoomPlayerCard::where('game_room_id', $roomId)->whereIn('user_id', $playerIds)->get();
