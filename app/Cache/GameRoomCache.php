@@ -125,7 +125,7 @@ class GameRoomCache
             }
         }
 
-        self::setPlayers($roomId, $playerIds);
+        self::setPlayers($roomId, array_values($playerIds));
     }
 
     public static function clearPlayers($roomId)
