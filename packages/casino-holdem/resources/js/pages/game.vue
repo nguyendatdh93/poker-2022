@@ -26,6 +26,7 @@
         <div class="position-player">
           <hand
               v-for="(opponent, i) in players"
+              v-if="opponent.cards"
               :key="i"
               :cards="opponent.user_id == user.id ? opponent.cards : getCards(opponent.user_id)"
               :score="opponent.score"
@@ -86,7 +87,7 @@
                   <span class="coin">{{ gameRoom.bets[opponent.user_id] }}</span>
                   <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
                 </div>
-                <div v-if="opponent.user.account" class="bet_bg bet_bg_player">
+                <div v-if="opponent.user && opponent.user.account" class="bet_bg bet_bg_player">
                   <span class="coin">{{ opponent.user.account.buy_in }}</span>
                   <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
                 </div>

@@ -634,8 +634,11 @@ class GameService extends ParentGameService
         }
 
         $this->resetPlayersCard($roomId, $playerIdsNextGame);
-        broadcast(new OnPlayersEvent($players->toJson(), $roomId));
+        $players = $this->getRoomPlayers([
+            'room_id' => $roomId
+        ]);
         broadcast(new GameRoomStartEvent($roomId, $this->getProvablyFairGame()));
+        broadcast(new OnPlayersEvent($players->toJson(), $roomId));
     }
 
     private function getNextPlayerCanCheck($params)

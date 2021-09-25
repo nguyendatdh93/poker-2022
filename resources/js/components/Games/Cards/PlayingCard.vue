@@ -1,7 +1,7 @@
 <template>
   <div class="playing-card-container">
     <slot name="top"></slot>
-    <div class="playing-card ml-n10 mx-lg-1" :class="{ 'face-down': value === null,'first-card': isFirstCard === true,clickable, inactive,cardClass: null  }">
+    <div class="playing-card ml-n10 mx-lg-1" :class="{ 'face-down': value === null,clickable, inactive,cardClass: null  }">
       <div class="front elevation-2" :style="{ backgroundImage: frontImageUrl }">
         <div class="d-flex flex-column pa-2">
           <card-value :value="value" :suit="suit" />
@@ -39,10 +39,6 @@ export default {
       required: false,
       default: false
     },
-    cardclassindex:{
-      type: Number,
-      required: true,
-    }
   },
 
   computed: {
@@ -58,9 +54,6 @@ export default {
     backImageUrl () {
       return `url("${config('settings.games.playing_cards.back_image')}")`
     },
-    isFirstCard(){
-      return this.cardclassindex === 0  ? true : false
-    }
   }
 }
 </script>

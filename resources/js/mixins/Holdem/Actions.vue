@@ -39,7 +39,7 @@
     </v-btn>
 
     <v-slider
-        v-if="provablyFairGame.hash && !gameRoom.fold_players[user.id]"
+        v-if="provablyFairGame.hash && !gameRoom.fold_players[user.id] && players"
         v-model="sliderBet"
         class="align-center"
         :max="getMaxSlider()"
@@ -143,9 +143,8 @@ export default {
       return this.gameRoom.previously_bet + Math.floor(this.gameRoom.previously_bet/2);
     },
     getMaxSlider() {
-      console.log(this.players);
       for (let i = 0; i < this.players.length; i++) {
-        if (this.players[i].user_id != this.user.id) {
+        if (this.players[i].user_id != this.user.id || !this.players[i].user) {
           continue;
         }
 
