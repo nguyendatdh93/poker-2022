@@ -206,8 +206,6 @@ class GameService extends ParentGameService
             GameRoomCache::setWinner($params['room_id'],null);
             GameRoomCache::setWinnerAmount($params['room_id'],null);
             GameRoomCache::setOtherPlayersStake($params['room_id'], null);
-
-
         } catch (\Exception $e) {
         }
 
@@ -333,11 +331,11 @@ class GameService extends ParentGameService
             GameRoomCache::setActionIndex($params['room_id'], $this->getNextActionIndex($params));
             GameRoomCache::setBet($params['room_id'], $params['user_id'], $bet);
             GameRoomCache::setPot($params['room_id'], GameRoomCache::getPot($params['room_id']) + $bet);
-            $this->nextRound($params['room_id'], $params['user_id']);
             if ($bet) {
                 GameRoomCache::setPreviouslyBet($params['room_id'], $bet);
             }
-            
+
+            $this->nextRound($params['room_id'], $params['user_id']);
             broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $bet));
             $this->sendNextPlayerActionMessage($params);
             DB::commit();
@@ -627,8 +625,6 @@ class GameService extends ParentGameService
             sleep(3);
             $this->moveToNextGame($roomId, $playerId);
         }
-
-//        $this->setPlayerCanCheck($roomId);
     }
 
     private function moveToNextGame($roomId, $playerId)

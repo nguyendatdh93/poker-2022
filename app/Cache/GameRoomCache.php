@@ -413,6 +413,6 @@ class GameRoomCache
         self::setWinnerAmount($roomId, null);
         self::clearFoldPlayers($roomId);
         self::setOtherPlayersStake($roomId, null);
-
+        self::setPot($roomId, null);
     }
 }
