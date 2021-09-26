@@ -128,6 +128,17 @@ class GameService extends ParentGameService
             GameRoomCache::setEndPlayer($params['room_id'], $this->changeEndPlayer($params));
         }
 
+        // if there is only one player in room. It should be check winner
+        $foldPlayers = GameRoomCache::getFoldPlayers($params['room_id']);
+        $players = GameRoomCache::getPlayers($params['room_id']);
+        $leftPlayers = array_diff($players, $foldPlayers);;
+        if (count($leftPlayers) == 1) {
+            $this->handleWinnerCards($params['room_id']);
+            sleep(3);
+            $this->moveToNextGame($params['room_id'], $params['user_id']);
+            return $this;
+        }
+
         $this->nextRound($params['room_id'], $params['user_id']);
         $this->setPlayerCanCheck($params['room_id']);
         broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], 0));
