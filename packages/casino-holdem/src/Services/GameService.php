@@ -133,7 +133,7 @@ class GameService extends ParentGameService
         $players = GameRoomCache::getPlayers($params['room_id']);
         $leftPlayers = array_diff($players, $foldPlayers);;
         if (count($leftPlayers) == 1) {
-            $this->handleWinnerCards($params['room_id']);
+            $this->handleWinnerCards($params['room_id'], $leftPlayers[0]);
             sleep(3);
             $this->moveToNextGame($params['room_id'], $params['user_id']);
             return $this;
@@ -554,31 +554,38 @@ class GameService extends ParentGameService
         }
     }
 
-    public function handleWinnerCards($roomId)
+    public function handleWinnerCards($roomId, $winnerId = 0)
     {
         $playerIds = GameRoomCache::getPlayers($roomId);
         $playersCards = GameRoomPlayerCard::where('game_room_id', $roomId)->whereIn('user_id', $playerIds)->get();
-        $winnerIndex = 0;
-        $winner = new PokerHand(collect($playersCards[$winnerIndex]->cards), collect(GameRoomCache::getCommunityCard($roomId)));
-        for ($i = 1; $i < $playersCards->count(); $i++) {
-            $competitor = new PokerHand(collect($playersCards[$i]->cards), collect(GameRoomCache::getCommunityCard($roomId)));
-            if ($winner->compare($competitor) == -1) {
-                $winner = $competitor;
-                $winnerIndex = $i;
+        if (!$winnerId) {
+            $winnerIndex = 0;
+            $winner = new \App\Helpers\Games\PokerHand(collect($playersCards[$winnerIndex]->cards), collect(GameRoomCache::getCommunityCard($roomId)));
+            for ($i = 1; $i < $playersCards->count(); $i++) {
+                $competitor = new PokerHand(collect($playersCards[$i]->cards), collect(GameRoomCache::getCommunityCard($roomId)));
+                if ($winner->compare($competitor) == -1) {
+                    $winner = $competitor;
+                    $winnerIndex = $i;
+                }
             }
+
+            $winnerCards = $playersCards[$winnerIndex]->cards;
+            $winnerId =  $playersCards[$winnerIndex]->user_id;
+        } else {
+            $winnerCards = GameRoomPlayerCard::where('game_room_id', $roomId)->where('user_id', $winnerId)->first()->cards;
         }
 
-        GameRoomCache::setWinner($roomId, $playersCards[$winnerIndex]->user_id);
-        GameRoomCache::setWinnerCards($roomId, $playersCards[$winnerIndex]->cards);
+        GameRoomCache::setWinner($roomId, $winnerId);
+        GameRoomCache::setWinnerCards($roomId, $winnerCards);
         GameRoomCache::setPlayersCards($roomId, $playersCards->keyBy('user_id'));
-        $user = User::where('id', $playersCards[$winnerIndex]->user_id)->first();
+        $user = User::where('id', $winnerId)->first();
         $pot = GameRoomCache::getPot($roomId);
-        $this->sendChatMessage($roomId, $playersCards[$winnerIndex]->user_id, "$user->name wins pot($pot) with high card king");
+        $this->sendChatMessage($roomId, $winnerId, "$user->name wins pot($pot) with high card king");
 
         // calculate winners amount and other players stake
         $winnersPercentage = 97.5; //todo- add this to env
         $winnersAmount = ($winnersPercentage/100) * $pot;
-        Account::where('user_id',  $playersCards[$winnerIndex]->user_id)->update([
+        Account::where('user_id', $winnerId)->update([
             'buy_in' => DB::raw("buy_in + $winnersAmount")
         ]);
 
