@@ -306,7 +306,6 @@ export default {
         .listen('ChatMessageSent', message => this.addMessage(message));
 
       this.echo.join(`game.${room}`).listen('GameRoomStartEvent', data => {
-        console.log('aabababa', document.querySelectorAll(".v-list-item"));
         document.querySelectorAll(".v-list-item").forEach(el => el.remove());
       });
     },
