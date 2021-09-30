@@ -43,7 +43,7 @@
       <v-list two-line class="pa-0">
         <transition-group name="slide-x-transition" tag="div">
           <v-hover v-slot:default="{ hover }" v-for="(msg, index) in messages" :key="`message-${index}`">
-            <v-list-item :class="{ 'grey darken-2': hover }" v-if="!msg.sys">
+            <v-list-item :class="{ 'chat-message-item grey darken-2': hover }" v-if="!msg.sys">
               <v-list-item-avatar size="50" v-if="msg.user && msg.user.avatar_url">
                 <user-avatar :user="msg.user" />
               </v-list-item-avatar>
@@ -83,7 +83,7 @@
                 </p>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :class="{ 'grey darken-2': hover }" v-else>
+            <v-list-item :class="{ 'chat-message-item grey darken-2': hover }" v-else>
               <v-list-item-content>
                 <v-list-item-title class="subtitle-2">
                   <user-profile-modal :user="msg.user">
@@ -304,6 +304,11 @@ export default {
         })
         // new message
         .listen('ChatMessageSent', message => this.addMessage(message));
+
+      this.echo.join(`game.${room}`).listen('GameRoomStartEvent', data => {
+        console.log('aabababa', document.querySelectorAll(".v-list-item"));
+        document.querySelectorAll(".v-list-item").forEach(el => el.remove());
+      });
     },
 
     leaveRoom (room) {

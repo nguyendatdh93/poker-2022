@@ -140,8 +140,8 @@ class GameService extends ParentGameService
         }
 
         $this->nextRound($params['room_id'], $params['user_id']);
-        $this->setPlayerCanCheck($params['room_id']);
         broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], 0));
+        $this->setPlayerCanCheck($params['room_id']);
         $this->sendNextPlayerActionMessage($params);
         return $this;
     }
@@ -335,9 +335,10 @@ class GameService extends ParentGameService
                 GameRoomCache::setPreviouslyBet($params['room_id'], $bet);
             }
 
-            $this->nextRound($params['room_id'], $params['user_id']);
             broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $bet));
+            $this->nextRound($params['room_id'], $params['user_id']);
             $this->sendNextPlayerActionMessage($params);
+            broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $bet));
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();

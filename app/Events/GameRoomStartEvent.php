@@ -75,6 +75,8 @@ class GameRoomStartEvent implements ShouldBroadcast
      */
     public function broadcastWith()
     {
+        // remove previos chat messages.
+        ChatMessage::where('room_id', $this->roomId)->delete();
         $this->initPlayersBet();
         $this->gameRoom->players_bet = $this->gameRoom->playersBet()->get()->keyBy('user_id');
         return [
