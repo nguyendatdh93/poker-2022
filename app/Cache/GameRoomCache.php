@@ -14,7 +14,7 @@ class GameRoomCache
      */
     public static function getBigBlind($roomId)
     {
-        return Cache::get("big:blind:$roomId");
+        return Cache::tags(["room:$roomId"])->get("big:blind:$roomId");
     }
 
     /**
@@ -22,7 +22,7 @@ class GameRoomCache
      */
     public static function setBigBlind($roomId, $bigBlindId): void
     {
-        Cache::put("big:blind:$roomId", $bigBlindId);
+        Cache::tags(["room:$roomId"])->put("big:blind:$roomId", $bigBlindId);
     }
 
     /**
@@ -30,7 +30,7 @@ class GameRoomCache
      */
     public static function getSmallBlind($roomId)
     {
-        return Cache::get("small:blind:$roomId");
+        return Cache::tags(["room:$roomId"])->get("small:blind:$roomId");
     }
 
     /**
@@ -38,7 +38,7 @@ class GameRoomCache
      */
     public static function setSmallBlind($roomId, $smallBlindId): void
     {
-        Cache::put("small:blind:$roomId", $smallBlindId);
+        Cache::tags(["room:$roomId"])->put("small:blind:$roomId", $smallBlindId);
     }
 
     /**
@@ -46,7 +46,7 @@ class GameRoomCache
      */
     public static function getDealer($roomId)
     {
-        return Cache::get("dealer:$roomId");
+        return Cache::tags(["room:$roomId"])->get("dealer:$roomId");
     }
 
     /**
@@ -54,7 +54,7 @@ class GameRoomCache
      */
     public static function setDealer($roomId, $dealerId): void
     {
-        Cache::put("dealer:$roomId", $dealerId);
+        Cache::tags(["room:$roomId"])->put("dealer:$roomId", $dealerId);
     }
 
     /**
@@ -62,7 +62,7 @@ class GameRoomCache
      */
     public static function setRound($roomId, $round): void
     {
-        Cache::put("round:$roomId", $round);
+        Cache::tags(["room:$roomId"])->put("round:$roomId", $round);
     }
 
     /**
@@ -70,7 +70,7 @@ class GameRoomCache
      */
     public static function getRound($roomId)
     {
-        return Cache::get("round:$roomId");
+        return Cache::tags(["room:$roomId"])->get("round:$roomId");
     }
 
     /**
@@ -78,12 +78,12 @@ class GameRoomCache
      */
     public static function setBet($roomId, $playerId, $bet): void
     {
-        Cache::put("bet:$roomId:player:$playerId", $bet);
+        Cache::tags(["room:$roomId"])->put("bet:$roomId:player:$playerId", $bet);
     }
 
     public static function clearBet($roomId, $playerId)
     {
-        Cache::forget("bet:$roomId:player:$playerId");
+        Cache::tags(["room:$roomId"])->forget("bet:$roomId:player:$playerId");
     }
 
     /**
@@ -94,7 +94,7 @@ class GameRoomCache
         $playerIds = self::getPlayers($roomId);
         $bets = [];
         foreach ($playerIds ?? [] as $playerId) {
-            $bets[$playerId] = Cache::get("bet:$roomId:player:$playerId");
+            $bets[$playerId] = Cache::tags(["room:$roomId"])->get("bet:$roomId:player:$playerId");
         }
 
         return $bets;
@@ -113,7 +113,7 @@ class GameRoomCache
      */
     public static function getPlayers($roomId)
     {
-        return Cache::get("players:$roomId");
+        return Cache::tags(["room:$roomId"])->get("players:$roomId");
     }
 
     public static function removePlayer($roomId, $playerId)
@@ -138,7 +138,7 @@ class GameRoomCache
      */
     public static function setActionIndex($roomId, $index): void
     {
-        Cache::put("action:index:$roomId", $index);
+        Cache::tags(["room:$roomId"])->put("action:index:$roomId", $index);
     }
 
     /**
@@ -146,7 +146,7 @@ class GameRoomCache
      */
     public static function getActionIndex($roomId)
     {
-        return Cache::get("action:index:$roomId");
+        return Cache::tags(["room:$roomId"])->get("action:index:$roomId");
     }
 
     /**
@@ -162,7 +162,7 @@ class GameRoomCache
      */
     public static function getPot($roomId)
     {
-        return Cache::get("pot:$roomId");
+        return Cache::tags(["room:$roomId"])->get("pot:$roomId");
     }
 
     /**
@@ -170,7 +170,7 @@ class GameRoomCache
      */
     public static function setCommunityCard($roomId, $cards)
     {
-        Cache::put("community:card:$roomId", $cards);
+        Cache::tags(["room:$roomId"])->put("community:card:$roomId", $cards);
     }
 
     /**
@@ -178,7 +178,7 @@ class GameRoomCache
      */
     public static function setWinner($roomId, $playerId)
     {
-        Cache::put("winner:$roomId", $playerId);
+        Cache::tags(["room:$roomId"])->put("winner:$roomId", $playerId);
     }
 
     /**
@@ -186,7 +186,7 @@ class GameRoomCache
      */
     public static function getWinner($roomId)
     {
-        return Cache::get("winner:$roomId");
+        return Cache::tags(["room:$roomId"])->get("winner:$roomId");
     }
 
     /**
@@ -202,7 +202,7 @@ class GameRoomCache
      */
     public static function getWinnerCards($roomId)
     {
-        return Cache::get("winner:cards:$roomId");
+        return Cache::tags(["room:$roomId"])->get("winner:cards:$roomId");
     }
 
    /**
@@ -218,14 +218,14 @@ class GameRoomCache
      */
     public static function getWinnerAmount($roomId)
     {
-        return Cache::get("winner:amount:$roomId");
+        return Cache::tags(["room:$roomId"])->get("winner:amount:$roomId");
     }
     /**
      * @param mixed
      */
     public static function setPlayersCards($roomId, $cards)
     {
-        Cache::put("players:cards:$roomId", $cards);
+        Cache::tags(["room:$roomId"])->put("players:cards:$roomId", $cards);
     }
 
     /**
@@ -233,7 +233,7 @@ class GameRoomCache
      */
     public static function getPlayersCards($roomId)
     {
-        return Cache::get("players:cards:$roomId");
+        return Cache::tags(["room:$roomId"])->get("players:cards:$roomId");
     }
 
 
@@ -242,7 +242,7 @@ class GameRoomCache
      */
     public static function setPreviouslyBet($roomId, $bet)
     {
-        Cache::put("previously:bet:$roomId", $bet);
+        Cache::tags(["room:$roomId"])->put("previously:bet:$roomId", $bet);
     }
 
     /**
@@ -250,7 +250,7 @@ class GameRoomCache
      */
     public static function getPreviouslyBet($roomId)
     {
-        return Cache::get("previously:bet:$roomId");
+        return Cache::tags(["room:$roomId"])->get("previously:bet:$roomId");
     }
 
     /**
@@ -258,7 +258,7 @@ class GameRoomCache
      */
     public static function getCommunityCard($roomId)
     {
-        return Cache::get("community:card:$roomId");
+        return Cache::tags(["room:$roomId"])->get("community:card:$roomId");
     }
 
     /**
@@ -266,25 +266,24 @@ class GameRoomCache
      */
     public static function setFoldPlayer($roomId, $playerId)
     {
-        Cache::put("fold:$roomId:player:$playerId", $playerId);
+        Cache::tags(["room:$roomId"])->put("fold:$roomId:player:$playerId", $playerId);
     }
 
     public static function getFoldPlayer($roomId, $playerId)
     {
-        return Cache::get("fold:$roomId:player:$playerId");
+        return Cache::tags(["room:$roomId"])->get("fold:$roomId:player:$playerId");
     }
 
     public static function clearFoldPlayer($roomId, $playerId)
     {
-        Cache::forget("fold:$roomId:player:$playerId");
+        Cache::tags(["room:$roomId", "fold:$playerId"])->forget("fold:$roomId:player:$playerId");
     }
 
     public static function clearFoldPlayers($roomId)
     {
         $playerIds = GameRoomPlayer::where('game_room_id', $roomId)->get()->pluck('user_id');
-        $players = [];
         foreach ($playerIds ?? [] as $playerId) {
-            Cache::forget("fold:$roomId:player:$playerId");
+            Cache::tags(["room:$roomId", "fold:$playerId"])->flush();
         }
     }
 
@@ -310,7 +309,7 @@ class GameRoomCache
      */
     public static function getPlayerCanCheck($roomId)
     {
-        return Cache::get("player:can:check:$roomId");
+        return Cache::tags(["room:$roomId"])->get("player:can:check:$roomId");
     }
 
     /**
@@ -319,7 +318,7 @@ class GameRoomCache
      */
     public static function setPlayerCanCheck($roomId, $index)
     {
-        Cache::put("player:can:check:$roomId", $index);
+        Cache::tags(["room:$roomId"])->put("player:can:check:$roomId", $index);
     }
 
     /**
@@ -337,7 +336,7 @@ class GameRoomCache
      */
     public static function setEndPlayer($roomId, $playerId)
     {
-        Cache::put("end:player:$roomId", $playerId);
+        Cache::tags(["room:$roomId"])->put("end:player:$roomId", $playerId);
     }
 
     /**
@@ -346,7 +345,7 @@ class GameRoomCache
      */
     public static function getPreviousSmallBlindIndex($roomId)
     {
-        return Cache::get("previous:small:blind:$roomId");
+        return Cache::tags(["room:$roomId"])->get("previous:small:blind:$roomId");
     }
 
     /**
@@ -355,7 +354,7 @@ class GameRoomCache
      */
     public static function setPreviousSmallBlindIndex($roomId, $index)
     {
-        Cache::put("previous:small:blind:$roomId", $index);
+        Cache::tags(["room:$roomId"])->put("previous:small:blind:$roomId", $index);
     }
 
     /**
@@ -363,7 +362,7 @@ class GameRoomCache
      */
     public static function setOtherPlayersStake($roomId, $amount)
     {
-        Cache::put("other_players_stake:$roomId", $amount);
+        Cache::tags(["room:$roomId"])->put("other_players_stake:$roomId", $amount);
     }
 
     /**
@@ -371,7 +370,7 @@ class GameRoomCache
      */
     public static function getOtherPlayersStake($roomId)
     {
-        return Cache::get("other_players_stake:$roomId");
+        return Cache::tags(["room:$roomId"])->get("other_players_stake:$roomId");
     }
 
     public static function getGameRoomCache($roomId)
@@ -399,20 +398,6 @@ class GameRoomCache
 
     public static function clearGameRoomCache($roomId)
     {
-        self::clearPlayers($roomId);
-        self::setBigBlind($roomId, null);
-        self::setSmallBlind($roomId, null);
-        self::setDealer($roomId, null);
-        self::setRound($roomId, null);
-        self::setCommunityCard($roomId, null);
-        self::setActionIndex($roomId, null);
-        self::setPreviouslyBet($roomId, null);
-        self::setPlayersCards($roomId, null);
-        self::setWinnerCards($roomId, null);
-        self::setEndPlayer($roomId, null);
-        self::setWinnerAmount($roomId, null);
-        self::clearFoldPlayers($roomId);
-        self::setOtherPlayersStake($roomId, null);
-        self::setPot($roomId, null);
+        Cache::tags(["room:$roomId"])->flush();
     }
 }
