@@ -105,7 +105,7 @@ class GameRoomCache
      */
     public static function setPlayers($roomId, $playerIds): void
     {
-        Cache::put("players:$roomId", $playerIds);
+        Cache::tags(["room:$roomId"])->put("players:$roomId", $playerIds);
     }
 
     /**
@@ -154,7 +154,7 @@ class GameRoomCache
      */
     public static function setPot($roomId, $pot): void
     {
-        Cache::put("pot:$roomId", $pot);
+        Cache::tags(["room:$roomId"])->put("pot:$roomId", $pot);
     }
 
     /**
@@ -194,7 +194,7 @@ class GameRoomCache
      */
     public static function setWinnerCards($roomId, $cards)
     {
-        Cache::put("winner:cards:$roomId", $cards);
+        Cache::tags(["room:$roomId"])->put("winner:cards:$roomId", $cards);
     }
 
     /**
@@ -210,7 +210,7 @@ class GameRoomCache
      */
     public static function setWinnerAmount($roomId, $amount)
     {
-        Cache::put("winner:amount:$roomId", $amount);
+        Cache::tags(["room:$roomId"])->put("winner:amount:$roomId", $amount);
     }
 
     /**
@@ -327,7 +327,7 @@ class GameRoomCache
      */
     public static function getEndPlayer($roomId)
     {
-        return Cache::get("end:player:$roomId");
+        return Cache::tags(["room:$roomId"])->get("end:player:$roomId");
     }
 
     /**
