@@ -140,7 +140,7 @@ export default {
       this.raiseBet = bet;
     },
     getMinSlider() {
-      return this.gameRoom.previously_bet + Math.floor(this.gameRoom.previously_bet/2);
+      return parseInt(this.gameRoom.previously_bet) + parseInt(Math.floor(this.gameRoom.previously_bet/2));
     },
     getMaxSlider() {
       for (let i = 0; i < this.players.length; i++) {
