@@ -128,11 +128,6 @@ class GameRoomCache
         self::setPlayers($roomId, array_values($playerIds));
     }
 
-    public static function clearPlayers($roomId)
-    {
-        self::setEndPlayer($roomId, null);
-    }
-
     /**
      * @param mixed $dealer
      */

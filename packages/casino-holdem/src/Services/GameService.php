@@ -401,6 +401,10 @@ class GameService extends ParentGameService
     public function left($params)
     {
         $player = $params['player'];
+        if (!GameRoomCache::getPlayers($params['room_id'])) {
+            return $this;
+        }
+
         GameRoomPlayer::where('user_id', $player['id'])->delete();
         $players = $this->getRoomPlayers($params);
         if (GameRoomCache::getRound($params['room_id']) >= 1) {
@@ -587,37 +591,37 @@ class GameService extends ParentGameService
         $pot = GameRoomCache::getPot($roomId);
         $this->sendChatMessage($roomId, $winnerId, "$user->name wins pot($pot) with high card king");
 
-//        // calculate winners amount and other players stake
-//        $winnersPercentage = 97.5; //todo- add this to env
-//        $winnersAmount = ($winnersPercentage/100) * $pot;
-//        Account::where('user_id', $winnerId)->update([
-//            'buy_in' => DB::raw("buy_in + $winnersAmount")
-//        ]);
-//
-//        GameRoomCache::setWinnerAmount($roomId, $winnersAmount);
-//        //add winning amount to users account
-//        AccountService::updateUserOrAdminAccount($winnersAmount,$user->id);
-//
-//        //add remainings 70% of 2.5% to admin
-//        $remainingPercentage = 2.5;
-//        $remainingTotalAmount = ($remainingPercentage/100)*$pot;
-//        $adminsStake = (70/100)*$remainingTotalAmount;
-//        AccountService::updateUserOrAdminAccount($adminsStake);
-//
-//        // other players commission
-//        //commision logic - level 1 referer of this user will get 20%/number of players on table
-//        //  level 2 refrerr of this user will get 10%/number of players on table
-//        // if  any level is mising add that amount to admin account
-//        $players = User::whereIn('id', $playerIds)->get();
-//        $playersCount = $players->count();
-//        $commission = config('settings.affiliate.commissions.game_win.rates');
-//        $tierlyCommission[] =  (($commission[0]/100)*$remainingTotalAmount)/$playersCount;
-//        $tierlyCommission[] =  (($commission[1]/100)*$remainingTotalAmount)/$playersCount;
-//        GameRoomCache::setOtherPlayersStake($roomId, $tierlyCommission);
-//        // Log::debug("player to array",$players->toArray());
-//        foreach ($players as $key => $player) {
-//            event(new ResultEvent($player,$roomId));
-//        }
+        // calculate winners amount and other players stake
+        $winnersPercentage = 97.5; //todo- add this to env
+        $winnersAmount = ($winnersPercentage/100) * $pot;
+        Account::where('user_id', $winnerId)->update([
+            'buy_in' => DB::raw("buy_in + $winnersAmount")
+        ]);
+
+        GameRoomCache::setWinnerAmount($roomId, $winnersAmount);
+        //add winning amount to users account
+        AccountService::updateUserOrAdminAccount($winnersAmount,$user->id);
+
+        //add remainings 70% of 2.5% to admin
+        $remainingPercentage = 2.5;
+        $remainingTotalAmount = ($remainingPercentage/100)*$pot;
+        $adminsStake = (70/100)*$remainingTotalAmount;
+        AccountService::updateUserOrAdminAccount($adminsStake);
+
+        // other players commission
+        //commision logic - level 1 referer of this user will get 20%/number of players on table
+        //  level 2 refrerr of this user will get 10%/number of players on table
+        // if  any level is mising add that amount to admin account
+        $players = User::whereIn('id', $playerIds)->get();
+        $playersCount = $players->count();
+        $commission = config('settings.affiliate.commissions.game_win.rates');
+        $tierlyCommission[] =  (($commission[0]/100)*$remainingTotalAmount)/$playersCount;
+        $tierlyCommission[] =  (($commission[1]/100)*$remainingTotalAmount)/$playersCount;
+        GameRoomCache::setOtherPlayersStake($roomId, $tierlyCommission);
+        // Log::debug("player to array",$players->toArray());
+        foreach ($players as $key => $player) {
+            event(new ResultEvent($player,$roomId));
+        }
     }
 
     private function handleForNextRound($roomId, $playerId)
@@ -643,6 +647,7 @@ class GameService extends ParentGameService
     {
         // clear all current game
         $this->sendChatMessage($roomId, $playerId, 'Continue to start new game');
+        var_dump(111111);
         GameRoomCache::clearGameRoomCache($roomId);
         $players = $this->getRoomPlayers([
             'room_id' => $roomId
