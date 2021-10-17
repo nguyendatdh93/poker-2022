@@ -261,24 +261,24 @@ class GameRoomCache
      */
     public static function setFoldPlayer($roomId, $playerId)
     {
-        Cache::tags(["room:$roomId"])->put("fold:$roomId:player:$playerId", $playerId);
+        Cache::tags(["room:$roomId", "fold:$roomId:$playerId"])->put("fold:$roomId:player:$playerId", $playerId);
     }
 
     public static function getFoldPlayer($roomId, $playerId)
     {
-        return Cache::tags(["room:$roomId"])->get("fold:$roomId:player:$playerId");
+        return Cache::tags(["room:$roomId", "fold:$roomId:$playerId"])->get("fold:$roomId:player:$playerId");
     }
 
     public static function clearFoldPlayer($roomId, $playerId)
     {
-        Cache::tags(["room:$roomId", "fold:$playerId"])->forget("fold:$roomId:player:$playerId");
+        Cache::tags(["room:$roomId", "fold:$roomId:$playerId"])->forget("fold:$roomId:player:$playerId");
     }
 
     public static function clearFoldPlayers($roomId)
     {
         $playerIds = GameRoomPlayer::where('game_room_id', $roomId)->get()->pluck('user_id');
         foreach ($playerIds ?? [] as $playerId) {
-            Cache::tags(["room:$roomId", "fold:$playerId"])->flush();
+            Cache::tags("fold:$roomId:$playerId")->flush();
         }
     }
 
@@ -290,7 +290,7 @@ class GameRoomCache
         $playerIds = GameRoomPlayer::where('game_room_id', $roomId)->get()->pluck('user_id');
         $players = [];
         foreach ($playerIds ?? [] as $playerId) {
-            if ($player = Cache::get("fold:$roomId:player:$playerId")) {
+            if ($player = Cache::tags(["room:$roomId", "fold:$roomId:$playerId"])->get("fold:$roomId:player:$playerId")) {
                 $players[$playerId] = $player;
             }
         }
