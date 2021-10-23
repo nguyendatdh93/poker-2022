@@ -1,6 +1,5 @@
 <template>
-  <div class="d-flex flex-column fill-height">
-
+  <div class="d-flex flex-column fill-height" id="result-iframe-wrap" role="main">
     <game-room
         :playing="playing"
         @room="onRoomChange($event.room)"
@@ -16,7 +15,7 @@
       <div id="pot" class="d-flex justify-space-around mt-2">
         <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
           <p v-if="gameRoom.pot > 0" class="bet_bg">
-             <span class="coin">Pot : {{ gameRoom.pot }}</span>
+            <span class="coin">Pot : {{ gameRoom.pot }}</span>
             <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
           </p>
         </div>
@@ -24,76 +23,79 @@
       <img src="/images/table.png" class="poker_table"/>
       <div id="opponent-hands" class="d-flex justify-space-around mt-2">
         <div class="position-player">
-          <hand
-              v-for="(opponent, i) in players"
-              v-if="opponent.cards"
-              :key="i"
-              :cards="opponent.user_id == user.id ? opponent.cards : getCards(opponent.user_id)"
-              :score="opponent.score"
-              :result="opponent.score > 0 && !playing ? resultMessage(opponent) : opponent.result"
-              :result-class="resultClass(opponent)"
-              :bet="opponent.bet"
-              :win="opponent.win"
-              :class="`room-${players.length}-players position_player_${getPlayerPosition(players, opponent, i+1)}`"
-          >
-            <template v-slot:title>
-              <div class="font-weight-thin text-center ml-n10 dealer_or_player">
-                <span v-if="isFoldPlayer(opponent.user_id)">
-                    Fold
-                </span>
-                <span v-else-if="isDealer(opponent.user_id)" class="dealer_opponent">
-                  <img  src="/images/dealer.png" class="dealer_img"/> -
-                  <span>{{ opponent.name }}</span>
-                </span>
-                <span v-else>
-                 {{ opponent.name }}
-                </span>
-                <v-progress-circular
-                    v-show="isOpponentTurn(opponent)"
-                    :rotate="360"
-                    :size="25"
-                    :width="2"
-                    :value="isOpponentTurn(opponent) ? Math.round(100 * (opponent.action_end - time) / actionDuration) : 0"
-                    color="primary"
-                >
-                  {{ opponent.action_end - time }}
-                </v-progress-circular>
-              </div>
-            </template>
-            <template v-slot:bottom>
-              <div class="bottom_section">
-                <countdown v-if="opponent.user_id == gameRoom.action_index && gameRoom.round <= 4" :left-time="20000" @finish="finishCountdown">
-                  <template slot="process" slot-scope="{ timeObj }">
+          <ul class="list">
+            <li class="card" v-for="(opponent, i) in players">
+              <hand
+                  v-if="opponent.cards"
+                  :key="i"
+                  :cards="opponent.user_id == user.id ? opponent.cards : getCards(opponent.user_id)"
+                  :score="opponent.score"
+                  :result="opponent.score > 0 && !playing ? resultMessage(opponent) : opponent.result"
+                  :result-class="resultClass(opponent)"
+                  :bet="opponent.bet"
+                  :win="opponent.win"
+                  :class="`room-${players.length}-players position_player_${getPlayerPosition(players, opponent, i+1)}`"
+              >
+                <template v-slot:title>
+                  <div class="font-weight-thin text-center ml-n10 dealer_or_player">
+                  <span v-if="isFoldPlayer(opponent.user_id)">
+                      Fold
+                  </span>
+                    <span v-else-if="isDealer(opponent.user_id)" class="dealer_opponent">
+                    <img  src="/images/dealer.png" class="dealer_img"/> -
+                    <span>{{ opponent.name }}</span>
+                  </span>
+                    <span v-else>
+                   {{ opponent.name }}
+                  </span>
                     <v-progress-circular
+                        v-show="isOpponentTurn(opponent)"
+                        :rotate="360"
+                        :size="25"
+                        :width="2"
+                        :value="isOpponentTurn(opponent) ? Math.round(100 * (opponent.action_end - time) / actionDuration) : 0"
+                        color="primary"
+                    >
+                      {{ opponent.action_end - time }}
+                    </v-progress-circular>
+                  </div>
+                </template>
+                <template v-slot:bottom>
+                  <div class="bottom_section">
+                    <countdown v-if="opponent.user_id == gameRoom.action_index && gameRoom.round <= 4" :left-time="20000" @finish="finishCountdown">
+                      <template slot="process" slot-scope="{ timeObj }">
+                        <v-progress-circular
+                            class="progress-bar"
+                            color="light-blue"
+                            height="10"
+                            buffer-value="100"
+                            :value="timeObj.ceil.s * 5"
+                            striped
+                        ></v-progress-circular>
+                      </template>
+                    </countdown>
+                    <v-progress-circular
+                        v-else
                         class="progress-bar"
                         color="light-blue"
                         height="10"
                         buffer-value="100"
-                        :value="timeObj.ceil.s * 5"
+                        :value="0"
                         striped
                     ></v-progress-circular>
-                  </template>
-                </countdown>
-                <v-progress-circular
-                    v-else
-                    class="progress-bar"
-                    color="light-blue"
-                    height="10"
-                    buffer-value="100"
-                    :value="0"
-                    striped
-                ></v-progress-circular>
-                <div v-if="gameRoom.bets && gameRoom.bets[opponent.user_id] > 0" class="bet_bg bet_bg_player">
-                  <span class="coin">{{ gameRoom.bets[opponent.user_id] }}</span>
-                  <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
-                </div>
-                <div v-if="opponent.user && opponent.user.account" class="bet_bg bet_bg_player">
-                  <span class="coin">{{ opponent.user.account.buy_in }}</span>
-                  <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
-                </div>
-              </div>
-            </template>
-          </hand>
+                    <div v-if="gameRoom.bets && gameRoom.bets[opponent.user_id] > 0" class="bet_bg bet_bg_player">
+                      <span class="coin">{{ gameRoom.bets[opponent.user_id] }}</span>
+                      <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
+                    </div>
+                    <div v-if="opponent.user && opponent.user.account" class="bet_bg bet_bg_player">
+                      <span class="coin">{{ opponent.user.account.buy_in }}</span>
+                      <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
+                    </div>
+                  </div>
+                </template>
+              </hand>
+            </li>
+          </ul>
         </div>
       </div>
       <div id="community-card" class="d-flex justify-center mt-2" v-if="gameRoom.community_card && gameRoom.round >= 2">
@@ -114,7 +116,8 @@
                :user="user">
       </actions>
     </template>
-
+    <button class="stack">Stack</button>
+    <button class="spread">Spread</button>
     <chat v-if="room" v-model="chatDrawer" :room-id="room.id" class="chat"/>
   </div>
 </template>
@@ -233,7 +236,24 @@ export default {
       this.bonusBet = this.defaultBonusBet
     });
   },
+  mounted () {
+    $('.stack').click(function () {
+      $(".card").each(function (e) {
+        setTimeout(function () {
+          $(".card").eq(e).attr("class", "card");
+        }, e * 150);
+      });
+    });
 
+    $('.spread').click(function () {
+      console.log(1111);
+      $(".card").each(function (e) {
+        setTimeout(function () {
+          $(".card").eq(e).attr("class", "card ani" + e);
+        }, e * 150);
+      });
+    });
+  },
   methods: {
     ...mapActions({
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
@@ -536,8 +556,6 @@ margin-left: -12px!important;
   //background: red;
   border-radius: 60%;
   display: block;
-  width: 600px !important;
-  height: 400px !important;
 }
 
 .position-player {
@@ -551,32 +569,32 @@ margin-left: -12px!important;
 }
 
 // 1 player
-.room-1-players.position_player_1 {
-  position: absolute;
-  bottom: 16px;
-  left: 410px;
-  margin: 0px auto;
-  display: block;
-  width: 200px;
-}
+//.room-1-players.position_player_1 {
+//  position: absolute;
+//  bottom: 16px;
+//  left: 410px;
+//  margin: 0px auto;
+//  display: block;
+//  width: 200px;
+//}
 
 // 2 player
-.room-2-players.position_player_1 {
-  position: absolute;
-  bottom: 16px;
-  left: 410px;
-  margin: 0px auto;
-  display: block;
-  width: 200px;
-}
-
-.room-2-players.position_player_2 {
-  position: absolute;
-  left: 400px;
-  margin: 0px auto;
-  display: block;
-  width: 200px;
-}
+//.room-2-players.position_player_1 {
+//  position: absolute;
+//  bottom: 16px;
+//  left: 410px;
+//  margin: 0px auto;
+//  display: block;
+//  width: 200px;
+//}
+//
+//.room-2-players.position_player_2 {
+//  position: absolute;
+//  left: 400px;
+//  margin: 0px auto;
+//  display: block;
+//  width: 200px;
+//}
 
 // 3 players
 .room-3-players.position_player_1 {
