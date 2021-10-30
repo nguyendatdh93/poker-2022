@@ -49,8 +49,14 @@
     <h3>{{ __('Please enable JavaScript in your browser.') }}</h3>
   </noscript>
   <link href="{{ asset('v2/css/styles.css') }}" type="text/css" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"
+          type="text/javascript"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;200;300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 </head>
 <body class="theme-{{ config('settings.theme.mode') }}" onload="if(window !== window.top) window.top.location = window.location">
   {{-- SPA container --}}

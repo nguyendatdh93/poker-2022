@@ -12,109 +12,219 @@
         @exit="onExit"
     />
     <template v-if="room">
-      <div id="pot" class="d-flex justify-space-around mt-2">
-        <div class="font-weight-thin text-center mb-2 ml-n10 ml-lg-0">
-          <p v-if="gameRoom.pot > 0" class="bet_bg">
-            <span class="coin">Pot : {{ gameRoom.pot }}</span>
-            <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
-          </p>
+      <div class="image_table">
+        <div class="imgg" style="max-width: 1045px;margin: auto;">
+          <div id="imgg-pp">
+            <div id="imgg">
+              <img src="images/table.png" alt="" style="margin: auto;accent-color: ;">
+            </div>
+          </div>
         </div>
       </div>
-      <img src="/images/table.png" class="poker_table"/>
-      <div id="opponent-hands" class="d-flex justify-space-around mt-2">
-        <div class="position-player">
-          <ul class="list">
-            <li class="card" v-for="(opponent, i) in players">
-              <hand
-                  v-if="opponent.cards"
-                  :key="i"
-                  :cards="opponent.user_id == user.id ? opponent.cards : getCards(opponent.user_id)"
-                  :score="opponent.score"
-                  :result="opponent.score > 0 && !playing ? resultMessage(opponent) : opponent.result"
-                  :result-class="resultClass(opponent)"
-                  :bet="opponent.bet"
-                  :win="opponent.win"
-                  :class="`room-${players.length}-players position_player_${getPlayerPosition(players, opponent, i+1)}`"
-              >
-                <template v-slot:title>
-                  <div class="font-weight-thin text-center ml-n10 dealer_or_player">
-                  <span v-if="isFoldPlayer(opponent.user_id)">
-                      Fold
-                  </span>
-                    <span v-else-if="isDealer(opponent.user_id)" class="dealer_opponent">
-                    <img  src="/images/dealer.png" class="dealer_img"/> -
-                    <span>{{ opponent.name }}</span>
-                  </span>
-                    <span v-else>
-                   {{ opponent.name }}
-                  </span>
-                    <v-progress-circular
-                        v-show="isOpponentTurn(opponent)"
-                        :rotate="360"
-                        :size="25"
-                        :width="2"
-                        :value="isOpponentTurn(opponent) ? Math.round(100 * (opponent.action_end - time) / actionDuration) : 0"
-                        color="primary"
-                    >
-                      {{ opponent.action_end - time }}
-                    </v-progress-circular>
+      <div class="result-iframe-wrap">
+        <div class="wrap">
+          <div class="centere_class">
+            <div id="centere_class">
+              <div id="logo">
+                <div class="logo">
+                  <div class="logo1">
+                    <a href=""><img src="images/logo.png" alt=""/></a>
                   </div>
-                </template>
-                <template v-slot:bottom>
-                  <div class="bottom_section">
-                    <countdown v-if="opponent.user_id == gameRoom.action_index && gameRoom.round <= 4" :left-time="20000" @finish="finishCountdown">
-                      <template slot="process" slot-scope="{ timeObj }">
-                        <v-progress-circular
-                            class="progress-bar"
-                            color="light-blue"
-                            height="10"
-                            buffer-value="100"
-                            :value="timeObj.ceil.s * 5"
-                            striped
-                        ></v-progress-circular>
-                      </template>
-                    </countdown>
-                    <v-progress-circular
-                        v-else
-                        class="progress-bar"
-                        color="light-blue"
-                        height="10"
-                        buffer-value="100"
-                        :value="0"
-                        striped
-                    ></v-progress-circular>
-                    <div v-if="gameRoom.bets && gameRoom.bets[opponent.user_id] > 0" class="bet_bg bet_bg_player">
-                      <span class="coin">{{ gameRoom.bets[opponent.user_id] }}</span>
-                      <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
-                    </div>
-                    <div v-if="opponent.user && opponent.user.account" class="bet_bg bet_bg_player">
-                      <span class="coin">{{ opponent.user.account.buy_in }}</span>
-                      <v-icon class="coin-icon">mdi-currency-usd-circle</v-icon>
+                </div>
+              </div>
+              <div class="grid">
+                <div id="vgrid">
+                  <div id="grid">
+                    <div id="innergrid">
+                      <div class="cnter_cards">
+                        <ul class="list">
+                          <li class="card"><img src="images/cards.png" alt=""/></li>
+                          <li class="card">
+                            <img src="images/number-cards.png" alt=""/>
+                          </li>
+                          <li class="card">
+                            <img src="images/cards.png" alt=""/>
+                          </li>
+                          <li class="card">
+                            <img src="images/cards.png" alt=""/>
+                          </li>
+                          <li class="card"><img src="images/cards.png" alt=""/></li>
+                          <li class="card">
+                            <img src="images/cards.png" alt=""/>
+                          </li>
+                          <li class="card">
+                            <img src="images/cards.png" alt=""/>
+                          </li>
+                          <li class="card">
+                            <img src="images/cards.png" alt=""/>
+                          </li>
+                          <li class="card"><img src="images/cards.png" alt=""/></li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                </template>
-              </hand>
-            </li>
-          </ul>
+                </div>
+              </div>
+              <div class="grid">
+                <div id="vgrid">
+                  <div id="grid">
+                    <div id="innergrid">
+                      <ul class="list">
+                        <li class="cards ani0 sitting-out">
+                          <div class="left-img">
+                            <div class="img">
+                              <img src="images/img1.png" alt=""/>
+                            </div>
+                          </div>
+                          <div class="text-card">
+
+                            <h2>Abigail</h2>
+                            <span>Sitting out</span>
+                          </div>
+                        </li>
+                        <li class="cards ani1">
+                          <div class="left-img">
+                            <div class="img">
+                              <img src="images/img1.png" alt=""/>
+                            </div>
+                          </div>
+                          <div class="text-card">
+                            <h2>Abigail</h2>
+                            <span>7,500$</span>
+                          </div>
+                          <div class="poker_icon top">
+                            <img src="images/pokr-icon.png" alt=""/>
+                            <span>100</span>
+                          </div>
+                          <div class="progress_bar">
+                            <div id="progress_bar"
+                                 style="width:70%; background-color:#16a34d;"></div>
+                          </div>
+                        </li>
+                        <li class="cards ani2">
+                          <div class="left-img">
+                            <div class="img">
+                              <img src="images/img1.png" alt=""/>
+                            </div>
+                          </div>
+                          <div class="text-card">
+                            <h2>Abigail</h2>
+                            <span>7,500$</span>
+                          </div>
+                          <div class="poker_icon top">
+                            <img src="images/pokr-icon.png" alt=""/>
+                            <span>100</span>
+                          </div>
+                        </li>
+                        <li class="cards ani3">
+                          <div class="left-img">
+                            <div class="img">
+                              <img src="images/img1.png" alt=""/>
+                            </div>
+                          </div>
+                          <div class="text-card">
+                            <h2>Abigail</h2>
+                            <span>7,500$</span>
+                          </div>
+                          <div class="poker_icon right">
+                            <img src="images/pokr-icon.png" alt=""/>
+                            <span>100</span>
+                          </div>
+                        </li>
+                        <li class="cards ani4 sitting-out">
+                          <div class="left-img">
+                            <div class="img">
+                              <img src="images/img1.png" alt=""/>
+                            </div>
+                          </div>
+                          <div class="text-card">
+                            <h2>Abigail</h2>
+                            <span>Sitting out</span>
+                          </div>
+                        </li>
+                        <li class="cards ani5">
+                          <div class="left-img">
+                            <div class="img">
+                              <img src="images/img1.png" alt=""/>
+                            </div>
+                          </div>
+                          <div class="text-card">
+                            <h2>Abigail3</h2>
+                            <span>7,500$</span>
+                          </div>
+                          <div class="poker_icon left">
+                            <img src="images/pokr-icon.png" alt=""/>
+                            <span>100</span>
+                          </div>
+                        </li>
+                        <li class="cards ani6">
+                          <div class="left-img">
+                            <div class="img">
+                              <img src="images/img1.png" alt=""/>
+                            </div>
+                          </div>
+                          <div class="text-card">
+                            <h2>Abigail</h2>
+                            <span>7,500$</span>
+                          </div>
+                          <div class="poker_icon bottom">
+                            <img src="images/pokr-icon.png" alt=""/>
+                            <span>100</span>
+                          </div>
+                        </li>
+                        <li class="cards ani7">
+                          <div class="left-img">
+                            <div class="img">
+                              <img src="images/img1.png" alt=""/>
+                            </div>
+                          </div>
+                          <div class="text-card">
+                            <h2>Abigail</h2>
+                            <span>7,500$</span>
+                          </div>
+                          <div class="poker_icon bottom">
+                            <img src="images/pokr-icon.png" alt=""/>
+                            <span>100</span>
+                          </div>
+                        </li>
+                        <li class="cards ani8 sitting-out">
+                          <div class="left-img">
+                            <div class="img">
+                              <img src="images/img1.png" alt=""/>
+                            </div>
+                          </div>
+                          <div class="text-card">
+
+                            <h2>Abigail</h2>
+                            <span>Sitting out</span>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="table-text">
+                <div class="table-text1">
+                  <div id="table-text">
+                    <div class="pot">
+                      <span>Pot: 250</span>
+                    </div>
+                    <div class="righttext">
+                      <ul>
+                        <li>Real Money Table</li>
+                        <li>Bussolini III - No Limit Hold'em</li>
+                        <li>50/100 Play Money</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div id="community-card" class="d-flex justify-center mt-2" v-if="gameRoom.community_card && gameRoom.round >= 2">
-        <playing-card
-            v-for="(card, i) in gameRoom.community_card"
-            :key="`card-${i}`"
-            :card="card"
-            :clickable="false"
-        >
-          <template v-slot:top>
-            <slot v-if="$scopedSlots['top.' + i]" :name="`top.${i}`" />
-          </template>
-        </playing-card>
-      </div>
-      <actions v-if="room && gameRoom && gameRoom.players && gameRoom.round <= 4 && user.id == gameRoom.action_index"
-               :room="room"
-               :provably-fair-game="provablyFairGame"
-               :user="user">
-      </actions>
     </template>
     <button class="stack">Stack</button>
     <button class="spread">Spread</button>
@@ -237,20 +347,11 @@ export default {
     });
   },
   mounted () {
-    $('.stack').click(function () {
+    $(document).ready(function () {
       $(".card").each(function (e) {
         setTimeout(function () {
-          $(".card").eq(e).attr("class", "card");
-        }, e * 150);
-      });
-    });
-
-    $('.spread').click(function () {
-      console.log(1111);
-      $(".card").each(function (e) {
-        setTimeout(function () {
-          $(".card").eq(e).attr("class", "card ani" + e);
-        }, e * 150);
+          $(".card").eq(e).addClass("ani" + e);
+        }, e * 200);
       });
     });
   },
@@ -567,416 +668,5 @@ margin-left: -12px!important;
   height: 600px;
   //background: #ff000042;
 }
-
-// 1 player
-//.room-1-players.position_player_1 {
-//  position: absolute;
-//  bottom: 16px;
-//  left: 410px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-
-// 2 player
-//.room-2-players.position_player_1 {
-//  position: absolute;
-//  bottom: 16px;
-//  left: 410px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-2-players.position_player_2 {
-//  position: absolute;
-//  left: 400px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-
-//// 3 players
-//.room-3-players.position_player_1 {
-//  position: absolute;
-//  bottom: 16px;
-//  left: 410px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-3-players.position_player_2 {
-//  position: absolute;
-//  left: 40px;
-//  top: 100px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-3-players.position_player_3 {
-//  position: absolute;
-//  right: 6px;
-//  top: 100px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//// 4 players
-//.room-4-players.position_player_1 {
-//  position: absolute;
-//  bottom: 16px;
-//  left: 410px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-4-players.position_player_2 {
-//  position: absolute;
-//  left: 20px;
-//  top: 230px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-4-players.position_player_3 {
-//  position: absolute;
-//  top: 5px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//  left: 440px;
-//}
-//
-//.room-4-players.position_player_4 {
-//  position: absolute;
-//  right: 20px;
-//  top: 230px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//// 5 players
-//.room-5-players.position_player_1 {
-//  position: absolute;
-//  bottom: 16px;
-//  left: 410px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-5-players.position_player_2 {
-//  position: absolute;
-//  top: 300px;
-//  left: 20px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-5-players.position_player_3 {
-//  position: absolute;
-//  top: 20px;
-//  left: 165px;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-5-players.position_player_4 {
-//  position: absolute;
-//  right: 165px;
-//  top: 10px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-5-players.position_player_5 {
-//  position: absolute;
-//  top: 300px;
-//  right: 10px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//// 6 players
-//.room-6-players.position_player_1 {
-//  position: absolute;
-//  bottom: 16px;
-//  left: 410px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-6-players.position_player_2 {
-//  position: absolute;
-//  bottom: 70px;
-//  left: 80px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-6-players.position_player_3 {
-//  position: absolute;
-//  top: 134px;
-//  left: 80px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-6-players.position_player_4 {
-//  position: absolute;
-//  left: 410px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-6-players.position_player_5 {
-//  position: absolute;
-//  top: 134px;
-//  right: 80px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-6-players.position_player_6 {
-//  position: absolute;
-//  top: 300px;
-//  right: 10px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//// 7 players
-//.room-7-players.position_player_1 {
-//  position: absolute;
-//  bottom: 16px;
-//  left: 410px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-7-players.position_player_2 {
-//  position: absolute;
-//  bottom: 54px;
-//  left: 119px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-7-players.position_player_3 {
-//  position: absolute;
-//  top: 203px;
-//  left: 34px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-7-players.position_player_4 {
-//  position: absolute;
-//  left: 266px;
-//  top: 13px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-7-players.position_player_5 {
-//  position: absolute;
-//  top: 13px;
-//  right: 219px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-7-players.position_player_6 {
-//  position: absolute;
-//  top: 203px;
-//  right: 10px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-7-players.position_player_7 {
-//  position: absolute;
-//  bottom: 54px;
-//  right: 100px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//// 8 players
-//.room-8-players.position_player_1 {
-//  position: absolute;
-//  bottom: 16px;
-//  left: 410px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-8-players.position_player_2 {
-//  position: absolute;
-//  bottom: 45px;
-//  left: 145px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-8-players.position_player_3 {
-//  position: absolute;
-//  top: 239px;
-//  left: 34px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-8-players.position_player_4 {
-//  position: absolute;
-//  left: 167px;
-//  top: 13px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-8-players.position_player_5 {
-//  position: absolute;
-//  top: -14px;
-//  left: 422px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-8-players.position_player_6 {
-//  position: absolute;
-//  top: 13px;
-//  right: 101px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-8-players.position_player_7 {
-//  position: absolute;
-//  top: 239px;
-//  right: 10px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-8-players.position_player_8 {
-//  position: absolute;
-//  bottom: 45px;
-//  right: 107px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//// 9 players
-//.room-9-players.position_player_1 {
-//  position: absolute;
-//  bottom: 16px;
-//  left: 410px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-9-players.position_player_2 {
-//  position: absolute;
-//  bottom: 45px;
-//  left: 162px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-9-players.position_player_3 {
-//  position: absolute;
-//  bottom: 204px;
-//  left: 34px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-9-players.position_player_4 {
-//  position: absolute;
-//  left: 40px;
-//  top: 115px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-9-players.position_player_5 {
-//  position: absolute;
-//  top: 0px;
-//  left: 289px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-9-players.position_player_6 {
-//  position: absolute;
-//  top: 0px;
-//  right: 243px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-9-players.position_player_7 {
-//  position: absolute;
-//  top: 115px;
-//  right: 10px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-9-players.position_player_8 {
-//  position: absolute;
-//  bottom: 204px;
-//  right: 10px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
-//
-//.room-9-players.position_player_9 {
-//  position: absolute;
-//  bottom: 45px;
-//  right: 130px;
-//  margin: 0px auto;
-//  display: block;
-//  width: 200px;
-//}
 
 </style>
