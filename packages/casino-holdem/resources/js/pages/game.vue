@@ -16,7 +16,7 @@
         <div class="imgg" style="max-width: 1045px;margin: auto;">
           <div id="imgg-pp">
             <div id="imgg">
-              <img src="images/table.png" alt="" style="margin: auto;accent-color: ;">
+              <img src="/v2/images/table.png" alt="" style="margin: auto;accent-color: ;">
             </div>
           </div>
         </div>
@@ -28,7 +28,7 @@
               <div id="logo">
                 <div class="logo">
                   <div class="logo1">
-                    <a href=""><img src="images/logo.png" alt=""/></a>
+                    <a href=""><img src="/v2/images/logo.png" alt=""/></a>
                   </div>
                 </div>
               </div>
@@ -38,27 +38,27 @@
                     <div id="innergrid">
                       <div class="cnter_cards">
                         <ul class="list">
-                          <li class="card"><img src="images/cards.png" alt=""/></li>
+                          <li class="card"><img src="/v2/images/cards.png" alt=""/></li>
                           <li class="card">
-                            <img src="images/number-cards.png" alt=""/>
+                            <img src="/v2/images/number-cards.png" alt=""/>
                           </li>
                           <li class="card">
-                            <img src="images/cards.png" alt=""/>
+                            <img src="/v2/images/cards.png" alt=""/>
                           </li>
                           <li class="card">
-                            <img src="images/cards.png" alt=""/>
-                          </li>
-                          <li class="card"><img src="images/cards.png" alt=""/></li>
-                          <li class="card">
-                            <img src="images/cards.png" alt=""/>
-                          </li>
-                          <li class="card">
-                            <img src="images/cards.png" alt=""/>
-                          </li>
-                          <li class="card">
-                            <img src="images/cards.png" alt=""/>
+                            <img src="/v2/images/cards.png" alt=""/>
                           </li>
                           <li class="card"><img src="images/cards.png" alt=""/></li>
+                          <li class="card">
+                            <img src="/v2/images/cards.png" alt=""/>
+                          </li>
+                          <li class="card">
+                            <img src="/v2/images/cards.png" alt=""/>
+                          </li>
+                          <li class="card">
+                            <img src="/v2/images/cards.png" alt=""/>
+                          </li>
+                          <li class="card"><img src="/v2/images/cards.png" alt=""/></li>
                         </ul>
                       </div>
                     </div>
@@ -70,22 +70,34 @@
                   <div id="grid">
                     <div id="innergrid">
                       <ul class="list">
-                        <li class="cards ani0 sitting-out">
-                          <div class="left-img">
-                            <div class="img">
-                              <img src="images/img1.png" alt=""/>
-                            </div>
-                          </div>
-                          <div class="text-card">
-
-                            <h2>Abigail</h2>
-                            <span>Sitting out</span>
-                          </div>
+                        <li v-for="(opponent, i) in players" :key="i" class="cards ani0">
+                          <hand
+                              v-if="opponent.cards"
+                              :cards="opponent.user_id == user.id ? opponent.cards : getCards(opponent.user_id)"
+                              :score="opponent.score"
+                              :result="opponent.score > 0 && !playing ? resultMessage(opponent) : opponent.result"
+                              :result-class="resultClass(opponent)"
+                              :bet="opponent.bet"
+                              :win="opponent.win"
+                              :class="`room-${players.length}-players position_player_${getPlayerPosition(players, opponent, i+1)}`"
+                          >
+                            <template>
+                              <div class="left-img">
+                                <div class="img">
+                                  <img src="/v2/images/img1.png" alt=""/>
+                                </div>
+                              </div>
+                              <div class="text-card">
+                                <h2>{{ isFoldPlayer(opponent.user_id) ? 'Fold' : opponent.name}}</h2>
+                                <span>{{ opponent.user.account.buy_in }}</span>
+                              </div>
+                            </template>
+                          </hand>
                         </li>
                         <li class="cards ani1">
                           <div class="left-img">
                             <div class="img">
-                              <img src="images/img1.png" alt=""/>
+                              <img src="/v2/images/img1.png" alt=""/>
                             </div>
                           </div>
                           <div class="text-card">
@@ -93,7 +105,7 @@
                             <span>7,500$</span>
                           </div>
                           <div class="poker_icon top">
-                            <img src="images/pokr-icon.png" alt=""/>
+                            <img src="/v2/images/pokr-icon.png" alt=""/>
                             <span>100</span>
                           </div>
                           <div class="progress_bar">
@@ -104,7 +116,7 @@
                         <li class="cards ani2">
                           <div class="left-img">
                             <div class="img">
-                              <img src="images/img1.png" alt=""/>
+                              <img src="/v2/images/img1.png" alt=""/>
                             </div>
                           </div>
                           <div class="text-card">
@@ -112,14 +124,14 @@
                             <span>7,500$</span>
                           </div>
                           <div class="poker_icon top">
-                            <img src="images/pokr-icon.png" alt=""/>
+                            <img src="/v2/images/pokr-icon.png" alt=""/>
                             <span>100</span>
                           </div>
                         </li>
                         <li class="cards ani3">
                           <div class="left-img">
                             <div class="img">
-                              <img src="images/img1.png" alt=""/>
+                              <img src="/v2/images/img1.png" alt=""/>
                             </div>
                           </div>
                           <div class="text-card">
@@ -127,14 +139,14 @@
                             <span>7,500$</span>
                           </div>
                           <div class="poker_icon right">
-                            <img src="images/pokr-icon.png" alt=""/>
+                            <img src="/v2/images/pokr-icon.png" alt=""/>
                             <span>100</span>
                           </div>
                         </li>
                         <li class="cards ani4 sitting-out">
                           <div class="left-img">
                             <div class="img">
-                              <img src="images/img1.png" alt=""/>
+                              <img src="/v2/images/img1.png" alt=""/>
                             </div>
                           </div>
                           <div class="text-card">
@@ -145,7 +157,7 @@
                         <li class="cards ani5">
                           <div class="left-img">
                             <div class="img">
-                              <img src="images/img1.png" alt=""/>
+                              <img src="/v2/images/img1.png" alt=""/>
                             </div>
                           </div>
                           <div class="text-card">
@@ -153,14 +165,14 @@
                             <span>7,500$</span>
                           </div>
                           <div class="poker_icon left">
-                            <img src="images/pokr-icon.png" alt=""/>
+                            <img src="/v2/images/pokr-icon.png" alt=""/>
                             <span>100</span>
                           </div>
                         </li>
                         <li class="cards ani6">
                           <div class="left-img">
                             <div class="img">
-                              <img src="images/img1.png" alt=""/>
+                              <img src="/v2/images/img1.png" alt=""/>
                             </div>
                           </div>
                           <div class="text-card">
@@ -168,14 +180,14 @@
                             <span>7,500$</span>
                           </div>
                           <div class="poker_icon bottom">
-                            <img src="images/pokr-icon.png" alt=""/>
+                            <img src="/v2/images/pokr-icon.png" alt=""/>
                             <span>100</span>
                           </div>
                         </li>
                         <li class="cards ani7">
                           <div class="left-img">
                             <div class="img">
-                              <img src="images/img1.png" alt=""/>
+                              <img src="/v2/images/img1.png" alt=""/>
                             </div>
                           </div>
                           <div class="text-card">
@@ -183,14 +195,14 @@
                             <span>7,500$</span>
                           </div>
                           <div class="poker_icon bottom">
-                            <img src="images/pokr-icon.png" alt=""/>
+                            <img src="/v2/images/pokr-icon.png" alt=""/>
                             <span>100</span>
                           </div>
                         </li>
                         <li class="cards ani8 sitting-out">
                           <div class="left-img">
                             <div class="img">
-                              <img src="images/img1.png" alt=""/>
+                              <img src="/v2/images/img1.png" alt=""/>
                             </div>
                           </div>
                           <div class="text-card">
@@ -208,8 +220,8 @@
               <div class="table-text">
                 <div class="table-text1">
                   <div id="table-text">
-                    <div class="pot">
-                      <span>Pot: 250</span>
+                    <div class="pot" v-if="gameRoom.pot > 0">
+                      <span>Pot: {{ gameRoom.pot }}</span>
                     </div>
                     <div class="righttext">
                       <ul>
@@ -254,6 +266,20 @@ import Chat from '~/components/Chat'
 import Form from "vform";
 import Actions from "../../../../../resources/js/mixins/Holdem/Actions";
 import PlayingCard from "../../../../../resources/js/components/Games/Cards/PlayingCard";
+
+$(function () {
+  console.log($(".image_table"));
+  setTimeout(function () {
+    console.log(3333);
+    $(".card").each(function (e) {
+      setTimeout(function () {
+        $(".card").eq(e).addClass("ani" + e);
+      }, e * 200);
+    });
+  }, 5000);
+
+});
+
 // import Countdown from '@choujiaojiao/vue2-countdown'
 // import vueAwesomeCountdown from 'vue-awesome-countdown'
 
@@ -284,11 +310,10 @@ export default {
       // action: null,
       loading: false,
       player: {},
-      opponents: [
-      ],
+      opponents: [],
       time: null,
       intervalId: null,
-      primaryUserIndex:false
+      primaryUserIndex: false
     }
   },
   computed: {
@@ -346,14 +371,7 @@ export default {
       this.bonusBet = this.defaultBonusBet
     });
   },
-  mounted () {
-    $(document).ready(function () {
-      $(".card").each(function (e) {
-        setTimeout(function () {
-          $(".card").eq(e).addClass("ani" + e);
-        }, e * 200);
-      });
-    });
+  mounted() {
   },
   methods: {
     ...mapActions({
@@ -363,17 +381,17 @@ export default {
     isDealer(playerId) {
       return playerId == this.gameRoom.dealer;
     },
-    createId(index,opponent) {
+    createId(index, opponent) {
       let id = "opponent_";
-      if(opponent.user_id == this.user.id){
+      if (opponent.user_id == this.user.id) {
         this.primaryUserIndex = index;
         return "primary_user";
       }
-      if(this.primaryUserIndex && Number(this.primaryUserIndex) < Number(index)){
-      const decrementIndex = Number(index)-1;
-      id =id+decrementIndex
-      }else{
-      id =id+index;
+      if (this.primaryUserIndex && Number(this.primaryUserIndex) < Number(index)) {
+        const decrementIndex = Number(index) - 1;
+        id = id + decrementIndex
+      } else {
+        id = id + index;
       }
       return id;
     },
@@ -584,66 +602,80 @@ export default {
   transform: translate(-50%, -50%);
   width: 65% !important;
 }
-#player_actions{
-    position: absolute;
-    bottom: -2%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+
+#player_actions {
+  position: absolute;
+  bottom: -2%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-#community-card{
-position: absolute;
-top: 40%;
-left: 50%;
-transform: translate(-50%, 0);
+
+#community-card {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
+
 #pot {
-    position: absolute;
-    top: 33%;
-    left: 50%;
-    transform: translate(-50%, 0);
-    z-index: 9;
+  position: absolute;
+  top: 33%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 9;
 }
-.bet_bg{
+
+.bet_bg {
   background: white;
   border-radius: 20px;
   padding: 0 5px;
-  span{
-    color:black;
+
+  span {
+    color: black;
     font-size: 13px;
   }
-  .coin-icon{
+
+  .coin-icon {
     color: black;
     font-size: 20px;
   }
 }
-.bet_bg_player{
-width: max-content;
+
+.bet_bg_player {
+  width: max-content;
 }
-.dealer_or_player{
-margin-left: 15px!important;
+
+.dealer_or_player {
+  margin-left: 15px !important;
 }
-#primary_user > #dealer_or_player{
-margin-left: -12px!important;
+
+#primary_user > #dealer_or_player {
+  margin-left: -12px !important;
 }
-.dealer_img{
+
+.dealer_img {
   height: 25px;
   transform: rotate(351deg);
 }
-.dealer_opponent{
-      display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 5px;
-    img{
-          padding-right: 5px;
-    }
+
+.dealer_opponent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+
+  img {
+    padding-right: 5px;
+  }
 }
-.bottom_section{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
+
+.bottom_section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
 }
+
 .progress-bar {
   width: 60%;
   display: block;
@@ -666,6 +698,7 @@ margin-left: -12px!important;
   transform: translate(-50%, -50%);
   width: 1000px;
   height: 600px;
+
   //background: #ff000042;
 }
 
