@@ -94,6 +94,18 @@
           </div>
         </div>
       </div>
+      <div id="community-card" class="d-flex justify-center mt-2" v-if="gameRoom.community_card && gameRoom.round >= 2">
+        <playing-card
+            v-for="(card, i) in gameRoom.community_card"
+            :key="`card-${i}`"
+            :card="card"
+            :clickable="false"
+        >
+          <template v-slot:top>
+            <slot v-if="$scopedSlots['top.' + i]" :name="`top.${i}`" />
+          </template>
+        </playing-card>
+      </div>
       <actions
           v-if="room && gameRoom && gameRoom.players && gameRoom.round <= 4 && user.id == gameRoom.action_index"
           :room="room"
@@ -129,7 +141,6 @@ import Actions from "../../../../../resources/js/mixins/Holdem/Actions";
 import PlayingCard from "../../../../../resources/js/components/Games/Cards/PlayingCard";
 
 $(function () {
-  console.log($(".image_table"));
   setTimeout(function () {
     $(".card").each(function (e) {
       setTimeout(function () {

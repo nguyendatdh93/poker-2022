@@ -18,8 +18,8 @@
           <div class="fold_btn" v-if="gameRoom.round >= 2 && gameRoom.player_can_check && user.id == gameRoom.player_can_check">
             <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]"  @click="onCheck()">Check</button>
           </div>
-          <div class="range_slideer">
-            <div class="range">2400</div>
+          <div class="range_slideer" v-if="provablyFairGame.hash && !gameRoom.fold_players[user.id] && players">
+            <div class="range">{{ sliderBet }}</div>
             <div class="range_meter">
               <div class="meter_val">
                 <span>Min</span>
@@ -30,7 +30,7 @@
             </div>
             <div class="range_slidr">
               <button id="minus">-</button>
-              <input id="range" type="range" min="10" max="1000" step="10" value="30">
+              <input id="range" type="range" :min="getMinSlider()" :max="getMaxSlider()" step="10" :value="sliderBet">
               <button id="plus">+</button>
             </div>
           </div>
