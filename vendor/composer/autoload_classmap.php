@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Cache\\GameRoomCache' => $baseDir . '/app/Cache/GameRoomCache.php',
     'App\\Console\\Commands\\ApproveAffiliateCommissions' => $baseDir . '/app/Console/Commands/ApproveAffiliateCommissions.php',
     'App\\Console\\Commands\\CheckRedeemTimeExpiry' => $baseDir . '/app/Console/Commands/CheckRedeemTimeExpiry.php',
     'App\\Console\\Commands\\CreateGames' => $baseDir . '/app/Console/Commands/CreateGames.php',
@@ -19,11 +20,12 @@ return array(
     'App\\Events\\ChatMessageSent' => $baseDir . '/app/Events/ChatMessageSent.php',
     'App\\Events\\FoldEvent' => $baseDir . '/app/Events/FoldEvent.php',
     'App\\Events\\GamePlayed' => $baseDir . '/app/Events/GamePlayed.php',
-    'App\\Events\\GameRoomCommunityCardEvent' => $baseDir . '/app/Events/GameRoomCommunityCardEvent.php',
+    'App\\Events\\GameRoomPlayEvent' => $baseDir . '/app/Events/GameRoomPlayEvent.php',
     'App\\Events\\GameRoomStartEvent' => $baseDir . '/app/Events/GameRoomStartEvent.php',
     'App\\Events\\MultiplayerGameStateChanged' => $baseDir . '/app/Events/MultiplayerGameStateChanged.php',
     'App\\Events\\OnPlayersEvent' => $baseDir . '/app/Events/OnPlayersEvent.php',
     'App\\Events\\RaiseEvent' => $baseDir . '/app/Events/RaiseEvent.php',
+    'App\\Events\\ResultEvent' => $baseDir . '/app/Events/ResultEvent.php',
     'App\\Events\\UserIsOnline' => $baseDir . '/app/Events/UserIsOnline.php',
     'App\\Exceptions\\EmailTakenException' => $baseDir . '/app/Exceptions/EmailTakenException.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',

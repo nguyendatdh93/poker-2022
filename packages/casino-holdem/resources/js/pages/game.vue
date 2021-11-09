@@ -38,27 +38,19 @@
                     <div id="innergrid">
                       <div class="cnter_cards">
                         <ul class="list">
-                          <li class="card"><img src="/v2/images/cards.png" alt=""/></li>
-                          <li class="card">
-                            <img src="/v2/images/number-cards.png" alt=""/>
+                          <li class="card" v-for="(opponent, i) in players" :key="i">
+                          <hand
+                              v-if="opponent.cards"
+                              :cards="opponent.user_id == user.id ? opponent.cards : getCards(opponent.user_id)"
+                              :score="opponent.score"
+                              :result="opponent.score > 0 && !playing ? resultMessage(opponent) : opponent.result"
+                              :result-class="resultClass(opponent)"
+                              :bet="opponent.bet"
+                              :win="opponent.win"
+                              :class="`room-${players.length}-players position_player_${getPlayerPosition(players, opponent, i+1)}`"
+                          >
+                          </hand>
                           </li>
-                          <li class="card">
-                            <img src="/v2/images/cards.png" alt=""/>
-                          </li>
-                          <li class="card">
-                            <img src="/v2/images/cards.png" alt=""/>
-                          </li>
-                          <li class="card"><img src="images/cards.png" alt=""/></li>
-                          <li class="card">
-                            <img src="/v2/images/cards.png" alt=""/>
-                          </li>
-                          <li class="card">
-                            <img src="/v2/images/cards.png" alt=""/>
-                          </li>
-                          <li class="card">
-                            <img src="/v2/images/cards.png" alt=""/>
-                          </li>
-                          <li class="card"><img src="/v2/images/cards.png" alt=""/></li>
                         </ul>
                       </div>
                     </div>
@@ -70,146 +62,11 @@
                   <div id="grid">
                     <div id="innergrid">
                       <ul class="list">
-                        <li v-for="(opponent, i) in players" :key="i" class="cards ani0">
-                          <hand
-                              v-if="opponent.cards"
-                              :cards="opponent.user_id == user.id ? opponent.cards : getCards(opponent.user_id)"
-                              :score="opponent.score"
-                              :result="opponent.score > 0 && !playing ? resultMessage(opponent) : opponent.result"
-                              :result-class="resultClass(opponent)"
-                              :bet="opponent.bet"
-                              :win="opponent.win"
-                              :class="`room-${players.length}-players position_player_${getPlayerPosition(players, opponent, i+1)}`"
-                          >
-                            <template>
-                              <div class="left-img">
-                                <div class="img">
-                                  <img src="/v2/images/img1.png" alt=""/>
-                                </div>
-                              </div>
-                              <div class="text-card">
-                                <h2>{{ isFoldPlayer(opponent.user_id) ? 'Fold' : opponent.name}}</h2>
-                                <span>{{ opponent.user.account.buy_in }}</span>
-                              </div>
-                            </template>
-                          </hand>
-                        </li>
-                        <li class="cards ani1">
-                          <div class="left-img">
-                            <div class="img">
-                              <img src="/v2/images/img1.png" alt=""/>
+                        <li v-for="(opponent, i) in players" :key="i" :class="`cards ani` + i">
+                            <div class="text-card">
+                              <h2>{{ isFoldPlayer(opponent.user_id) ? 'Fold' : opponent.name}}</h2>
+                              <span>{{ opponent.user.account.buy_in }}</span>
                             </div>
-                          </div>
-                          <div class="text-card">
-                            <h2>Abigail</h2>
-                            <span>7,500$</span>
-                          </div>
-                          <div class="poker_icon top">
-                            <img src="/v2/images/pokr-icon.png" alt=""/>
-                            <span>100</span>
-                          </div>
-                          <div class="progress_bar">
-                            <div id="progress_bar"
-                                 style="width:70%; background-color:#16a34d;"></div>
-                          </div>
-                        </li>
-                        <li class="cards ani2">
-                          <div class="left-img">
-                            <div class="img">
-                              <img src="/v2/images/img1.png" alt=""/>
-                            </div>
-                          </div>
-                          <div class="text-card">
-                            <h2>Abigail</h2>
-                            <span>7,500$</span>
-                          </div>
-                          <div class="poker_icon top">
-                            <img src="/v2/images/pokr-icon.png" alt=""/>
-                            <span>100</span>
-                          </div>
-                        </li>
-                        <li class="cards ani3">
-                          <div class="left-img">
-                            <div class="img">
-                              <img src="/v2/images/img1.png" alt=""/>
-                            </div>
-                          </div>
-                          <div class="text-card">
-                            <h2>Abigail</h2>
-                            <span>7,500$</span>
-                          </div>
-                          <div class="poker_icon right">
-                            <img src="/v2/images/pokr-icon.png" alt=""/>
-                            <span>100</span>
-                          </div>
-                        </li>
-                        <li class="cards ani4 sitting-out">
-                          <div class="left-img">
-                            <div class="img">
-                              <img src="/v2/images/img1.png" alt=""/>
-                            </div>
-                          </div>
-                          <div class="text-card">
-                            <h2>Abigail</h2>
-                            <span>Sitting out</span>
-                          </div>
-                        </li>
-                        <li class="cards ani5">
-                          <div class="left-img">
-                            <div class="img">
-                              <img src="/v2/images/img1.png" alt=""/>
-                            </div>
-                          </div>
-                          <div class="text-card">
-                            <h2>Abigail3</h2>
-                            <span>7,500$</span>
-                          </div>
-                          <div class="poker_icon left">
-                            <img src="/v2/images/pokr-icon.png" alt=""/>
-                            <span>100</span>
-                          </div>
-                        </li>
-                        <li class="cards ani6">
-                          <div class="left-img">
-                            <div class="img">
-                              <img src="/v2/images/img1.png" alt=""/>
-                            </div>
-                          </div>
-                          <div class="text-card">
-                            <h2>Abigail</h2>
-                            <span>7,500$</span>
-                          </div>
-                          <div class="poker_icon bottom">
-                            <img src="/v2/images/pokr-icon.png" alt=""/>
-                            <span>100</span>
-                          </div>
-                        </li>
-                        <li class="cards ani7">
-                          <div class="left-img">
-                            <div class="img">
-                              <img src="/v2/images/img1.png" alt=""/>
-                            </div>
-                          </div>
-                          <div class="text-card">
-                            <h2>Abigail</h2>
-                            <span>7,500$</span>
-                          </div>
-                          <div class="poker_icon bottom">
-                            <img src="/v2/images/pokr-icon.png" alt=""/>
-                            <span>100</span>
-                          </div>
-                        </li>
-                        <li class="cards ani8 sitting-out">
-                          <div class="left-img">
-                            <div class="img">
-                              <img src="/v2/images/img1.png" alt=""/>
-                            </div>
-                          </div>
-                          <div class="text-card">
-
-                            <h2>Abigail</h2>
-                            <span>Sitting out</span>
-                          </div>
                         </li>
                       </ul>
                     </div>
@@ -237,9 +94,13 @@
           </div>
         </div>
       </div>
+      <actions
+          v-if="room && gameRoom && gameRoom.players && gameRoom.round <= 4 && user.id == gameRoom.action_index"
+          :room="room"
+          :provably-fair-game="provablyFairGame"
+          :user="user">
+      </actions>
     </template>
-    <button class="stack">Stack</button>
-    <button class="spread">Spread</button>
     <chat v-if="room" v-model="chatDrawer" :room-id="room.id" class="chat"/>
   </div>
 </template>
@@ -270,7 +131,6 @@ import PlayingCard from "../../../../../resources/js/components/Games/Cards/Play
 $(function () {
   console.log($(".image_table"));
   setTimeout(function () {
-    console.log(3333);
     $(".card").each(function (e) {
       setTimeout(function () {
         $(".card").eq(e).addClass("ani" + e);
@@ -701,5 +561,9 @@ export default {
 
   //background: #ff000042;
 }
-
+.logo1 {
+  display: table-cell;
+  vertical-align: middle;
+  height: 41vh;
+}
 </style>

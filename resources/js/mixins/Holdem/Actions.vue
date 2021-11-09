@@ -1,63 +1,62 @@
 <template>
   <div class="d5-flex justify-center flex-wrap mt-10" id="player_actions">
-    <v-btn
-        :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]"
-        class="mx-1 my-2 my-lg-0"
-        small
-        @click="onFold()"
-    > Fold
-    </v-btn>
-    <v-btn
-        :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]"
-        class="mx-1 my-2 my-lg-0"
-        small
-        @click="onCall()"
-    > Call
-    </v-btn>
-    <v-btn
-        :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]"
-        class="mx-1 my-2 my-lg-0"
-        small
-        @click="onRaise()"
-    > Raise
-    </v-btn>
-    <v-btn
-        :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]"
-        v-if="gameRoom.round == 2 && user.id == gameRoom.small_blind"
-        class="mx-1 my-2 my-lg-0"
-        small
-        @click="onBet()"
-    > Bet
-    </v-btn>
-    <v-btn
-        :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]"
-        v-if="gameRoom.round >= 2 && gameRoom.player_can_check && user.id == gameRoom.player_can_check"
-        class="mx-1 my-2 my-lg-0"
-        small
-        @click="onCheck()"
-    > check
-    </v-btn>
-
-    <v-slider
-        v-if="provablyFairGame.hash && !gameRoom.fold_players[user.id] && players"
-        v-model="sliderBet"
-        class="align-center"
-        :max="getMaxSlider()"
-        :min="getMinSlider()"
-        hide-details
-        @end="onRaiseBet"
-    >
-      <template v-slot:append>
-        <v-text-field
-            v-model="sliderBet"
-            class="mt-0 pt-0"
-            hide-details
-            single-line
-            type="number"
-            style="width: 60px"
-        ></v-text-field>
-      </template>
-    </v-slider>
+    <div class="bottom_part">
+      <div class="container-fluid">
+        <div class="buttons">
+          <div class="fold_btn">
+            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onFold()">Fold</button>
+          </div>
+          <div class="fold_btn">
+            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onCall()">Call 100</button>
+          </div>
+          <div class="fold_btn">
+            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onRaise()">Raise to 300</button>
+          </div>
+          <div class="fold_btn" v-if="gameRoom.round == 2 && user.id == gameRoom.small_blind">
+            <button :disabled="!provablyFairGae.hash || gameRoom.fold_players[user.id]" @click="onBet()">Bet</button>
+          </div>
+          <div class="fold_btn" v-if="gameRoom.round >= 2 && gameRoom.player_can_check && user.id == gameRoom.player_can_check">
+            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]"  @click="onCheck()">Check</button>
+          </div>
+          <div class="range_slideer">
+            <div class="range">2400</div>
+            <div class="range_meter">
+              <div class="meter_val">
+                <span>Min</span>
+                <span>3BB</span>
+                <span>Pot</span>
+                <span class="laast">Max</span>
+              </div>
+            </div>
+            <div class="range_slidr">
+              <button id="minus">-</button>
+              <input id="range" type="range" min="10" max="1000" step="10" value="30">
+              <button id="plus">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--    <v-slider-->
+<!--        v-if="provablyFairGame.hash && !gameRoom.fold_players[user.id] && players"-->
+<!--        v-model="sliderBet"-->
+<!--        class="align-center"-->
+<!--        :max="getMaxSlider()"-->
+<!--        :min="getMinSlider()"-->
+<!--        hide-details-->
+<!--        @end="onRaiseBet"-->
+<!--    >-->
+<!--      <template v-slot:append>-->
+<!--        <v-text-field-->
+<!--            v-model="sliderBet"-->
+<!--            class="mt-0 pt-0"-->
+<!--            hide-details-->
+<!--            single-line-->
+<!--            type="number"-->
+<!--            style="width: 60px"-->
+<!--        ></v-text-field>-->
+<!--      </template>-->
+<!--    </v-slider>-->
   </div>
 </template>
 
