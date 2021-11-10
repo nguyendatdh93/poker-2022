@@ -39,17 +39,17 @@
                       <div class="cnter_cards">
                         <ul class="list">
                           <li class="card" v-for="(opponent, i) in players" :key="i">
-                          <hand
-                              v-if="opponent.cards"
-                              :cards="opponent.user_id == user.id ? opponent.cards : getCards(opponent.user_id)"
-                              :score="opponent.score"
-                              :result="opponent.score > 0 && !playing ? resultMessage(opponent) : opponent.result"
-                              :result-class="resultClass(opponent)"
-                              :bet="opponent.bet"
-                              :win="opponent.win"
-                              :class="`room-${players.length}-players position_player_${getPlayerPosition(players, opponent, i+1)}`"
-                          >
-                          </hand>
+                            <hand
+                                v-if="opponent.cards"
+                                :cards="opponent.user_id == user.id ? opponent.cards : getCards(opponent.user_id)"
+                                :score="opponent.score"
+                                :result="opponent.score > 0 && !playing ? resultMessage(opponent) : opponent.result"
+                                :result-class="resultClass(opponent)"
+                                :bet="opponent.bet"
+                                :win="opponent.win"
+                                :class="`room-${players.length}-players position_player_${getPlayerPosition(players, opponent, i+1)}`"
+                            >
+                            </hand>
                           </li>
                         </ul>
                       </div>
@@ -63,10 +63,15 @@
                     <div id="innergrid">
                       <ul class="list">
                         <li v-for="(opponent, i) in players" :key="i" :class="`cards ani` + i">
-                            <div class="text-card">
-                              <h2>{{ isFoldPlayer(opponent.user_id) ? 'Fold' : opponent.name}}</h2>
-                              <span>{{ opponent.user.account.buy_in }}</span>
+                          <div class="left-img">
+                            <div class="img">
+                              <img src="/v2/images/img1.png" alt=""/>
                             </div>
+                          </div>
+                          <div class="text-card">
+                            <h2>{{ isFoldPlayer(opponent.user_id) ? 'Fold' : opponent.name }}</h2>
+                            <span>{{ opponent.user.account.buy_in }}</span>
+                          </div>
                         </li>
                       </ul>
                     </div>
@@ -102,7 +107,7 @@
             :clickable="false"
         >
           <template v-slot:top>
-            <slot v-if="$scopedSlots['top.' + i]" :name="`top.${i}`" />
+            <slot v-if="$scopedSlots['top.' + i]" :name="`top.${i}`"/>
           </template>
         </playing-card>
       </div>
@@ -572,6 +577,7 @@ export default {
 
   //background: #ff000042;
 }
+
 .logo1 {
   display: table-cell;
   vertical-align: middle;
