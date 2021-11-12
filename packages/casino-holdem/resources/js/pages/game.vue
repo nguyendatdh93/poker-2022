@@ -21,7 +21,7 @@
           </div>
         </div>
       </div>
-      <div class="result-iframe-wrap">
+      <div class="result-iframe-wrap four-players">
         <div class="wrap">
           <div class="centere_class">
             <div id="centere_class">
@@ -63,11 +63,6 @@
                     <div id="innergrid">
                       <ul class="list">
                         <li v-for="(opponent, i) in players" :key="i" :class="`cards ani` + i">
-                          <div class="left-img">
-                            <div class="img">
-                              <img src="/v2/images/img1.png" alt=""/>
-                            </div>
-                          </div>
                           <div class="text-card">
                             <h2>{{ isFoldPlayer(opponent.user_id) ? 'Fold' : opponent.name }}</h2>
                             <span>{{ opponent.user.account.buy_in }}</span>

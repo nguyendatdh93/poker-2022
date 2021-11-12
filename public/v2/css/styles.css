@@ -472,6 +472,64 @@ body {
 	font-size: 20px;
 	margin-top: 0px;
 }
+.four-players .card.ani0 {
+	left: 500px;
+	top: 30px;
+}
+.four-players .cards.ani0 {
+	left: 0px !important;
+	top: 344px;
+}
+
+.four-players .card.ani3 {
+	left: -550px;
+	top: 247px;
+}
+.four-players .cards.ani3 {
+	left: 500px;
+	top: 13px;
+}
+.poker_icon.right {
+	left: 75px;
+	top: 10px;
+	width: auto;
+	float: left;
+}
+.four-players .cards.ani0 {
+	left: -50px !important;
+	top: 261px;
+}
+.four-players .card.ani0 {
+	left: -7px;
+	top: -3px;
+}
+.four-players .cards.ani2 {
+	top: 260px;
+	left: 1000px !important;
+}
+.four-players .poker_icon.top {
+	top: 40px;
+	position: absolute;
+	text-align: center;
+	width: auto;
+	left: -37%;
+}
+.four-players .card.ani2 {
+	left: 480px;
+	top: 244px;
+}
+.four-players .cards.ani1 {
+	left: 528px;
+	top: 495px;
+}
+.four-players .cards.ani1 .poker_icon.top {
+	left: 32%;
+	top: -43px;
+}
+.four-players .card.ani1 {
+	left: 15px;
+	top: 478px;
+}
 @media screen and (min-width:640px) and (max-width:779px){
 	#result-iframe-wrap {
 		background-size: contain;
@@ -1013,4 +1071,12 @@ body {
 	border-right: 0px solid;
 	float: left;
 	margin-right: 0px;
+}
+.range {
+	width: 69px;
+	text-align: center;
+}
+#header_top {
+	position: fixed;
+	z-index: 9;
 }
