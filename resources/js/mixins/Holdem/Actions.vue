@@ -7,16 +7,21 @@
             <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onFold()">Fold</button>
           </div>
           <div class="fold_btn">
-            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onCall()">Call 100</button>
+            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onCall()">Call 100
+            </button>
           </div>
           <div class="fold_btn">
-            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onRaise()">Raise to 300</button>
+            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onRaise()">Raise to
+              300
+            </button>
           </div>
           <div class="fold_btn" v-if="gameRoom.round == 2 && user.id == gameRoom.small_blind">
             <button :disabled="!provablyFairGae.hash || gameRoom.fold_players[user.id]" @click="onBet()">Bet</button>
           </div>
-          <div class="fold_btn" v-if="gameRoom.round >= 2 && gameRoom.player_can_check && user.id == gameRoom.player_can_check">
-            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]"  @click="onCheck()">Check</button>
+          <div class="fold_btn"
+               v-if="gameRoom.round >= 2 && gameRoom.player_can_check && user.id == gameRoom.player_can_check">
+            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onCheck()">Check
+            </button>
           </div>
           <div class="range_slideer" v-if="provablyFairGame.hash && !gameRoom.fold_players[user.id] && players">
             <div class="range">{{ sliderBet }}</div>
@@ -29,34 +34,15 @@
               </div>
             </div>
             <div class="range_slidr">
-              <button id="minus">-</button>
-              <input id="range" type="range" :min="getMinSlider()" :max="getMaxSlider()" step="10" :value="sliderBet">
-              <button id="plus">+</button>
+              <button id="minus" @click="sliderBet = sliderBet-1" :disabled="sliderBet == getMinSlider()">-</button>
+              <input id="range" type="range" :min="getMinSlider()" :max="getMaxSlider()" @change="changeSlider"
+                     step="10" :value="sliderBet">
+              <button id="plus" @click="sliderBet = sliderBet+1" :disabled="sliderBet == getMaxSlider()">+</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-<!--    <v-slider-->
-<!--        v-if="provablyFairGame.hash && !gameRoom.fold_players[user.id] && players"-->
-<!--        v-model="sliderBet"-->
-<!--        class="align-center"-->
-<!--        :max="getMaxSlider()"-->
-<!--        :min="getMinSlider()"-->
-<!--        hide-details-->
-<!--        @end="onRaiseBet"-->
-<!--    >-->
-<!--      <template v-slot:append>-->
-<!--        <v-text-field-->
-<!--            v-model="sliderBet"-->
-<!--            class="mt-0 pt-0"-->
-<!--            hide-details-->
-<!--            single-line-->
-<!--            type="number"-->
-<!--            style="width: 60px"-->
-<!--        ></v-text-field>-->
-<!--      </template>-->
-<!--    </v-slider>-->
   </div>
 </template>
 
@@ -128,6 +114,7 @@ export default {
     getPlayerActionIndex(playerId) {
       if (this.gameRoom.players) {
         let players = Object.values(this.gameRoom.players);
+        changeSlider
         return players.findIndex((player) => {
           return player == playerId;
         })
@@ -139,7 +126,7 @@ export default {
       this.raiseBet = bet;
     },
     getMinSlider() {
-      return parseInt(this.gameRoom.previously_bet) + parseInt(Math.floor(this.gameRoom.previously_bet/2));
+      return parseInt(this.gameRoom.previously_bet) + parseInt(Math.floor(this.gameRoom.previously_bet / 2));
     },
     getMaxSlider() {
       for (let i = 0; i < this.players.length; i++) {
@@ -155,6 +142,9 @@ export default {
       }
 
       return 500;
+    },
+    changeSlider(event) {
+      this.sliderBet = $(event.currentTarget).val()
     }
   }
 }
