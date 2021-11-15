@@ -21,7 +21,7 @@
           </div>
         </div>
       </div>
-      <div class="result-iframe-wrap four-players">
+      <div :class="`result-iframe-wrap `+ getNumberPlayers() +`-players`">
         <div class="wrap">
           <div class="centere_class">
             <div id="centere_class">
@@ -249,6 +249,28 @@ export default {
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
       setProvablyFairGame: 'provably-fair/set',
     }),
+    getNumberPlayers() {
+        let playerCount = '';
+        console.log(this.room.parameters.players_count);
+        if(this.room.parameters.players_count == 2) {
+          console.log(1111);
+          return 'two';
+        }else if(this.room.parameters.players_count == 3) {
+          return 'three';
+        }else if(this.room.parameters.players_count == 4) {
+          return 'four';
+        }else if(this.room.parameters.players_count == 5) {
+          return 'five';
+        }else if(this.room.parameters.players_count == 6) {
+          return 'six';
+        }else if(this.room.parameters.players_count == 7) {
+          return 'seven';
+        }else if(this.room.parameters.players_count == 8) {
+          return 'eight';
+        }else if(this.room.parameters.players_count == 9) {
+          return 'night';
+        }
+    },
     isDealer(playerId) {
       return playerId == this.gameRoom.dealer;
     },
