@@ -12,16 +12,16 @@
         @exit="onExit"
     />
     <template v-if="room">
-      <div class="image_table">
-        <div class="imgg" style="max-width: 1045px;margin: auto;">
-          <div id="imgg-pp">
-            <div id="imgg">
-              <img src="/v2/images/table.png" alt="" style="margin: auto;accent-color: ;">
+      <div :class="`result-iframe-wrap `+ getNumberPlayers() +`-players`">
+        <div class="image_table">
+          <div class="imgg" style="max-width: 1045px;margin: auto;">
+            <div id="imgg-pp">
+              <div id="imgg">
+                <img src="/v2/images/table.png" alt="" style="margin: auto;accent-color: ;">
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div :class="`result-iframe-wrap `+ getNumberPlayers() +`-players`">
         <div class="wrap">
           <div class="centere_class">
             <div id="centere_class">
