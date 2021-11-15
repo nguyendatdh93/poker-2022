@@ -66,8 +66,6 @@ export default {
       }
 
       this.$watch('authenticated', (isAuthenticated, wasAuthenticated) => {
-        console.log(isAuthenticated, wasAuthenticated)
-
         if (!wasAuthenticated && isAuthenticated) {
           if (this.displayOnlineStatus) {
             this.joinOnlineChannel()

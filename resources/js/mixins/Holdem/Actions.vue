@@ -114,7 +114,6 @@ export default {
     getPlayerActionIndex(playerId) {
       if (this.gameRoom.players) {
         let players = Object.values(this.gameRoom.players);
-        changeSlider
         return players.findIndex((player) => {
           return player == playerId;
         })

@@ -22,14 +22,12 @@ export default {
               return window.location.href = '/';
             }
 
-            console.log('OnPlayersEvent', JSON.parse(data.players));
             this.$store.dispatch('game-room/setPlayers', JSON.parse(data.players))
           }).listen('GameRoomStartEvent', data => {
-            console.log('GameRoomStartEvent', data);
             this.$store.dispatch('game-room/setGameRoom', data.game_room);
+            this.distributeCards();
           }).listen('GameRoomPlayEvent', data => {
             let gameRoom = JSON.parse(data.game_room);
-            console.log('GameRoomPlayEvent', gameRoom);
             this.$store.dispatch('game-room/setGameRoom', gameRoom);
             this.gamePlay = true;
             if (data.user_id == this.user.id) {
@@ -45,6 +43,17 @@ export default {
     ...mapActions({
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
     }),
+    distributeCards() {
+      $(function () {
+        setTimeout(function () {
+          $(".card").each(function (e) {
+            setTimeout(function () {
+              $(".card").eq(e).addClass("ani" + e);
+            }, e * 200);
+          });
+        }, 2000);
+      });
+    },
     async finishCountdown() {
       await axios.post('/api/games/casino-holdem/fold', {
         hash: this.provablyFairGame.hash,

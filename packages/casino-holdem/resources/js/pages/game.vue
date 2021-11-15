@@ -140,17 +140,6 @@ import Form from "vform";
 import Actions from "../../../../../resources/js/mixins/Holdem/Actions";
 import PlayingCard from "../../../../../resources/js/components/Games/Cards/PlayingCard";
 
-$(function () {
-  setTimeout(function () {
-    $(".card").each(function (e) {
-      setTimeout(function () {
-        $(".card").eq(e).addClass("ani" + e);
-      }, e * 200);
-    });
-  }, 5000);
-
-});
-
 // import Countdown from '@choujiaojiao/vue2-countdown'
 // import vueAwesomeCountdown from 'vue-awesome-countdown'
 
@@ -251,9 +240,7 @@ export default {
     }),
     getNumberPlayers() {
         let playerCount = '';
-        console.log(this.room.parameters.players_count);
         if(this.room.parameters.players_count == 2) {
-          console.log(1111);
           return 'two';
         }else if(this.room.parameters.players_count == 3) {
           return 'three';

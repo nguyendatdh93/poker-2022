@@ -185,8 +185,6 @@ export default {
   methods: {
     async register () {
       // Register the user
-      console.log(this.hasCookie,"refffffff");
-
       const { data } = await this.form.post('/api/auth/register')
         .catch(() => {
           if (this.recaptchaPublicKey) {
