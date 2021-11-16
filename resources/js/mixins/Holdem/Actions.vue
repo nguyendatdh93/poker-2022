@@ -11,8 +11,7 @@
             </button>
           </div>
           <div class="fold_btn">
-            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onRaise()">Raise to
-              300
+            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onRaise()">Raise to {{ getMinSlider() }}
             </button>
           </div>
           <div class="fold_btn" v-if="gameRoom.round == 2 && user.id == gameRoom.small_blind">
