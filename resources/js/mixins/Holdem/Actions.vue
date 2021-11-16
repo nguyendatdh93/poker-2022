@@ -1,5 +1,5 @@
 <template>
-  <div class="d5-flex justify-center flex-wrap mt-10" id="player_actions">
+  <div class="d5-flex justify-center flex-wrap mt-10" id="player_actions" style="width: 100%">
     <div class="bottom_part">
       <div class="container-fluid">
         <div class="buttons">
@@ -7,7 +7,7 @@
             <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onFold()">Fold</button>
           </div>
           <div class="fold_btn">
-            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onCall()">Call 100
+            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onCall()">Call {{ gameRoom.previously_bet }}
             </button>
           </div>
           <div class="fold_btn">
@@ -16,7 +16,7 @@
             </button>
           </div>
           <div class="fold_btn" v-if="gameRoom.round == 2 && user.id == gameRoom.small_blind">
-            <button :disabled="!provablyFairGae.hash || gameRoom.fold_players[user.id]" @click="onBet()">Bet</button>
+            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onBet()">Bet</button>
           </div>
           <div class="fold_btn"
                v-if="gameRoom.round >= 2 && gameRoom.player_can_check && user.id == gameRoom.player_can_check">
@@ -25,14 +25,6 @@
           </div>
           <div class="range_slideer" v-if="provablyFairGame.hash && !gameRoom.fold_players[user.id] && players">
             <div class="range">{{ sliderBet }}</div>
-            <div class="range_meter">
-              <div class="meter_val">
-                <span>Min</span>
-                <span>3BB</span>
-                <span>Pot</span>
-                <span class="laast">Max</span>
-              </div>
-            </div>
             <div class="range_slidr">
               <button id="minus" @click="sliderBet = sliderBet-1" :disabled="sliderBet == getMinSlider()">-</button>
               <input id="range" type="range" :min="getMinSlider()" :max="getMaxSlider()" @change="changeSlider"
