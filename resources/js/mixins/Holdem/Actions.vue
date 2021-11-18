@@ -7,12 +7,10 @@
             <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onFold()">Fold</button>
           </div>
           <div class="fold_btn">
-            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onCall()">Call {{ gameRoom.previously_bet }}
-            </button>
+            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onCall()">Call {{ gameRoom.previously_bet }}</button>
           </div>
           <div class="fold_btn">
-            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onRaise()">Raise to {{ getMinSlider() }}
-            </button>
+            <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onRaise()">Raise to {{ sliderBet }}</button>
           </div>
           <div class="fold_btn" v-if="gameRoom.round == 2 && user.id == gameRoom.small_blind">
             <button :disabled="!provablyFairGame.hash || gameRoom.fold_players[user.id]" @click="onBet()">Bet</button>
@@ -47,6 +45,7 @@ export default {
   computed: {
     ...mapState('broadcasting', ['echo']),
     ...mapState('game-room', ['foldPlayers', 'gameRoom', 'players']),
+
   },
   data() {
     return {
@@ -55,6 +54,7 @@ export default {
     }
   },
   created() {
+    this.sliderBet = this.getMinSlider();
     this.echo.join(`game.${this.room.id}`)
         .listen('FoldEvent', data => {
           this.$store.dispatch('game-room/setFoldPlayers', data.players)

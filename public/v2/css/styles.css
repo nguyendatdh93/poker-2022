@@ -97,7 +97,7 @@ body {
 	top: 492px;
 }
 .card.ani2 {
-	left: -283px;
+	left: -313px;
 	top: 478px;
 }
 .card.ani4 {
@@ -137,7 +137,7 @@ body {
 	top: 14px;
 }
 .card.ani1 {
-	left: -15px;
+	left: -43px;
 	top: 479px;
 }
 .card.ani0 {
@@ -212,23 +212,24 @@ body {
 }
 .text-card h2 {
 	font-family: 'Work Sans', sans-serif;
-	font-size: 27px;
+	font-size: 19px;
 	font-weight: 400;
-	letter-spacing: 1px;
+	letter-spacing: 0px;
 	position: relative;
 	margin-bottom: 6px;
 	padding-bottom: 6px;
-	margin-top: 16px;
+	margin-top: 2px;
 }
 .text-card span {
 	font-family: 'Work Sans', sans-serif;
-	font-size: 32px;
+	font-size: 22px;
 	font-weight: 500;
 	letter-spacing: 1px;
 }
 .image_table {
 	position: absolute;
 	width: 100%;
+	top: 34px;
 }
 .imgg {
 	max-width: 1045px;
@@ -278,8 +279,8 @@ body {
 	float: left;
 }
 .poker_icon.left {
-	right: 151px;
-	top: -50px;
+	right: -51px;
+	top: 21px;
 	width: auto;
 	float: left;
 }
@@ -310,7 +311,7 @@ body {
 	margin: auto;
 	position: absolute;
 	text-align: center;
-	top: 0px;
+	top: 80px;
 	transform: scale(0.75);
 }
 .table-text {
@@ -388,6 +389,8 @@ body {
 	z-index: 9;
 	height: 19px;
 	left: 1px;
+	width:0px;
+	transition: all 1.5s;
 	top: 1px;
 	border-radius: 5px 0px 0px 5px;
 }
@@ -403,9 +406,8 @@ body {
 }
 #table-text {
 	position: absolute;
-	/* bottom: 220px; */
+	bottom: 160px;
 	width: 495px;
-	/* left: 18%; */
 }
 .table-text1 {
 	display: table-cell;
@@ -438,7 +440,7 @@ body {
 	width: 1170px;
 	margin: 0px auto;
 	position: absolute;
-	top: 0;
+	top: 40px;
 }
 #vgrid {
 	display: table-cell;
@@ -774,6 +776,45 @@ body {
 	width: auto;
 	float: left;
 }
+.dealer_button img {
+	width: 100%;
+}
+.dealer_button {
+	position: absolute;
+	width: 30PX;
+	height: 30PX;
+	overflow: hidden;
+	border-radius: 100PX;
+	border: 3px solid #16a34d;
+	left: 10px;
+	top: -30px;
+}
+.text-card {
+	position: relative;
+	margin-left: 0px;
+	float: left;
+	color: #fff;
+	text-align: center;
+	width: 80%;
+}
+.dealer_button {
+	position: absolute;
+	width: 30PX;
+	height: 30PX;
+	overflow: hidden;
+	border-radius: 100PX;
+	border: 3px solid #16a34d;
+	left: -50px;
+	top: -30px;
+}
+.poker_icon.bottom {
+	top: -73px;
+	left: -73%;
+}
+.logo1 a {
+	margin-top: 210px !important;
+	float: left;
+}
 @media screen and (min-width:640px) and (max-width:779px){
 	#result-iframe-wrap {
 		background-size: contain;
@@ -1095,6 +1136,17 @@ body {
 		top: 521px;
 	}
 }
+.theme-dark.withchat .result-iframe-wrap {
+	transform: scale(0.95);
+	margin-left: 0px;
+	margin-top: ;
+}
+.withchat .image_table {
+	margin-top: -20px;
+}
+.withchat .centere_class {
+	margin-left: -30px;
+}
 @media screen and (max-width:768px){
 #result-iframe-wrap {
 	background: url('../images/table.png') no-repeat center 70px;
@@ -1107,6 +1159,10 @@ body {
 		background-size: auto;
 		width: 1170px !important;
 	}
+}
+.theme-dark.without-chat header, .theme-dark.without-chat main, .theme-dark.without-chat footer {
+	width: 100% !important;
+	padding-right: 0px !important;
 }
 #result-iframe-wrap { background:none !important; }
 #header_top { background: #ffffff42; width:100%; float:left; }
@@ -1323,4 +1379,9 @@ body {
 #header_top {
 	position: fixed;
 	z-index: 9;
+}
+.card img {
+	width: ;
+	transform: scale(0.6);
+	margin-top: -53px;
 }

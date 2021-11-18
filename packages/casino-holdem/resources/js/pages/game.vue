@@ -63,6 +63,9 @@
                     <div id="innergrid">
                       <ul class="list">
                         <li v-for="(opponent, i) in players" :key="i" :class="`cards ani` + i">
+                          <div class="dealer_button" v-if="isDealer(opponent.user_id)">
+                            <img src="/v2/images/fcard.jpg" alt=""/>
+                          </div>
                           <div class="text-card">
                             <div class="left-img">
                               <div class="img">
@@ -71,6 +74,20 @@
                             </div>
                             <h2>{{ isFoldPlayer(opponent.user_id) ? 'Fold' : opponent.name }}</h2>
                             <span>{{ opponent.user.account.buy_in }}</span>
+                          </div>
+                          <div class="progress_bar">
+<!--                            <countdown :left-time="20000" @finish="finishCountdown">-->
+<!--                              <template slot="process" slot-scope="{ timeObj }">-->
+                                <v-progress-linear
+                                    class="progress-bar"
+                                    color="light-blue"
+                                    height="10"
+                                    buffer-value="100"
+                                    :value="50"
+                                    striped
+                                ></v-progress-linear>
+<!--                              </template>-->
+<!--                            </countdown>-->
                           </div>
                         </li>
                       </ul>
@@ -118,7 +135,7 @@
           :user="user">
       </actions>
     </template>
-<!--    <chat v-if="room" v-model="chatDrawer" :room-id="room.id" class="chat"/>-->
+    <!--    <chat v-if="room" v-model="chatDrawer" :room-id="room.id" class="chat"/>-->
   </div>
 </template>
 
@@ -144,9 +161,6 @@ import Chat from '~/components/Chat'
 import Form from "vform";
 import Actions from "../../../../../resources/js/mixins/Holdem/Actions";
 import PlayingCard from "../../../../../resources/js/components/Games/Cards/PlayingCard";
-
-// import Countdown from '@choujiaojiao/vue2-countdown'
-// import vueAwesomeCountdown from 'vue-awesome-countdown'
 
 export default {
   name: 'CasinoHoldem',
@@ -233,7 +247,16 @@ export default {
   },
   created() {
     this.$nextTick(() => {
-      this.bonusBet = this.defaultBonusBet
+      this.bonusBet = this.defaultBonusBet;
+
+      setTimeout(function () {
+        jQuery('.cards').each(function () {
+          var barr = jQuery(this).find('#progress_bar').attr('data-max');
+          if (barr != undefined) {
+            jQuery(this).find('#progress_bar').width(barr + '%');
+          }
+        });
+      }, 2000);
     });
   },
   mounted() {
@@ -244,24 +267,24 @@ export default {
       setProvablyFairGame: 'provably-fair/set',
     }),
     getNumberPlayers() {
-        let playerCount = '';
-        if(this.room.parameters.players_count == 2) {
-          return 'two';
-        }else if(this.room.parameters.players_count == 3) {
-          return 'three';
-        }else if(this.room.parameters.players_count == 4) {
-          return 'four';
-        }else if(this.room.parameters.players_count == 5) {
-          return 'five';
-        }else if(this.room.parameters.players_count == 6) {
-          return 'six';
-        }else if(this.room.parameters.players_count == 7) {
-          return 'seven';
-        }else if(this.room.parameters.players_count == 8) {
-          return 'eight';
-        }else if(this.room.parameters.players_count == 9) {
-          return 'night';
-        }
+      let playerCount = '';
+      if (this.room.parameters.players_count == 2) {
+        return 'two';
+      } else if (this.room.parameters.players_count == 3) {
+        return 'three';
+      } else if (this.room.parameters.players_count == 4) {
+        return 'four';
+      } else if (this.room.parameters.players_count == 5) {
+        return 'five';
+      } else if (this.room.parameters.players_count == 6) {
+        return 'six';
+      } else if (this.room.parameters.players_count == 7) {
+        return 'seven';
+      } else if (this.room.parameters.players_count == 8) {
+        return 'eight';
+      } else if (this.room.parameters.players_count == 9) {
+        return 'night';
+      }
     },
     isDealer(playerId) {
       return playerId == this.gameRoom.dealer;
