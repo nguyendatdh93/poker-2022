@@ -83,7 +83,7 @@
                                     color="light-blue"
                                     height="10"
                                     buffer-value="100"
-                                    :value="50"
+                                    :value="100"
                                     striped
                                 ></v-progress-linear>
 <!--                              </template>-->
