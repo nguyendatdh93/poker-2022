@@ -121,6 +121,7 @@ export default {
   }
 
   .playing-cards {
+    top:-61px;
     position: relative;
   }
 }

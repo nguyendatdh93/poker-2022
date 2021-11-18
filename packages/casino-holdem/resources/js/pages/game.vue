@@ -64,6 +64,11 @@
                       <ul class="list">
                         <li v-for="(opponent, i) in players" :key="i" :class="`cards ani` + i">
                           <div class="text-card">
+                            <div class="left-img">
+                              <div class="img">
+                                <img src="/v2/images/img1.png" alt=""/>
+                              </div>
+                            </div>
                             <h2>{{ isFoldPlayer(opponent.user_id) ? 'Fold' : opponent.name }}</h2>
                             <span>{{ opponent.user.account.buy_in }}</span>
                           </div>
@@ -113,7 +118,7 @@
           :user="user">
       </actions>
     </template>
-    <chat v-if="room" v-model="chatDrawer" :room-id="room.id" class="chat"/>
+<!--    <chat v-if="room" v-model="chatDrawer" :room-id="room.id" class="chat"/>-->
   </div>
 </template>
 
