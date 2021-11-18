@@ -76,18 +76,18 @@
                             <span>{{ opponent.user.account.buy_in }}</span>
                           </div>
                           <div class="progress_bar">
-<!--                            <countdown :left-time="20000" @finish="finishCountdown">-->
-<!--                              <template slot="process" slot-scope="{ timeObj }">-->
+                            <countdown v-if="opponent.user_id == gameRoom.action_index && gameRoom.round <= 4" :left-time="20000" @finish="finishCountdown">
+                              <template slot="process" slot-scope="{ timeObj }">
                                 <v-progress-linear
                                     class="progress-bar"
                                     color="light-blue"
                                     height="10"
                                     buffer-value="100"
-                                    :value="100"
+                                    :value="timeObj.ceil.s * 5"
                                     striped
                                 ></v-progress-linear>
-<!--                              </template>-->
-<!--                            </countdown>-->
+                              </template>
+                            </countdown>
                           </div>
                         </li>
                       </ul>

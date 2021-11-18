@@ -815,6 +815,10 @@ body {
 	margin-top: 210px !important;
 	float: left;
 }
+.progress_bar .v-progress-linear {
+	width: 100% !important;
+	height: 12px !important;
+}
 @media screen and (min-width:640px) and (max-width:779px){
 	#result-iframe-wrap {
 		background-size: contain;
