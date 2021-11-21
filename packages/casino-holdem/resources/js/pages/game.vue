@@ -17,7 +17,7 @@
           <div class="imgg" style="max-width: 1045px;margin: auto;">
             <div id="imgg-pp">
               <div id="imgg">
-                <img src="/v2/images/table.png" alt="" style="margin: auto;accent-color: ;">
+                <img src="/v2/images/table.png" alt="" style="margin: auto;">
               </div>
             </div>
           </div>
@@ -135,7 +135,7 @@
           :user="user">
       </actions>
     </template>
-    <!--    <chat v-if="room" v-model="chatDrawer" :room-id="room.id" class="chat"/>-->
+    <chat v-if="room" :room-id="room.id" class="chat"/>
   </div>
 </template>
 
@@ -182,7 +182,6 @@ export default {
       bonusBet: 0,
       win: 0,
       netWin: 1,
-      chatDrawer: true,
       ready: false,
       room: null,
       game: null,
@@ -197,6 +196,7 @@ export default {
   },
   computed: {
     ...mapState('broadcasting', ['echo']),
+    ...mapState('auth', ['account', 'user']),
     ...mapState('auth', ['account', 'user']),
     ...mapState('game-room', ['foldPlayers', 'playersBet', 'communityCard', 'action', 'gameRoom']),
     playerResultClass() {

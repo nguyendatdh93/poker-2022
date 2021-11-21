@@ -2,7 +2,7 @@ import axios from 'axios'
 import { route } from '~/plugins/route'
 
 import {
-  GAME_ROOM_PLAYERS, GAME_ROOM_FOLD_PLAYERS, GAME_ROOM_PLAYERS_BET, GAME_ROOM_COMMUNITY_CARD, GAME_ROOM_ACTION, GAME_ROOM
+  GAME_ROOM_PLAYERS, GAME_ROOM_FOLD_PLAYERS, GAME_ROOM_PLAYERS_BET, GAME_ROOM_COMMUNITY_CARD, GAME_ROOM_ACTION, GAME_ROOM, GAME_ROOM_CHAT
 } from '../mutation-types'
 
 // state
@@ -13,6 +13,7 @@ export const state = {
   communityCard: [],
   action: [],
   gameRoom: [],
+  chatDrawer: false,
 }
 
 // mutations
@@ -35,6 +36,9 @@ export const mutations = {
   [GAME_ROOM] (state, payload) {
     state.gameRoom = payload;
   },
+  [GAME_ROOM_CHAT] (state, payload) {
+    state.chatDrawer = payload;
+  },
 }
 
 // actions
@@ -56,6 +60,10 @@ export const actions = {
   setPlayersBet({commit}, payload) {
     // execute the action
     commit(GAME_ROOM_PLAYERS_BET, payload);
+  },
+  setGameRoomChat({commit, state}, payload) {
+    // execute the action
+    commit(GAME_ROOM_CHAT, !state.chatDrawer);
   },
   setCommunityCard({commit}, payload) {
     // execute the action

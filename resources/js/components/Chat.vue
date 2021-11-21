@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer
     id="chat"
-    :value="value"
+    :value="chatDrawer"
     app
     right
     width="300"
@@ -173,13 +173,14 @@ export default {
       form: new Form({
         message: '',
         recipients: []
-      })
+      }),
     }
   },
 
   computed: {
     ...mapState('auth', ['user']),
     ...mapState('broadcasting', ['echo']),
+    ...mapState('game-room', ['chatDrawer']),
     maxLength () {
       return config('settings.interface.chat.message_max_length')
     }

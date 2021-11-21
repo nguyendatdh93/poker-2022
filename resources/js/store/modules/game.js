@@ -10,7 +10,7 @@ const lastWin = get(window, 'games.last_win')
 // state
 export const state = {
   recent: lastWin ? [lastWin] : [], // recent games
-  count: get(window, 'games.count', 0) // total number of games, is not equal to recent.length
+  count: get(window, 'games.count', 0), // total number of games, is not equal to recent.length
 }
 
 // mutations
