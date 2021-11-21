@@ -340,7 +340,7 @@ class GameRoomCache
      */
     public static function getPreviousSmallBlindIndex($roomId)
     {
-        return Cache::tags(["room:$roomId"])->get("previous:small:blind:$roomId");
+        return Cache::get("previous:small:blind:$roomId");
     }
 
     /**
@@ -349,7 +349,7 @@ class GameRoomCache
      */
     public static function setPreviousSmallBlindIndex($roomId, $index)
     {
-        Cache::tags(["room:$roomId"])->put("previous:small:blind:$roomId", $index);
+        Cache::put("previous:small:blind:$roomId", $index);
     }
 
     /**

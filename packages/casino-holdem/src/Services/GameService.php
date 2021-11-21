@@ -647,7 +647,6 @@ class GameService extends ParentGameService
     {
         // clear all current game
         $this->sendChatMessage($roomId, $playerId, 'Continue to start new game');
-        var_dump(111111);
         GameRoomCache::clearGameRoomCache($roomId);
         $players = $this->getRoomPlayers([
             'room_id' => $roomId

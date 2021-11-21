@@ -64,7 +64,7 @@ export default {
 
   .playing-card {
     position: relative;
-    width: 5em;
+    width: 3em;
     height: 7em;
     transform-style: preserve-3d;
     transition: all 0.5s ease-out;
