@@ -1,7 +1,7 @@
 <template>
-  <div class="playing-card-container">
+  <div :class="`playing-card-container ` + (isPlayerCard ? 'player-card-container' : ``)">
     <slot name="top"></slot>
-    <div class="playing-card ml-n10 mx-lg-1" :class="{ 'face-down': value === null,clickable, inactive,cardClass: null  }">
+    <div class="playing-card ml-n10 mx-lg-1" :class="{ 'face-down': value === null,clickable, inactive,cardClass: null }">
       <div class="front elevation-2" :style="{ backgroundImage: frontImageUrl }">
         <div class="d-flex flex-column pa-2">
           <card-value :value="value" :suit="suit" />
@@ -39,6 +39,11 @@ export default {
       required: false,
       default: false
     },
+    isPlayerCard: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
   },
 
   computed: {
@@ -64,7 +69,7 @@ export default {
 
   .playing-card {
     position: relative;
-    width: 3em;
+    width: 4em;
     height: 7em;
     transform-style: preserve-3d;
     transition: all 0.5s ease-out;
@@ -110,6 +115,12 @@ export default {
     &.clickable {
       cursor: pointer;
     }
+  }
+}
+
+.player-card-container {
+  .playing-card {
+    width: 3em !important;
   }
 }
 </style>

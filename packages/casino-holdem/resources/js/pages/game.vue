@@ -122,6 +122,7 @@
             :key="`card-${i}`"
             :card="card"
             :clickable="false"
+            :is-player-card="false"
         >
           <template v-slot:top>
             <slot v-if="$scopedSlots['top.' + i]" :name="`top.${i}`"/>

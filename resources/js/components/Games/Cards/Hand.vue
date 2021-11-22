@@ -18,6 +18,7 @@
           :clickable="clickable"
           :inactive="inactiveCards.indexOf(card) > -1"
           @click.native="click(i, card)"
+          :is-player-card="true"
         >
           <template v-slot:top>
             <slot v-if="$scopedSlots['top.' + i]" :name="`top.${i}`" />
