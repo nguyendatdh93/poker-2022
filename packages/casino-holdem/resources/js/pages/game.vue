@@ -69,7 +69,7 @@
                           <div class="text-card">
                             <div class="left-img">
                               <div class="img">
-                                <img src="/v2/images/img1.png" alt=""/>
+                                <img :src="opponent.user.avatar_url ? opponent.user.avatar_url : opponent.user.gravatar_url" alt="" style="width: 100%"/>
                               </div>
                             </div>
                             <h2>{{ isFoldPlayer(opponent.user_id) ? 'Fold' : opponent.name }}</h2>
