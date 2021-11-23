@@ -69,7 +69,7 @@
                           <div class="text-card">
                             <div class="left-img">
                               <div class="img">
-                                <img :src="opponent.user.avatar_url ? opponent.user.avatar_url : opponent.user.gravatar_url" alt="" style="width: 100%"/>
+                                <img :src="opponent.user && opponent.user.avatar_url ? opponent.user.avatar_url : (opponent.user && opponent.user.gravatar_url ? opponent.user.gravatar_url : '')" alt="" style="width: 100%"/>
                               </div>
                             </div>
                             <h2>{{ isFoldPlayer(opponent.user_id) ? 'Fold' : opponent.name }}</h2>
@@ -116,19 +116,7 @@
           </div>
         </div>
       </div>
-      <div id="community-card" class="d-flex justify-center mt-2" v-if="gameRoom.community_card && gameRoom.round >= 2">
-        <playing-card
-            v-for="(card, i) in gameRoom.community_card"
-            :key="`card-${i}`"
-            :card="card"
-            :clickable="false"
-            :is-player-card="false"
-        >
-          <template v-slot:top>
-            <slot v-if="$scopedSlots['top.' + i]" :name="`top.${i}`"/>
-          </template>
-        </playing-card>
-      </div>
+      <holdem-community-card v-if="gameRoom.community_card && gameRoom.round >= 2"></holdem-community-card>
       <actions
           v-if="room && gameRoom && gameRoom.players && gameRoom.round <= 4 && user.id == gameRoom.action_index"
           :room="room"
@@ -162,11 +150,12 @@ import Chat from '~/components/Chat'
 import Form from "vform";
 import Actions from "../../../../../resources/js/mixins/Holdem/Actions";
 import PlayingCard from "../../../../../resources/js/components/Games/Cards/PlayingCard";
+import HoldemCommunityCard from "../../../../../resources/js/components/Games/HoldemCommunityCard";
 
 export default {
   name: 'CasinoHoldem',
 
-  components: {GameRoom, PlayControls, Hand, Chat, Actions, PlayingCard},
+  components: {GameRoom, PlayControls, Hand, Chat, Actions, PlayingCard, HoldemCommunityCard},
 
   mixins: [FormMixin, GameMixin, SoundMixin, GameRoomMixin],
 

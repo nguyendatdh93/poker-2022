@@ -59,6 +59,9 @@ export default {
     backImageUrl () {
       return `url("${config('settings.games.playing_cards.back_image')}")`
     },
+  },
+  created() {
+    this.$emit('loadedCard', true);
   }
 }
 </script>
