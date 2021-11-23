@@ -96,22 +96,7 @@
                 </div>
 
               </div>
-              <div class="table-text">
-                <div class="table-text1">
-                  <div id="table-text">
-                    <div class="pot" v-if="gameRoom.pot > 0">
-                      <span>Pot: {{ gameRoom.pot }}</span>
-                    </div>
-                    <div class="righttext">
-                      <ul>
-                        <li>Real Money Table</li>
-                        <li>Bussolini III - No Limit Hold'em</li>
-                        <li>50/100 Play Money</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <holdem-table-text></holdem-table-text>
             </div>
           </div>
         </div>
@@ -151,11 +136,12 @@ import Form from "vform";
 import Actions from "../../../../../resources/js/mixins/Holdem/Actions";
 import PlayingCard from "../../../../../resources/js/components/Games/Cards/PlayingCard";
 import HoldemCommunityCard from "../../../../../resources/js/components/Games/HoldemCommunityCard";
+import HoldemTableText from "../../../../../resources/js/components/Games/HoldemTableText";
 
 export default {
   name: 'CasinoHoldem',
 
-  components: {GameRoom, PlayControls, Hand, Chat, Actions, PlayingCard, HoldemCommunityCard},
+  components: {GameRoom, PlayControls, Hand, Chat, Actions, PlayingCard, HoldemCommunityCard, HoldemTableText},
 
   mixins: [FormMixin, GameMixin, SoundMixin, GameRoomMixin],
 
