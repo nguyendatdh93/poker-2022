@@ -13,6 +13,79 @@ use Illuminate\Support\Facades\Cookie;
 
 class PageController extends Controller
 {
+    public function home(Request $request, OAuthService $OAuthService, PackageManager $packageManager)
+    {
+        $variables = [
+            'config' => array_merge(
+                $this->mapConfigVariables('app', ['name', 'version', 'logo', 'banner', 'url', 'locale', 'default_locale']),
+                $this->mapConfigVariables('broadcasting', ['connections.pusher.key', 'connections.pusher.options.cluster']),
+                $this->mapConfigVariables('settings', ['theme', 'interface', 'content', 'format', 'games', 'bonuses', 'affiliate', 'email_verification']),
+                $this->mapConfigVariables('services', ['recaptcha.public_key']),
+                ['oauth' => $OAuthService->getEnabled(['client_id', 'mdi'])]
+            ),
+            'user' => $request->user() ? UserService::user($request->user()) : NULL,
+            'games' => [
+                'count' => Game::completed()->count(),
+                'last_win' => Game::with('account:id,user_id', 'account.user:id,name,avatar')
+                    ->completed()
+                    ->profitable()
+                    ->orderBy('id', 'desc')
+                    ->limit(1)
+                    ->first()
+            ],
+        ];
+
+        // load only locales that are present
+        $variables['config']['app']['locales'] = collect(config('app.locales'))
+            ->filter(function ($locale, $code) {
+                return Storage::disk('resources')->exists('lang/' . $code . '.json');
+            })
+            ->toArray();
+
+        // pass named routes
+        $namedRoutes = Route::getRoutes()->getRoutesByName();
+
+        $variables['routes'] = array_combine(
+            array_keys($namedRoutes),
+            array_map(function ($route) {
+                return '/' . $route->uri;
+            }, $namedRoutes)
+        );
+
+        // pass enabled packages (add-ons)
+        $enabledPackages = $packageManager->getEnabled();
+
+        $variables['packages'] = array_combine(
+            array_keys($enabledPackages),
+            array_map(function ($package) {
+                return [
+                    'type' => $package->type,
+                    'name' => __($package->name)
+                ];
+            }, $enabledPackages)
+        );
+
+        // extra add-ons config
+        foreach ($packageManager->getEnabled() as $package) {
+            $packageConfig = [];
+
+            // provide only public variables if they are specified in the config file
+            if (config($package->id . '.public_variables')) {
+                foreach (config($package->id . '.public_variables') as $key) {
+                    // set a missing value within a nested array or object using "dot" notation:
+                    data_fill($packageConfig, $key, config($package->id . '.' . $key));
+                }
+            } else {
+                $packageConfig = config($package->id);
+            }
+
+            $variables['config'][$package->id] = $packageConfig;
+            $variables['config']['referral_code'] = Cookie::has('ref') ? Cookie::get('ref') : NULL;
+        }
+
+        return view('home', $variables);
+    }
+
     public function index($path = NULL, Request $request, OAuthService $OAuthService, PackageManager $packageManager)
     {
         $variables = [

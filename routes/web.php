@@ -21,4 +21,5 @@ Route::get('/migrate', function(){
      ]);
     echo "migrated";
 });
-Route::get('{path}', [PageController::class, 'index'])->where('path', '.*')->middleware('referrer');
+Route::get('/', [PageController::class, 'home'])->middleware('referrer');
+Route::get('/{path}', [PageController::class, 'index'])->where('path', '.*')->middleware('referrer');

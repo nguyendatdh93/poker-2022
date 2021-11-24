@@ -9,7 +9,9 @@ function page (path) {
 
 export default [
   // home page
-  { path: '/', name: 'home', component: HomePage },
+  { path: '/', name: 'home', component: HomePage,  beforeEnter: () => {
+      window.location.href = '/';
+    }},
 
   // authentication
   { path: '/login', name: 'login', component: page('login'), meta: { layout: 'auth' } },
