@@ -47,7 +47,7 @@
                                 :result-class="resultClass(opponent)"
                                 :bet="opponent.bet"
                                 :win="opponent.win"
-                                :class="`room-${players.length}-players position_player_${getPlayerPosition(players, opponent, i+1)}`"
+                                :class="`room-${players.length}-players ani${getPlayerPosition(players, opponent, i)}`"
                             >
                             </hand>
                           </li>
@@ -62,7 +62,7 @@
                   <div id="grid">
                     <div id="innergrid">
                       <ul class="list">
-                        <li v-for="(opponent, i) in players" :key="i" :class="`cards ani` + i">
+                        <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)}`">
                           <div class="dealer_button" v-if="isDealer(opponent.user_id)">
                             <img src="/v2/images/fcard.jpg" alt=""/>
                           </div>

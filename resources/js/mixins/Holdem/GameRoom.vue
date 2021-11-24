@@ -98,11 +98,11 @@ export default {
     },
     getPlayerPosition(players, player, currentPlayerPosition) {
       if (player.user_id == this.user.id) {
-        return 1;
+        return 0;
       }
 
       let currentUserPosition = players.findIndex((e) => e.user_id == this.user.id);
-      if (currentPlayerPosition > (currentUserPosition + 1)) {
+      if (currentPlayerPosition > currentUserPosition) {
         return currentPlayerPosition - currentUserPosition;
       } else {
         return players.length - currentUserPosition + currentPlayerPosition;
