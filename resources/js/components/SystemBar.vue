@@ -2,8 +2,6 @@
   <v-system-bar
     app
     :height="isMobile ? 60 : 30"
-    :color="theme"
-    :dark="isDark"
   >
     <v-row>
       <v-col cols="12" md="6" class="text-center text-md-left py-0 mb-1 mb-md-0">

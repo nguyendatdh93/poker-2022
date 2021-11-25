@@ -3,7 +3,7 @@ import { config } from './config'
 const mode = config('settings.theme.mode')
 
 export default {
-  dark: mode === 'dark',
+  dark: mode === 'transparent',
   options: {
     customProperties: true
   },

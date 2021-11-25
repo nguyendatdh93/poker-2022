@@ -39,7 +39,7 @@
       </h4>
     </div>
 
-    <div ref="messages" class="chat-messages-container overflow-y-auto" :class="`theme--${$vuetify.theme.isDark ? 'dark' : 'light'}`">
+    <div ref="messages" class="chat-messages-container overflow-y-auto">
       <v-list two-line class="pa-0">
         <transition-group name="slide-x-transition" tag="div">
           <v-hover v-slot:default="{ hover }" v-for="(msg, index) in messages" :key="`message-${index}`">

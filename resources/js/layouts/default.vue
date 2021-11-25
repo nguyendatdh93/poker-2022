@@ -108,13 +108,8 @@
 
       <v-toolbar-title class="d-flex align-center">
         <router-link :to="{ name: 'home' }">
-          <v-avatar size="40" tile>
-            <v-img :src="appLogoUrl" :alt="appName" />
-          </v-avatar>
+          <img src="/v2/images/logo.png" alt="">
         </router-link>
-        <div class="ml-3 d-none d-sm-block">
-          {{ appName }}
-        </div>
       </v-toolbar-title>
 
       <v-spacer />
@@ -272,19 +267,6 @@
           </v-card>
         </v-menu>
 
-        <v-menu v-model="userMenu" :close-on-content-click="false" offset-y v-if="Object.keys(this.gameRoom).length">
-          <template v-slot:activator="{ on }">
-            <v-btn
-                class="ma-2"
-                outlined
-                @click="$store.dispatch('game-room/setGameRoomChat', true)"
-            >
-              <v-icon>mdi-format-list-bulleted-square</v-icon>
-              Chat
-            </v-btn>
-          </template>
-        </v-menu>
-
         <v-btn v-if="chatEnabled" icon @click="chatDrawer = !chatDrawer">
           <v-badge :content="unreadChatMessagesCount" :value="unreadChatMessagesCount" overlap>
             <v-icon>{{ chatDrawer ? 'mdi-message' : 'mdi-message-outline' }}</v-icon>
@@ -337,7 +319,6 @@ export default {
     ...mapState('auth', ['user', 'account', 'token']),
     ...mapState('settings', ['settings']),
     ...mapState('progress', ['loading']),
-    ...mapState('game-room', ['gameRoom']),
     ...mapGetters({
       authenticated: 'auth/check',
       games: 'package-manager/games'
@@ -392,3 +373,14 @@ export default {
   }
 }
 </script>
+
+<style>
+.theme--dark {
+  background: unset !important;
+}
+.v-avatar.logo {
+  height: unset !important;
+  min-width: unset !important;
+  width: unset !important;
+}
+</style>

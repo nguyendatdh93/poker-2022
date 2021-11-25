@@ -1,22 +1,6 @@
 <template>
   <div :class="{ 'd-flex justify-center fill-height align-center': !room }">
-    <v-system-bar
-      v-if="room"
-      color="primary"
-      height="35"
-    >
-      <v-icon>mdi-map-marker</v-icon>
-      <span>{{ room.name }}</span>
-      <v-icon class="ml-2">mdi-cash</v-icon>
-      <span>{{ room.parameters.bet.small }}</span>
-      <v-icon class="ml-2">mdi-account-multiple</v-icon>
-      <span>{{ $t('{0}/{1}', [playersCount, room.parameters.players_count]) }}</span>
-      <v-spacer />
-      <v-btn icon small :disabled="forms.joinOrLeave.busy || playing" @click="leaveRoom">
-        <v-icon>mdi-logout-variant</v-icon>
-      </v-btn>
-    </v-system-bar>
-    <template v-else>
+    <template v-if="!room">
       <v-container v-if="!room" fluid class="align-self-start">
         <v-row align="center" justify="center">
           <v-col cols="12" md="8">
