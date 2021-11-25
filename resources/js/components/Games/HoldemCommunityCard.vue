@@ -33,7 +33,6 @@ export default {
   methods: {
     showCommunityCard(i) {
         setTimeout(function () {
-          console.log($("c_card_"+i))
           $("c_card_"+i).css('display', 'block');
           $(".c_card_"+i).css('left', '0px');
           $(".c_card_"+i).css('position', 'relative');

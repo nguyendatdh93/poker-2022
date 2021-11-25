@@ -33,7 +33,7 @@
             @if(!$user)
             <div class="header-btn button-border"><a href="/login">Login</a></div>
             @endif
-            <div class="header-btn"><a href="/games/casino-holdem">Join</a></div>
+            <div class="header-btn"><a href="/register">Join</a></div>
           </div>
         </div>
       </div>
@@ -61,7 +61,7 @@
           <div class="enjoy-play-img"><img src="{{ asset('v2/home/images/banner01.jpg') }}" class="img-fluid" /></div>
           <div class="banner-text-btn">
             <h5>Tournaments</h5>
-            <div class="commen-btn"><a href="https://www.google.com/">Play</a></div>
+            <div class="commen-btn"><a href="/games/casino-holdem">Play</a></div>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@
           <div class="enjoy-play-img"><img src="{{ asset('v2/home/images/banner02.jpg') }}" class="img-fluid" /></div>
           <div class="banner-text-btn">
             <h5>Cash Game</h5>
-            <div class="commen-btn"><a href="https://www.google.com/">Play</a></div>
+            <div class="commen-btn"><a href="/games/casino-holdem">Play</a></div>
           </div>
         </div>
       </div>
