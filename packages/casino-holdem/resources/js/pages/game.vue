@@ -38,7 +38,7 @@
                     <div id="innergrid">
                       <div class="cnter_cards">
                         <ul class="list">
-                          <li class="card" v-for="(opponent, i) in players" :key="i">
+                          <li :class="`card ani${getPlayerPosition(players, opponent, i)}`" v-for="(opponent, i) in players" :key="i">
                             <hand
                                 v-if="opponent.cards"
                                 :cards="opponent.user_id == user.id ? opponent.cards : getCards(opponent.user_id)"
@@ -47,7 +47,6 @@
                                 :result-class="resultClass(opponent)"
                                 :bet="opponent.bet"
                                 :win="opponent.win"
-                                :class="`room-${players.length}-players ani${getPlayerPosition(players, opponent, i)}`"
                             >
                             </hand>
                           </li>

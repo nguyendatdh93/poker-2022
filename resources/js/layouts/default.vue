@@ -398,4 +398,13 @@ export default {
   min-width: unset !important;
   width: unset !important;
 }
+
+.theme--dark-o {
+  background: #121212;
+}
+
+nav.v-navigation-drawer.theme--dark {
+  background: #121212;
+}
+
 </style>

@@ -63,7 +63,7 @@ class GameRoomController extends Controller
 
         return $room
             ? [
-                'room' => $room,
+                'room' => null,
                 'game' => $game ? $game->loadMissing('gameable') : NULL
             ]
             : [
@@ -214,6 +214,7 @@ class GameRoomController extends Controller
 
     private function joinGameRoom(GameRoom $room, User $user)
     {
+        GameRoomPlayer::where('user_id', $user->id)->where('game_room_id', $room->id)->delete();
         $player = new GameRoomPlayer();
         $player->room()->associate($room);
         $player->user()->associate($user);
