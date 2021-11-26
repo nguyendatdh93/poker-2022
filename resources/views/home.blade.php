@@ -31,9 +31,9 @@
         <div class="col-lg-6">
           <div class="header-flex end">
             @if(!$user)
-            <div class="header-btn button-border"><a href="/login">Login</a></div>
+              <div class="header-btn button-border"><a href="/login">Login</a></div>
+              <div class="header-btn"><a href="/register">Join</a></div>
             @endif
-            <div class="header-btn"><a href="/register">Join</a></div>
           </div>
         </div>
       </div>
