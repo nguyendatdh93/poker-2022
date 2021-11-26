@@ -259,7 +259,7 @@ export default {
       } else if (this.room.parameters.players_count == 8) {
         return 'eight';
       } else if (this.room.parameters.players_count == 9) {
-        return 'night';
+        return 'nine';
       }
     },
     isDealer(playerId) {

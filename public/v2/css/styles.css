@@ -785,6 +785,55 @@ body {
 	left: 0px;
 	top: 8px;
 }
+.seven-players  .cards.ani2 {
+	left: 938px;
+	top: 175px;
+}
+.seven-players  .card.ani2 {
+	left: 398px;
+	top: 160px;
+}
+.eight-players  .cards.ani2 {
+	left: 159px;
+	top: 27px;
+}
+.eight-players .cards.ani5 {
+	left: 450px;
+	top: 27px;
+}
+.eight-players .cards.ani6 {
+	left: 731px;
+	top: 27px;
+}
+.eight-players .card.ani5 {
+	left: -110px;
+	top: 14px;
+}
+.eight-players .card.ani6 {
+	left: 153%;
+	position: relative;
+	top: 14px;
+}
+.eight-players .card.ani2 {
+	left: -403px;
+	top: 14px;
+}
+.eight-players .cards.ani3,.seven-players .cards.ani3 {
+	left: -28px;
+	top: 400px;
+}
+.eight-players .cards.ani1,.seven-players .cards.ani1 {
+	left: 938px;
+	top: 400px;
+}
+.eight-players .card.ani1, .seven-players .card.ani1 {
+	left: 399px;
+	top: 384px;
+}
+.eight-players .card.ani3, .seven-players .card.ani3 {
+	left: -570px;
+	top: 384px;
+}
 .poker_icon.right {
 	left: 227px;
 	top: -64px;

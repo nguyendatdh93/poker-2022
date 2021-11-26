@@ -267,6 +267,20 @@
           </v-card>
         </v-menu>
 
+
+        <v-menu v-model="userMenu" :close-on-content-click="false" offset-y v-if="Object.keys(this.gameRoom).length">
+          <template v-slot:activator="{ on }">
+            <v-btn
+                class="ma-2"
+                outlined
+                @click="$store.dispatch('game-room/setGameRoomChat', true)"
+            >
+              <v-icon>mdi-format-list-bulleted-square</v-icon>
+              Chat
+            </v-btn>
+          </template>
+        </v-menu>
+
         <v-btn v-if="chatEnabled" icon @click="chatDrawer = !chatDrawer">
           <v-badge :content="unreadChatMessagesCount" :value="unreadChatMessagesCount" overlap>
             <v-icon>{{ chatDrawer ? 'mdi-message' : 'mdi-message-outline' }}</v-icon>
@@ -318,6 +332,7 @@ export default {
   computed: {
     ...mapState('auth', ['user', 'account', 'token']),
     ...mapState('settings', ['settings']),
+    ...mapState('game-room', ['gameRoom']),
     ...mapState('progress', ['loading']),
     ...mapGetters({
       authenticated: 'auth/check',
