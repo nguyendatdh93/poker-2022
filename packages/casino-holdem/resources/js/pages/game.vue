@@ -60,11 +60,11 @@
                 <div id="vgrid">
                   <div id="grid">
                     <div id="innergrid">
+                      <div class="dealer_button">
+                        <img src="/v2/images/fcard.jpg" alt=""/>
+                      </div>
                       <ul class="list">
                         <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)}`">
-                          <div class="dealer_button" v-if="isDealer(opponent.user_id)">
-                            <img src="/v2/images/fcard.jpg" alt=""/>
-                          </div>
                           <div class="text-card">
                             <div class="left-img">
                               <div class="img">
