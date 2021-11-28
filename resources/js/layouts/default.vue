@@ -2,7 +2,7 @@
   <v-app :class="navbarVisible ? 'permanent-navbar' : 'temporary-navbar'">
     <system-bar v-if="systemBarEnabled && authenticated" />
 
-    <v-navigation-drawer v-model="navigationDrawer" app :permanent="navbarVisible" :temporary="!navbarVisible">
+    <v-navigation-drawer v-model="navigationDrawer" app :permanent="navbarVisible" :temporary="!navbarVisible" v-if="!players.length" class="theme-dark">
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title">
@@ -104,7 +104,7 @@
     <chat v-if="authenticated && chatEnabled" v-model="chatDrawer" @message="setUnreadChatMessagesCount" />
 
     <v-app-bar app :clipped-left="!navbarVisible">
-      <v-app-bar-nav-icon v-if="!navbarVisible" @click.stop="navigationDrawer = !navigationDrawer" />
+      <v-app-bar-nav-icon v-if="!navbarVisible && !players.length" @click.stop="navigationDrawer = !navigationDrawer" />
 
       <v-toolbar-title class="d-flex align-center">
         <router-link :to="{ name: 'home' }">
@@ -332,7 +332,7 @@ export default {
   computed: {
     ...mapState('auth', ['user', 'account', 'token']),
     ...mapState('settings', ['settings']),
-    ...mapState('game-room', ['gameRoom']),
+    ...mapState('game-room', ['gameRoom', 'players']),
     ...mapState('progress', ['loading']),
     ...mapGetters({
       authenticated: 'auth/check',
@@ -401,6 +401,10 @@ export default {
 
 .theme--dark-o {
   background: #121212;
+}
+
+.theme-dark {
+  background: #121212 !important;
 }
 
 nav.v-navigation-drawer.theme--dark {

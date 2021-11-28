@@ -1,5 +1,6 @@
 <template>
   <v-navigation-drawer
+      class="theme-dark"
     id="chat"
     :value="chatDrawer"
     app
