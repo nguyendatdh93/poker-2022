@@ -154,6 +154,8 @@ export default {
 
         if (this.user.two_factor_auth_enabled && !this.user.two_factor_auth_passed) {
           this.$router.push({ name: '2fa' })
+        } else if(this.$route.query.play) {
+          this.$router.push({ path: '/games/casino-holdem' })
         } else {
           this.$router.push({ name: 'home' })
         }

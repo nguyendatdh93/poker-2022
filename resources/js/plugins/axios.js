@@ -30,7 +30,7 @@ axios.interceptors.response.use(response => response, error => {
       store.dispatch('auth/clearUser')
     }
     store.dispatch('message/error', { text: i18n.t('Your session has expired.') })
-    router.push({ name: 'login' })
+    router.push({ name: 'login'})
   // no data found
   } else if (status === 404) {
     router.replace('/404')

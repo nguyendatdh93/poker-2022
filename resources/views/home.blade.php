@@ -49,7 +49,7 @@
   <div class="container">
     <div class="main-sub-head"><h3>Welcome you to Zerocryptopoker</h3></div>
     <div class="main-pare"><p>Make sure to use our available welcome offers when you register.</p></div>
-    <div class="commen-btn"><a href="/games/casino-holdem">Play</a></div>
+    <div class="commen-btn"><a href="/games/casino-holdem?play=true">Play</a></div>
   </div>
 </div>
 <div class="enjoy-play">
@@ -61,7 +61,7 @@
           <div class="enjoy-play-img"><img src="{{ asset('v2/home/images/banner01.jpg') }}" class="img-fluid" /></div>
           <div class="banner-text-btn">
             <h5>Tournaments</h5>
-            <div class="commen-btn"><a href="/games/casino-holdem">Play</a></div>
+            <div class="commen-btn"><a href="/games/casino-holdem?play=true">Play</a></div>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@
           <div class="enjoy-play-img"><img src="{{ asset('v2/home/images/banner02.jpg') }}" class="img-fluid" /></div>
           <div class="banner-text-btn">
             <h5>Cash Game</h5>
-            <div class="commen-btn"><a href="/games/casino-holdem">Play</a></div>
+            <div class="commen-btn"><a href="/games/casino-holdem?play=true">Play</a></div>
           </div>
         </div>
       </div>
