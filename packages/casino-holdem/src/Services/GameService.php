@@ -298,7 +298,7 @@ class GameService extends ParentGameService
             DB::beginTransaction();
             $this->setPlayerCanCheck($params['room_id']);
             $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
-            $bet = $previouslyBet * 2;
+            $bet = $previouslyBet;
             $this->handleBetAction($params, $bet);
             DB::commit();
         } catch (\Exception $e) {
