@@ -43,7 +43,7 @@
       </symbol>
     </svg>
     <svg v-if="value" fill="currentColor" :class="suitColor">
-      <use :xlink:href="'#value-' + value"></use>
+      <use :xlink:href="'#value-' + value" font-weight="bold"></use>
     </svg>
   </div>
 </template>
@@ -63,7 +63,7 @@ export default {
   computed: {
     suitColor () {
       if (['C', 'S'].includes(this.suit)) return 'black--text'
-      return 'red--text'
+      return 'black--text'
     }
   }
 }

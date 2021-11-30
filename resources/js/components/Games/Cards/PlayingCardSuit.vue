@@ -7,11 +7,11 @@
         <circle cx="12.51" cy="29.52" r="11.69" opacity="0.5"/>
         <polygon points="22.5 37.09 14.73 50.36 30.26 50.36 22.5 37.09" opacity="0.5"/>
       </symbol>
-      <symbol id="suit-D" viewBox="0 0 45.33 50.5" fill="currentColor" class="red--text">
+      <symbol id="suit-D" viewBox="0 0 45.33 50.5" fill="currentColor" class="black--text">
         <polygon points="22 50.5 38.51 22.22 5.49 22.22 22 50.5" opacity="0.7"/>
         <polygon points="22 0.5 5.49 28.78 38.51 28.78 22 0.5" opacity="0.7"/>
       </symbol>
-      <symbol id="suit-H" viewBox="0 0 45.33 50.5" fill="currentColor" class="red--text">
+      <symbol id="suit-H" viewBox="0 0 45.33 50.5" fill="currentColor" class="black--text">
         <circle cx="11.33" cy="11.33" r="11.33" opacity="0.7"/>
         <circle cx="34" cy="11.33" r="11.33" opacity="0.7"/>
         <polygon points="22.66 50 45.17 11.46 0.16 11.46 22.66 50" opacity="0.7"/>

@@ -4,8 +4,9 @@
     <div class="playing-card ml-n10 mx-lg-1" :class="{ 'face-down': value === null,clickable, inactive,cardClass: null }">
       <div class="front elevation-2" :style="{ backgroundImage: frontImageUrl }">
         <div class="d-flex flex-column pa-2">
-          <card-value :value="value" :suit="suit" />
-          <card-suit :suit="suit" />
+          <card-value :value="value" :suit="suit" class="pcard1" />
+          <card-suit :suit="suit" class="pcard2" />
+          <card-value :value="value" :suit="suit" class="pcard3" />
         </div>
       </div>
       <div class="back elevation-2" :style="{ backgroundImage: backImageUrl }"></div>
@@ -87,7 +88,7 @@ export default {
     }
 
     .front, .back {
-      border-radius: 0.75em;
+      border-radius: 0.3em;
       position: absolute;
        width: 60px;
       height: 80px;
@@ -125,5 +126,25 @@ export default {
   .playing-card {
     width: 3em !important;
   }
+}
+.pcard1 {
+  margin-left: -2px;
+  font-size: 15px;
+  margin-top: 4px;
+}
+
+.pcard2 {
+  font-size: 15px;
+  margin-left: 14px;
+}
+
+.pcard3{
+  font-size: 15px;
+  margin-left: 29px;
+  margin-bottom: 1px;
+}
+.elevation-2 {
+  height: 90px !important;
+  top: -10px;
 }
 </style>
