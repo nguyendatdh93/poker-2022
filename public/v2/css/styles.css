@@ -405,7 +405,7 @@ body {
 	height: 19px;
 	left: 1px;
 	width:0px;
-	transition: all 1.5s;
+	transition: all 30s;
 	top: 1px;
 	border-radius: 5px 0px 0px 5px;
 }
@@ -840,10 +840,10 @@ body {
 	width: auto;
 	float: left;
 }
-.dealer_button img {
+#dealer_button img {
 	width: 100%;
 }
-.dealer_button {
+#dealer_button {
 	position: absolute;
 	width: 30PX;
 	height: 30PX;
@@ -852,6 +852,7 @@ body {
 	border: 3px solid #16a34d;
 	left: 10px;
 	top: -30px;
+	transition:.5s all;
 }
 .text-card {
 	position: relative;
@@ -861,7 +862,7 @@ body {
 	text-align: center;
 	width: 80%;
 }
-.dealer_button {
+#dealer_button {
 	position: absolute;
 	width: 30PX;
 	height: 30PX;
@@ -870,6 +871,7 @@ body {
 	border: 3px solid #16a34d;
 	left: -50px;
 	top: -30px;
+	transition:.3s all;
 }
 .poker_icon.bobody {
 	background: url('../images/bg1.jpg') no-repeat;
@@ -1652,10 +1654,10 @@ body {
 	width: auto;
 	float: left;
 }
-.dealer_button img {
+#dealer_button img {
 	width: 100%;
 }
-.dealer_button {
+#dealer_button {
 	position: absolute;
 	width: 30PX;
 	height: 30PX;
@@ -1673,7 +1675,7 @@ body {
 	text-align: center;
 	width: 80%;
 }
-.dealer_button {
+#dealer_button {
 	position: absolute;
 	width: 30PX;
 	height: 30PX;
@@ -1732,6 +1734,44 @@ body {
 	transform: scale(0.9);;
 }
 .c_cards img { width:100%; }
+#dealer_button{
+	left: 508px;
+	top: 471px;
+	transition: .3s all;
+}
+#dealer_button.d_card_1 {
+	transition: .3s all;
+	left: 918px;
+	top: 340px;
+}
+#dealer_button.d_card_2 {
+	left: 240px;
+	top: 471px;
+}
+#dealer_button.d_card_3 {
+	left: -48px;
+	top: 335px;
+}
+#dealer_button.d_card_4 {
+	left: -36px;
+	top: 153px;
+}
+#dealer_button.d_card_5 {
+	left: 330px;
+	top: 10px;
+}
+#dealer_button.d_card_6 {
+	left: 680px;
+	top: 10px;
+}
+#dealer_button.d_card_7 {
+	left: 918px;
+	top: 155px;
+}
+#dealer_button.d_card_8 {
+	left: 773px;
+	top: 477px;
+}
 @media screen and (min-width:640px) and (max-width:779px){
 	#result-iframe-wrap {
 		background-size: contain;
@@ -2306,6 +2346,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 3em;
     font-family: 'Lobster', cursive;
     border-radius: 10px;
     position: absolute;

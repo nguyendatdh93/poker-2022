@@ -38,7 +38,7 @@
                     <div id="innergrid">
                       <div class="cnter_cards">
                         <ul class="list">
-                          <li :class="`card ani${getPlayerPosition(players, opponent, i)}`" v-for="(opponent, i) in players" :key="i">
+                          <li :class="`card`" v-for="(opponent, i) in players" :key="i">
                             <hand
                                 v-if="opponent.cards"
                                 :cards="opponent.user_id == user.id ? opponent.cards : getCards(opponent.user_id)"
@@ -60,10 +60,10 @@
                 <div id="vgrid">
                   <div id="grid">
                     <div id="innergrid">
-                      <div class="dealer_button">
-                        <img src="/v2/images/fcard.jpg" alt=""/>
-                      </div>
                       <ul class="list">
+                        <div id="dealer_button">
+                          <img src="/v2/images/fcard.jpg" alt=""/>
+                        </div>
                         <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)}`">
                           <div class="text-card">
                             <div class="left-img">
