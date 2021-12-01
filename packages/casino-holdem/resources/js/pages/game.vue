@@ -32,7 +32,7 @@
                   </div>
                 </div>
               </div>
-              <div class="grid">
+              <div class="grid" v-if="gameRoom && gameRoom.round">
                 <div id="vgrid">
                   <div id="grid">
                     <div id="innergrid">
@@ -61,7 +61,7 @@
                   <div id="grid">
                     <div id="innergrid">
                       <ul class="list">
-                        <div id="dealer_button">
+                        <div id="dealer_button" v-if="gameRoom && gameRoom.round">
                           <img src="/v2/images/fcard.jpg" alt=""/>
                         </div>
                         <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)}`">

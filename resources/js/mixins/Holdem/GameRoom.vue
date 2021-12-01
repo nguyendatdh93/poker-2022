@@ -50,7 +50,6 @@ export default {
         setTimeout(function () {
           $(".card").each(function (e) {
             setTimeout(function () {
-              console.log(self.gameRoom.players);
               let position = self.getPlayerPosition(self.players, self.players[e], e);
               $(".card").eq(e).addClass("ani" + (position));
             }, e * 200);
@@ -59,9 +58,18 @@ export default {
       });
     },
     distributeDealerIcon() {
+      let self = this;
       setTimeout(function () {
+        let dealerPosition = 0;
+        for (let i=0; i< self.players.length; i++) {
+          if (self.players[i].user_id == self.gameRoom.dealer) {
+            dealerPosition = i;
+            break;
+          }
+        }
+
         $('#dealer_button').removeAttr('class');
-        $('#dealer_button').addClass('d_card_1');
+        $('#dealer_button').addClass('d_card_' + dealerPosition);
       }, 2000);
     },
     async finishCountdown() {
