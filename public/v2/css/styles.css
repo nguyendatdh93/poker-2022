@@ -935,7 +935,7 @@ body {
 	top: 361px;
 }
 .card.ani0, .cards.ani0 {
-	left: 528px;
+	left: 508px;
 	top: 492px;
 }
 .card.ani2, .cards.ani2 {
@@ -1175,7 +1175,7 @@ body {
 	position: absolute;
 	text-align: center;
 	width: auto;
-	left: 53%;
+	left: 64%;
 }
 .text-card {
 	margin-top: 20px;
@@ -1503,18 +1503,17 @@ body {
 	top: 495px;
 }
 .three-players .cards.ani0 .poker_icon.top {
-	left: 32%;
-	top: -43px;
+	left: 55%;
+	top: -36px;
 }
 .three-players .card.ani0 {
-	left: -7px;
-	top: 478px;
+	left: -77px;
+	top: 488px;
 }
 .three-players .card.ani1 {
-	left: -550px;
+	left: -610px;
 	top: 244px;
 }
-
 
 .five-players .card.ani1 {
 	left: 500px;
@@ -1566,8 +1565,8 @@ body {
 	top: 495px;
 }
 .five-players .cards.ani0 .poker_icon.top {
-	left: 32%;
-	top: -43px;
+	left: 2%;
+	top: -34px;
 }
 .five-players .card.ani0 {
 	left: -7px;
@@ -1629,8 +1628,8 @@ body {
 	top: 495px;
 }
 .six-players .cards.ani0 .poker_icon.top {
-	left: 32%;
-	top: -43px;
+	left: 2%;
+	top: -33px;
 }
 .six-players .card.ani0 {
 	left: -7px;
@@ -1772,6 +1771,178 @@ body {
 	left: 773px;
 	top: 477px;
 }
+.four-players .card.ani3 {
+	left: -600px;
+	top: 247px;
+}
+.two-players #dealer_button {
+	left: 476px;
+	top: 478px;
+}
+.two-players #dealer_button.d_card_1 {
+	left: 476px;
+	top: 0px;
+}
+.three-players #dealer_button.d_card_0 {
+	left: 472px;
+	top: 471px;
+	transition: .3s all;
+}
+.three-players #dealer_button.d_card_1 {
+	left: 951px;
+	top: 230px;
+}
+.three-players #dealer_button.d_card_2 {
+	left: 100px;
+	top: 230px;
+}
+.four-players #dealer_button.d_card_0 {
+	left: 472px;
+	top: 471px;
+	transition: .3s all;
+}
+.four-players #dealer_button.d_card_1 {
+	left: 951px;
+	top: 230px;
+}
+.four-players #dealer_button.d_card_2 {
+	left: 100px;
+	top: 230px;
+}
+.four-players #dealer_button.d_card_3 {
+	left: 477px;
+	top: 0px;
+}
+.five-players #dealer_button {
+	left: 470px;
+	top: 471px;
+	transition: .3s all;
+}
+.five-players #dealer_button.d_card_1 {
+	transition: .3s all;
+	left: 150px !important;
+	top: 373px;
+}
+.five-players #dealer_button.d_card_2 {
+	transition: .3s all;
+	top: 370px;
+	left: 980px !important;
+}
+.five-players #dealer_button.d_card_3 {
+	transition: .3s all;
+	left: 960px;
+	top: 155px;
+}
+.five-players #dealer_button.d_card_4 {
+	transition: .3s all;
+	left: 194px;
+	top: 165px;
+}
+.six-players #dealer_button {
+	left: 470px;
+	top: 471px;
+	transition: .3s all;
+}
+.six-players #dealer_button.d_card_1 {
+	transition: .3s all;
+	left: 150px !important;
+	top: 373px;
+}
+.six-players #dealer_button.d_card_2 {
+	transition: .3s all;
+	top: 370px;
+	left: 980px !important;
+}
+.six-players #dealer_button.d_card_3 {
+	transition: .3s all;
+	left: 960px;
+	top: 155px;
+}
+.six-players #dealer_button.d_card_4 {
+	transition: .3s all;
+	left: 194px;
+	top: 165px;
+}
+.six-players #dealer_button.d_card_5 {
+	transition: .3s all;
+	left: 480px;
+	top: 2px;
+}
+
+.seven-players #dealer_button {
+	left: 470px;
+	top: 471px;
+	transition: .3s all;
+}
+.seven-players #dealer_button.d_card_1 {
+	transition: .3s all;
+	left: 150px !important;
+	top: 373px;
+}
+.seven-players #dealer_button.d_card_2 {
+	transition: .3s all;
+	top: 370px;
+	left: 910px !important;
+}
+.seven-players #dealer_button.d_card_3 {
+	transition: .3s all;
+	left: 910px;
+	top: 155px;
+}
+.seven-players #dealer_button.d_card_4 {
+	transition: .3s all;
+	left: 194px;
+	top: 165px;
+}
+.seven-players #dealer_button.d_card_5 {
+	transition: .3s all;
+	left: 330px;
+	top: 2px;
+}
+
+
+.eight-players #dealer_button {
+	left: 470px;
+	top: 471px;
+	transition: .3s all;
+}
+.eight-players #dealer_button.d_card_1 {
+	transition: .3s all;
+	top: 370px;
+	left: 910px;
+}
+.eight-players #dealer_button.d_card_2 {
+	transition: .3s all;
+	left: 139px;
+	top: 7px;
+}
+.eight-players #dealer_button.d_card_3 {
+	transition: .3s all;
+	left: 150px !important;
+	top: 373px;
+}
+.eight-players #dealer_button.d_card_4 {
+	transition: .3s all;
+	left: 194px;
+	top: 165px;
+}
+.eight-players #dealer_button.d_card_5 {
+	transition: .3s all;
+	left: 426px;
+	top: 10px;
+}
+.eight-players #dealer_button.d_card_6 {
+	transition: .3s all;
+	left: 711px;
+	top: 7px;
+}
+.eight-players #dealer_button.d_card_7 {
+	transition: .3s all;
+	left: 915px;
+	top: 154px;
+}
+
+
 @media screen and (min-width:640px) and (max-width:779px){
 	#result-iframe-wrap {
 		background-size: contain;
