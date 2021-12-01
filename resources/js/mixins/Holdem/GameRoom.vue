@@ -45,11 +45,14 @@ export default {
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
     }),
     distributeCards() {
+      let self = this;
       $(function () {
         setTimeout(function () {
           $(".card").each(function (e) {
             setTimeout(function () {
-              $(".card").eq(e).addClass("ani" + e);
+              console.log(self.gameRoom.players);
+              let position = self.getPlayerPosition(self.players, self.players[e], e);
+              $(".card").eq(e).addClass("ani" + (position));
             }, e * 200);
           });
         }, 2000);
