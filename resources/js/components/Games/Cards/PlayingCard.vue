@@ -88,7 +88,7 @@ export default {
     }
 
     .front, .back {
-      border-radius: 0.3em;
+      border-radius: 0.1em;
       position: absolute;
        width: 60px;
       height: 80px;
