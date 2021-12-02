@@ -61,10 +61,8 @@
                   <div id="grid">
                     <div id="innergrid">
                       <ul class="list">
-                        <div id="dealer_button" v-if="gameRoom && gameRoom.round">
-                          <img src="/v2/images/fcard.jpg" alt=""/>
-                        </div>
-                        <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)}`">
+                        <dealer-icon :room="room"></dealer-icon>
+                        <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)} ` + (isDealer(opponent.user_id) ? `is-dealer` : ``)">
                           <div class="text-card">
                             <div class="left-img">
                               <div class="img">
@@ -136,11 +134,12 @@ import Actions from "../../../../../resources/js/mixins/Holdem/Actions";
 import PlayingCard from "../../../../../resources/js/components/Games/Cards/PlayingCard";
 import HoldemCommunityCard from "../../../../../resources/js/components/Games/HoldemCommunityCard";
 import HoldemTableText from "../../../../../resources/js/components/Games/HoldemTableText";
+import DealerIcon from "../../../../../resources/js/components/Games/DealerIcon";
 
 export default {
   name: 'CasinoHoldem',
 
-  components: {GameRoom, PlayControls, Hand, Chat, Actions, PlayingCard, HoldemCommunityCard, HoldemTableText},
+  components: {GameRoom, PlayControls, Hand, Chat, Actions, PlayingCard, HoldemCommunityCard, HoldemTableText, DealerIcon},
 
   mixins: [FormMixin, GameMixin, SoundMixin, GameRoomMixin],
 

@@ -26,7 +26,6 @@ export default {
           }).listen('GameRoomStartEvent', data => {
             this.$store.dispatch('game-room/setGameRoom', data.game_room);
             this.distributeCards();
-            this.distributeDealerIcon();
           }).listen('GameRoomPlayEvent', data => {
             let gameRoom = JSON.parse(data.game_room);
             this.$store.dispatch('game-room/setGameRoom', gameRoom);
@@ -56,21 +55,6 @@ export default {
           });
         }, 2000);
       });
-    },
-    distributeDealerIcon() {
-      let self = this;
-      setTimeout(function () {
-        let dealerPosition = 0;
-        for (let i=0; i< self.players.length; i++) {
-          if (self.players[i].user_id == self.gameRoom.dealer) {
-            dealerPosition = i;
-            break;
-          }
-        }
-
-        $('#dealer_button').removeAttr('class');
-        $('#dealer_button').addClass('d_card_' + dealerPosition);
-      }, 2000);
     },
     async finishCountdown() {
       await axios.post('/api/games/casino-holdem/fold', {
