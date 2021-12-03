@@ -1067,6 +1067,9 @@ body {
 	z-index: 0;
 	left: 3px;
 }
+.cnter_cards {
+	margin-top: 50px;
+}
 .left-img {
 	width: 80px;
 	float: left;
@@ -1075,7 +1078,17 @@ body {
 	margin-top: 21px;
 	margin-left: -61px;
 }
-
+.card .front {
+	border-radius: 5px !important;
+}
+.playing-card-container .playing-card .back{
+	background-color: #f25c5c;
+	border-radius: 5px !important;
+}
+polygon, circle {
+	color: #000 !important;
+	opacity: 1 !important;
+}
 .text-card {
 	position: relative;
 	margin-left: 0px;
