@@ -61,7 +61,7 @@
                   <div id="grid">
                     <div id="innergrid">
                       <ul class="list">
-                        <dealer-icon :room="room"></dealer-icon>
+                        <dealer-icon v-if="gameRoom && gameRoom.round" :room="room"></dealer-icon>
                         <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)} ` + (isDealer(opponent.user_id) ? `is-dealer` : ``)">
                           <div class="text-card">
                             <div class="left-img">
