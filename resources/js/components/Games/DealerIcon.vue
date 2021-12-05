@@ -23,7 +23,7 @@ export default {
       setTimeout(function () {
         let dealerClass= $('.is-dealer')[0].classList.value;
         $('#dealer_button_custom').removeAttr('class');
-        $('#dealer_button_custom').addClass(dealerClass);
+        $('#dealer_button_custom').addClass($('.is-dealer')[0].classList[0] + ' ' + $('.is-dealer')[0].classList[1]);
         $('#dealer_button_custom').css('transition', '.5s all');
       }, 2000);
     },
@@ -40,5 +40,6 @@ export default {
   border-radius: 100PX;
   border: 3px solid #16a34d;
   margin-left: -25px !important;
+  margin-top: -30px !important;
 }
 </style>

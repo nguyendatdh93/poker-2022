@@ -65,7 +65,7 @@
                         <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)} ` + (isDealer(opponent.user_id) ? `is-dealer` : ``)">
                           <div class="text-card">
                             <div class="left-img">
-                              <div class="img">
+                              <div class="img" style="border-radius: 15px">
                                 <img :src="opponent.user && opponent.user.avatar_url ? opponent.user.avatar_url : (opponent.user && opponent.user.gravatar_url ? opponent.user.gravatar_url : '')" alt="" style="width: 100%"/>
                               </div>
                             </div>
@@ -588,5 +588,9 @@ export default {
   display: table-cell;
   vertical-align: middle;
   height: 41vh;
+}
+
+.left-img {
+  margin-top: 1px !important;
 }
 </style>
