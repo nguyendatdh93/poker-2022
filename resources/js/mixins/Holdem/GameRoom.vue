@@ -9,6 +9,7 @@ export default {
   data() {
     return {
       gamePlay: false,
+      startCountDown: false,
     }
   },
   computed: {
@@ -45,7 +46,7 @@ export default {
     }),
     distributeCards() {
       let self = this;
-      $(function () {
+      return new Promise(function (resolve, reject) {
         setTimeout(function () {
           $(".card").each(function (e) {
             setTimeout(function () {
@@ -53,15 +54,12 @@ export default {
               $(".card").eq(e).addClass("ani" + (position));
             }, e * 200);
           });
-        }, 2000);
-      });
-    },
-    async finishCountdown() {
-      await axios.post('/api/games/casino-holdem/fold', {
-        hash: this.provablyFairGame.hash,
-        room_id: this.room.id,
-        user_id: this.gameRoom.action_index,
-        user_action_index: this.getPlayerActionIndex(this.user.id)
+          resolve();
+        }, 2000)
+      }).then(() => {
+        setTimeout(function () {
+          self.startCountDown = true;
+        }, 2000)
       });
     },
     updatePlayerHand(player, values) {

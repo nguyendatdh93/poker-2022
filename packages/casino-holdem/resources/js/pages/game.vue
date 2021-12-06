@@ -72,20 +72,7 @@
                             <h2>{{ isFoldPlayer(opponent.user_id) ? 'Fold' : opponent.name }}</h2>
                             <span v-if="opponent.user">{{ opponent.user.account.buy_in }}</span>
                           </div>
-                          <div class="progress_bar">
-                            <countdown v-if="opponent.user_id == gameRoom.action_index && gameRoom.round <= 4" :left-time="30000" @finish="finishCountdown">
-                              <template slot="process" slot-scope="{ timeObj }">
-                                <v-progress-linear
-                                    class="progress-bar"
-                                    color="light-blue"
-                                    height="10"
-                                    buffer-value="100"
-                                    :value="timeObj.ceil.s * (100/30)"
-                                    striped
-                                ></v-progress-linear>
-                              </template>
-                            </countdown>
-                          </div>
+                          <count-down-bar :opponent="opponent" :start="startCountDown"></count-down-bar>
                         </li>
                       </ul>
                     </div>
@@ -135,11 +122,12 @@ import PlayingCard from "../../../../../resources/js/components/Games/Cards/Play
 import HoldemCommunityCard from "../../../../../resources/js/components/Games/HoldemCommunityCard";
 import HoldemTableText from "../../../../../resources/js/components/Games/HoldemTableText";
 import DealerIcon from "../../../../../resources/js/components/Games/DealerIcon";
+import CountDownBar from "../../../../../resources/js/components/Games/CountDownBar";
 
 export default {
   name: 'CasinoHoldem',
 
-  components: {GameRoom, PlayControls, Hand, Chat, Actions, PlayingCard, HoldemCommunityCard, HoldemTableText, DealerIcon},
+  components: {GameRoom, PlayControls, Hand, Chat, Actions, PlayingCard, HoldemCommunityCard, HoldemTableText, DealerIcon, CountDownBar},
 
   mixins: [FormMixin, GameMixin, SoundMixin, GameRoomMixin],
 
@@ -159,7 +147,6 @@ export default {
       ready: false,
       room: null,
       game: null,
-      // action: null,
       loading: false,
       player: {},
       opponents: [],
