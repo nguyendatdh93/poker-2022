@@ -69,7 +69,7 @@
                                 <img :src="opponent.user && opponent.user.avatar_url ? opponent.user.avatar_url : (opponent.user && opponent.user.gravatar_url ? opponent.user.gravatar_url : '')" alt="" style="width: 100%"/>
                               </div>
                             </div>
-                            <h2>{{ isFoldPlayer(opponent.user_id) ? 'Fold' : opponent.name }}</h2>
+                            <h2>{{ isFoldPlayer(opponent.user_id) ? 'Fold' : getTextOverflow(opponent.name, 10) }}</h2>
                             <span v-if="opponent.user">{{ opponent.user.account.buy_in }}</span>
                           </div>
                           <count-down-bar :opponent="opponent" :start="startCountDown"></count-down-bar>
@@ -441,8 +441,14 @@ export default {
       this.player = {}
       this.opponents = {}
       this.playing = false
-    }
+    },
+    getTextOverflow(text, limit = 10) {
+      if (text.length > 10) {
+        return text.substring(0,limit) + '...';
+      }
 
+      return text;
+    }
   }
 }
 </script>
