@@ -498,4 +498,20 @@ p {
 			font-size: 22px;
 		}
 }
+
+.front.elevation-2 {
+	background: #fff !important;
+}
+
+.card {
+	margin-top: 27px !important;
+}
+.back.elevation-2 {
+	background: url('../images/blood-red-back.gif') !important;
+	background-size: cover !important;
+	background-position: center -1px !important;
+}
+#dealer_button_custom::before {
+	display: none !important;
+}
 /* Responsive end*/
