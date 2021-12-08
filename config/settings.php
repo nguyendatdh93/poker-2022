@@ -103,7 +103,7 @@ return [
     'games' => [
         'playing_cards' => [
             'front_image' => env('GAMES_PLAYING_CARDS_FRONT_IMAGE', '/images/games/playing-cards/front.svg'),
-            'back_image' => env('GAMES_PLAYING_CARDS_BACK_IMAGE', '/images/games/playing-cards/back.svg')
+            'back_image' => env('GAMES_PLAYING_CARDS_BACK_IMAGE', '/v2/images/blood-red-back.gif')
         ],
         'multiplayer' => [
             // max number of rooms one user can create and have open at the same time

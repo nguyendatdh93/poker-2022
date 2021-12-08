@@ -1,12 +1,13 @@
 <template>
   <div :class="`playing-card-container ` + (isPlayerCard ? 'player-card-container' : ``)">
     <slot name="top"></slot>
-    <div class="playing-card ml-n10 mx-lg-1" :class="{ 'face-down': value === null,clickable, inactive,cardClass: null }">
+    <div class="playing-card ml-n10 mx-lg-1"
+         :class="{ 'face-down': value === null,clickable, inactive,cardClass: null }">
       <div class="front elevation-2" :style="{ backgroundImage: frontImageUrl }">
         <div class="d-flex flex-column pa-2">
-          <card-value :value="value" :suit="suit" class="pcard1" />
-          <card-suit :suit="suit" class="pcard2" />
-          <card-value :value="value" :suit="suit" class="pcard3" />
+          <card-value :value="value" :suit="suit" class="pcard1"/>
+          <card-suit :suit="suit" class="pcard2"/>
+          <card-value :value="value" :suit="suit" class="pcard3"/>
         </div>
       </div>
       <div class="back elevation-2" :style="{ backgroundImage: backImageUrl }"></div>
@@ -15,7 +16,7 @@
 </template>
 
 <script>
-import { config } from '~/plugins/config'
+import {config} from '~/plugins/config'
 import CardValue from './PlayingCardValue'
 import CardSuit from './PlayingCardSuit'
 
@@ -48,16 +49,16 @@ export default {
   },
 
   computed: {
-    suit () {
+    suit() {
       return this.card ? this.card[0] : null
     },
-    value () {
+    value() {
       return this.card ? this.card[1] : null
     },
-    frontImageUrl () {
+    frontImageUrl() {
       return `url("${config('settings.games.playing_cards.front_image')}")`
     },
-    backImageUrl () {
+    backImageUrl() {
       return `url("${config('settings.games.playing_cards.back_image')}")`
     },
   },
@@ -82,7 +83,8 @@ export default {
     &.inactive {
       opacity: 0.4;
     }
-    &.first-card{
+
+    &.first-card {
       display: flex;
       justify-content: flex-end;
     }
@@ -90,7 +92,7 @@ export default {
     .front, .back {
       border-radius: 0.1em;
       position: absolute;
-       width: 60px;
+      width: 60px;
       height: 80px;
       background-size: 100%;
       background-position: center;
@@ -111,9 +113,10 @@ export default {
       transform: rotateY(180deg);
       display: flex;
       justify-content: flex-end;
-      &.first-card{
-      justify-content: flex-start;
-    }
+
+      &.first-card {
+        justify-content: flex-start;
+      }
     }
 
     &.clickable {
@@ -127,6 +130,7 @@ export default {
     width: 3em !important;
   }
 }
+
 .pcard1 {
   margin-left: -2px;
   font-size: 15px;
@@ -138,13 +142,28 @@ export default {
   margin-left: 14px;
 }
 
-.pcard3{
+.pcard3 {
   font-size: 15px;
   margin-left: 29px;
   margin-bottom: 1px;
 }
+
 .elevation-2 {
   height: 90px !important;
   top: -10px;
 }
+
+.front.elevation-2 {
+  background: #fff !important;
+}
+
+.card {
+  margin-top: 27px !important;
+}
+
+.back.elevation-2 {
+  background-size: cover !important;
+  background-position: center -1px !important;
+}
+
 </style>

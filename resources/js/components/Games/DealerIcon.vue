@@ -32,6 +32,10 @@ export default {
 </script>
 
 <style scoped>
+#dealer_button_custom::before {
+  display: none !important;
+}
+
 #dealer_button_custom {
   position: absolute;
   width: 30PX;
