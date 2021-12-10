@@ -1,6 +1,5 @@
 body {
 	background: url('../images/bg1.jpg') no-repeat;
-	background-size: cover;
 }
 .grid {
   width: 1170px;
@@ -848,8 +847,6 @@ body {
 	width: 30PX;
 	height: 30PX;
 	overflow: hidden;
-	border-radius: 100PX;
-	border: 3px solid #16a34d;
 	left: 10px;
 	top: -30px;
 	transition:.5s all;
@@ -867,8 +864,6 @@ body {
 	width: 30PX;
 	height: 30PX;
 	overflow: hidden;
-	border-radius: 100PX;
-	border: 3px solid #16a34d;
 	left: -50px;
 	top: -30px;
 	transition:.3s all;
@@ -1674,8 +1669,6 @@ polygon, circle {
 	width: 30PX;
 	height: 30PX;
 	overflow: hidden;
-	border-radius: 100PX;
-	border: 3px solid #16a34d;
 	left: 10px;
 	top: -30px;
 }
@@ -1692,8 +1685,7 @@ polygon, circle {
 	width: 30PX;
 	height: 30PX;
 	overflow: hidden;
-	border-radius: 100PX;
-	border: 3px solid #16a34d;
+
 	left: -50px;
 	top: -30px;
 }
