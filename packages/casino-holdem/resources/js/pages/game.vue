@@ -487,7 +487,7 @@ export default {
 
 #player_actions {
   position: absolute;
-  bottom: -2%;
+  bottom: -25%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
