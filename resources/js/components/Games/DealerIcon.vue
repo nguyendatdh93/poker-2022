@@ -1,6 +1,6 @@
 <template>
   <div id="dealer_button_custom" class="cards ani1">
-    <img src="/v2/images/fcard.jpg" style="width: 50px" alt=""/>
+    <img src="/v2/images/deal-btn.png" style="width: 50px" alt=""/>
   </div>
 </template>
 

@@ -613,25 +613,25 @@ class GameService extends ParentGameService
         AccountService::updateUserOrAdminAccount($winnersAmount,$user->id);
 
         //add remainings 70% of 2.5% to admin
-        $remainingPercentage = 2.5;
-        $remainingTotalAmount = ($remainingPercentage/100)*$pot;
-        $adminsStake = (70/100)*$remainingTotalAmount;
-        AccountService::updateUserOrAdminAccount($adminsStake);
-
-        // other players commission
-        //commision logic - level 1 referer of this user will get 20%/number of players on table
-        //  level 2 refrerr of this user will get 10%/number of players on table
-        // if  any level is mising add that amount to admin account
-        $players = User::whereIn('id', $playerIds)->get();
-        $playersCount = $players->count();
-        $commission = config('settings.affiliate.commissions.game_win.rates');
-        $tierlyCommission[] =  (($commission[0]/100)*$remainingTotalAmount)/$playersCount;
-        $tierlyCommission[] =  (($commission[1]/100)*$remainingTotalAmount)/$playersCount;
-        GameRoomCache::setOtherPlayersStake($roomId, $tierlyCommission);
-        // Log::debug("player to array",$players->toArray());
-        foreach ($players as $key => $player) {
-            event(new ResultEvent($player,$roomId));
-        }
+//        $remainingPercentage = 2.5;
+//        $remainingTotalAmount = ($remainingPercentage/100)*$pot;
+//        $adminsStake = (70/100)*$remainingTotalAmount;
+//        AccountService::updateUserOrAdminAccount($adminsStake);
+//
+//        // other players commission
+//        //commision logic - level 1 referer of this user will get 20%/number of players on table
+//        //  level 2 refrerr of this user will get 10%/number of players on table
+//        // if  any level is mising add that amount to admin account
+//        $players = User::whereIn('id', $playerIds)->get();
+//        $playersCount = $players->count();
+//        $commission = config('settings.affiliate.commissions.game_win.rates');
+//        $tierlyCommission[] =  (($commission[0]/100)*$remainingTotalAmount)/$playersCount;
+//        $tierlyCommission[] =  (($commission[1]/100)*$remainingTotalAmount)/$playersCount;
+//        GameRoomCache::setOtherPlayersStake($roomId, $tierlyCommission);
+//        // Log::debug("player to array",$players->toArray());
+//        foreach ($players as $key => $player) {
+//            event(new ResultEvent($player,$roomId));
+//        }
     }
 
     private function handleForNextRound($roomId, $playerId)

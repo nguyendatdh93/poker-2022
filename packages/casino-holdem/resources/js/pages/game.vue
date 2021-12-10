@@ -25,13 +25,6 @@
         <div class="wrap">
           <div class="centere_class">
             <div id="centere_class">
-              <div id="logo">
-                <div class="logo">
-                  <div class="logo1">
-                    <a href=""><img src="/v2/images/logo.png" alt=""/></a>
-                  </div>
-                </div>
-              </div>
               <div class="grid" v-if="gameRoom && gameRoom.round">
                 <div id="vgrid">
                   <div id="grid">
