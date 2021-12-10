@@ -1761,20 +1761,20 @@ polygon, circle {
 	top: 471px;
 }
 #dealer_button.d_card_3 {
-	left: -48px;
+	left: 162px;
 	top: 335px;
 }
 #dealer_button.d_card_4 {
-	left: -36px;
+	left: 196px;
 	top: 153px;
 }
 #dealer_button.d_card_5 {
 	left: 330px;
-	top: 10px;
+	top: 130px;
 }
 #dealer_button.d_card_6 {
 	left: 680px;
-	top: 10px;
+	top: 130px;
 }
 #dealer_button.d_card_7 {
 	left: 918px;
@@ -1794,7 +1794,7 @@ polygon, circle {
 }
 .two-players #dealer_button.d_card_1 {
 	left: 476px;
-	top: 0px;
+	top: 117px;
 }
 .three-players #dealer_button.d_card_0 {
 	left: 472px;
@@ -1806,7 +1806,7 @@ polygon, circle {
 	top: 230px;
 }
 .three-players #dealer_button.d_card_2 {
-	left: 100px;
+	left: 145px;
 	top: 230px;
 }
 .four-players #dealer_button.d_card_0 {
@@ -1819,12 +1819,12 @@ polygon, circle {
 	top: 230px;
 }
 .four-players #dealer_button.d_card_2 {
-	left: 100px;
+	left: 150px;
 	top: 230px;
 }
 .four-players #dealer_button.d_card_3 {
 	left: 477px;
-	top: 0px;
+	top: 110px;
 }
 .five-players #dealer_button {
 	left: 470px;
@@ -1879,7 +1879,7 @@ polygon, circle {
 .six-players #dealer_button.d_card_5 {
 	transition: .3s all;
 	left: 480px;
-	top: 2px;
+	top: 120px;
 }
 
 .seven-players #dealer_button {
@@ -1910,7 +1910,12 @@ polygon, circle {
 .seven-players #dealer_button.d_card_5 {
 	transition: .3s all;
 	left: 330px;
-	top: 2px;
+	top: 130px;
+}
+.seven-players #dealer_button.d_card_6 {
+	transition: .3s all;
+	left: 680px;
+	top: 130px;
 }
 
 
@@ -1926,8 +1931,8 @@ polygon, circle {
 }
 .eight-players #dealer_button.d_card_2 {
 	transition: .3s all;
-	left: 139px;
-	top: 7px;
+	left: 199px;
+	top: 140px;
 }
 .eight-players #dealer_button.d_card_3 {
 	transition: .3s all;
@@ -1942,12 +1947,12 @@ polygon, circle {
 .eight-players #dealer_button.d_card_5 {
 	transition: .3s all;
 	left: 426px;
-	top: 10px;
+	top: 128px;
 }
 .eight-players #dealer_button.d_card_6 {
 	transition: .3s all;
 	left: 711px;
-	top: 7px;
+	top: 128px;
 }
 .eight-players #dealer_button.d_card_7 {
 	transition: .3s all;
@@ -2556,4 +2561,450 @@ polygon, circle {
 
 .container{
     perspective: 1000px;
+}
+
+
+/*--------- CASH GAME ------------*/
+
+#real_money {
+	float: left;
+	width: 100%;
+	margin-top: 80px;
+}
+.inner_real {
+	max-width: 360px;
+	margin: auto;
+}
+.real_money {
+	float: left;
+	width: 100%;
+}
+.title_name h2 {
+	font-family: 'Work Sans', sans-serif;
+	font-size: 21px;
+	font-weight: bold;
+	letter-spacing: 0px;
+	position: relative;
+	color: #fff !important;
+	margin: 0px !important;
+	text-align: center;
+}
+#title_name {
+	margin: auto;
+	max-width: 250px;
+}
+.title_name {
+	position: relative;
+	width: 100%;
+	float: left;
+	background: rgba(58,58,58,1);
+	background: -moz-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(58,58,58,1)), color-stop(40%, rgba(255,255,255,1)), color-stop(100%, rgba(58,58,58,1)));
+	background: -webkit-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: -o-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: -ms-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: linear-gradient(to bottom, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3a3a3a', endColorstr='#3a3a3a', GradientType=0 );
+	margin: 0px;
+	height:60px;
+	border-radius: 10px;
+	box-shadow: inset 0px 0px 50px rgba(0,0,0,0.6);
+}
+.title_name::before {
+	background: #1e1e1e;
+	position: absolute;
+	top: 2px;
+	border-radius: 10px;
+	width: 97.5%;
+	height: 55px;
+	box-shadow:inset 0px 0px 50px rgba(0,0,0,0.5);
+	content: '';
+	z-index: 0;
+	left: 3px;
+}
+.title_name h2 {
+	padding-top: 17px;
+}
+.cashgame {
+	position: relative;
+	width: 100%;
+	float: left;
+	background: rgba(58,58,58,1);
+	background: -moz-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(58,58,58,1)), color-stop(40%, rgba(255,255,255,1)), color-stop(100%, rgba(58,58,58,1)));
+	background: -webkit-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: -o-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: -ms-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: linear-gradient(to bottom, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3a3a3a', endColorstr='#3a3a3a', GradientType=0 );
+	margin: 0px;
+	width: 100%;
+	height:auto;
+	border-radius: 10px;
+	z-index: 2;
+	box-shadow: inset 0px 0px 50px rgba(0,0,0,0.6);
+}
+.cashgame::before {
+	background: #d8aa3a;
+	position: absolute;
+	top: 2px;
+	border-radius: 10px;
+	width: 98.8%;
+	height: 99%;
+	box-shadow: inset 0px 0px 30px #e15e1d;
+	content: '';
+	z-index: 0;
+	left: 2px;
+}
+#cashgame {
+	position: relative;
+	z-index: 99;
+	padding: 20px 30px;
+}
+#cashgame h2 {
+	font-family: 'Work Sans', sans-serif;
+	font-size: 31px;
+	font-weight: bold;
+	letter-spacing: 0px;
+	position: relative;
+	color: #1a1c19;
+	margin: 0px !important;
+	text-align: center;
+	text-align: ;
+	text-transform: uppercase !important;
+	border-bottom: 2px solid #1a1c19;
+	padding-bottom: 5px;
+}
+.tabs_data {
+	float: left;
+	width: 100%;
+	margin-top: 20px;
+	padding: 0px !important;
+}
+.tabs_data ul {
+	padding: 0px !important;
+	margin: 0px;
+	line-height: ;
+	list-style: none;
+	display: inline;
+	float: left;
+	width: 100%;
+}
+.tabs_data ul li.active {
+	position: relative;
+	width: 49.5%;
+	float: left;
+	background: rgba(58,58,58,1);
+	background: -moz-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(58,58,58,1)), color-stop(40%, rgba(255,255,255,1)), color-stop(100%, rgba(58,58,58,1)));
+	background: -webkit-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: -o-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: -ms-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: linear-gradient(to bottom, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3a3a3a', endColorstr='#3a3a3a', GradientType=0 );
+	margin: 0px;
+	height:35px;
+	border-radius: 10px;
+	z-index: 2;
+}
+.tabs_data ul li.active::before {
+	background: #131313;
+	position: absolute;
+	top: 1px;
+	border-radius: 10px;
+	width: 97.8%;
+	height: 99%;
+	box-shadow: inset 0px 0px 30px #000;
+	content: '';
+	z-index: 0;
+	left: 2px;
+}
+
+.tabs_data ul li {
+	position: relative;
+	width: 50%;
+	float: left;
+	margin: 0px;
+	height:35px;
+	border-radius: 10px;
+	z-index: 2;
+}
+.tabs_data ul{
+	border: 1px solid #131313; border-radius: 10px;
+}
+
+.tabs_data ul li a {
+	font-family: 'Work Sans', sans-serif;
+	font-size: 16px;
+	font-weight: normal;
+	letter-spacing: 0px;
+	position: relative;
+	color: #131313 !important;
+	margin: 0px !important;
+	text-align: center;
+	width: 100%;
+	float: left;
+	line-height: 34px;
+	text-decoration: none;
+}
+.tabs_data ul li.active a {
+	font-family: 'Work Sans', sans-serif;
+	font-size: 16px;
+	font-weight: normal;
+	letter-spacing: 0px;
+	position: relative;
+	color: #fff !important;
+	margin: 0px !important;
+	text-align: center;
+	width: 100%;
+	float: left;
+	line-height: 34px;
+}
+.tabs_content {
+	float: left;
+	width: 100%;
+	margin-top: 15px;
+}
+#nlhold {
+	float: left;
+	width: 100%;
+}
+.top_text {
+	float: left;
+	width: 100%;
+	font-family: 'Work Sans', sans-serif;
+	font-size: 16px;
+	font-weight: normal;
+	letter-spacing: 0px;
+	position: relative;
+	color:#131313;
+}
+.top_text .lefttext {
+	float: left;
+	width:auto;
+}
+.top_text .righttxt {
+	float: right;
+	width:auto;
+}
+.slider_tab {
+	float: left;
+	width: 100%;
+	background: #fff;
+	border-radius: 10px;
+	padding: 20px 20px 15px 20px;
+	margin-top: 10px;
+}
+#range_in {
+	width: 100%;
+	background: #c3c3c3 !important;
+	border: none !important;
+}
+.btm_text h3 {
+	float: left;
+	width: 100%;
+	font-family: 'Work Sans', sans-serif;
+	font-size: 16px;
+	font-weight: 500;
+	letter-spacing: 0px;
+	position: relative;
+	color:#131313;
+}
+.btm_text {
+	float: left;
+	width: 100%;
+	margin-top: 20px;
+}
+.numbr_table select {
+	position: absolute;
+	left: 0;
+	width: 96%;
+	height: 36px;
+	z-index: 9;
+	text-align: center;
+	background: none;
+	border:none;
+	z-index: 9;
+	text-align: center;
+	font-family: 'Work Sans', sans-serif;
+	font-size: 19px;
+	font-weight: normal;
+	letter-spacing: 0px;
+	position: relative;
+	color: #fff !important;
+	margin: 0px !important;
+	text-align: center;
+	float: left;
+	padding-top: 3px;
+}.numbr_table select option { color:#131313; }
+.numbr_table {
+	position: relative;
+	width: 100%;
+	float: left;
+	background: rgba(58,58,58,1);
+	background: -moz-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(58,58,58,1)), color-stop(40%, rgba(255,255,255,1)), color-stop(100%, rgba(58,58,58,1)));
+	background: -webkit-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: -o-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: -ms-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: linear-gradient(to bottom, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3a3a3a', endColorstr='#3a3a3a', GradientType=0 );
+	margin: 0px;
+	height:35px;
+	border-radius: 5px;
+	z-index: 2;
+}
+.numbr_table::before {
+	background: #131313;
+	position: absolute;
+	top: 1px;
+	border-radius: 5px;
+	width: 98.5%;
+	height: 99%;
+	box-shadow: inset 0px 0px 30px #000;
+	content: '';
+	z-index: 0;
+	left: 2px;
+}
+.numbr_table span {
+	position: relative;
+	z-index: 9;
+	text-align: center;
+	font-family: 'Work Sans', sans-serif;
+	font-size: 19px;
+	font-weight: normal;
+	letter-spacing: 0px;
+	position: relative;
+	color: #fff !important;
+	margin: 0px !important;
+	text-align: center;
+	width: 100%;
+	float: left;
+	padding-top: 3px;
+}
+
+
+.play_btn {
+	position: relative;
+	width: 100%;
+	float: left;
+	background: rgba(58,58,58,1);
+	background: -moz-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(58,58,58,1)), color-stop(40%, rgba(255,255,255,1)), color-stop(100%, rgba(58,58,58,1)));
+	background: -webkit-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: -o-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: -ms-linear-gradient(top, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	background: linear-gradient(to bottom, rgba(58,58,58,1) 0%, rgba(255,255,255,1) 40%, rgba(58,58,58,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3a3a3a', endColorstr='#3a3a3a', GradientType=0 );
+	margin: 0px;
+	height:48px;
+	border-radius: 5px;
+	z-index: 2;
+	margin-top:100px;
+	margin-bottom:30px;
+}
+.play_btn::before {
+	background: #137a35;
+	position: absolute;
+	top: 1px;
+	border-radius: 5px;
+	width: 98.7%;
+	height: 99%;
+	box-shadow: inset 0px 0px 30px #09401b;
+	content: '';
+	z-index: 0;
+	left: 2px;
+}
+.play_btn button {
+	position: relative;
+	z-index: 9;
+	text-align: center;
+	font-family: 'Work Sans', sans-serif;
+	font-size: 28px;
+	font-weight: bold;
+	letter-spacing: 0px;
+	position: relative;
+	color: #fff !important;
+	margin: 0px !important;
+	text-align: center;
+	width: 100%;
+	float: left;
+	background:none;
+	border:none;
+	padding-top: 2px;
+}
+.cashgame {
+	margin-top: 30px;
+	margin-bottom: 60px;
+}
+.top_arrow::before {
+	width: 21px;
+	height: 20px;
+	background: #d8aa3a;
+	position: absolute;
+	content: '';
+	top: -8px;
+	z-index: -1;
+	left: 49%;
+	transform: rotate(45deg);
+}
+.top_arrow {
+	position: relative;
+	z-index: -1;
+	padding: 0px;
+	float: left;
+	width: 100%;
+}
+.top_arrow::after {
+	height: 2px;
+	background: ;
+	border-bottom: 2px solid rgba(58,58,58,1);
+	z-index: 9;
+	width: 95%;
+	content: '';
+	position: absolute;
+	border-radius: 50px;
+	left: 7px;
+}
+.tabs_content > div {
+	position: absolute;
+	opacity: 0;
+	width:100%;
+	float:left;
+	left: 0;
+	transform: scale(0.5);
+	transition: .7s all;
+	visibility: hidden;
+}
+#lmhold {
+	width: 100%;
+	float: left;
+	left: 0;
+}
+.tabs_content > div.active {
+	position: relative;
+	transform: scale(1);
+	opacity: 1;
+	left:0;
+	visibility: visible;
+}
+
+
+
+/* New CSS *///
+
+.front.elevation-2 {
+	background: #fff !important;
+}
+
+.card {
+	margin-top: 27px !important;
+}
+.back.elevation-2 {
+	background: url('../images/blood-red-back.gif') !important;
+	background-size: cover !important;
+	background-position: center -1px !important;
+}
+#dealer_button_custom::before {
+	display: none !important;
 }
