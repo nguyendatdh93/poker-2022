@@ -1,5 +1,6 @@
 body {
 	background: url('../images/bg1.jpg') no-repeat;
+	background-size: cover;
 }
 .grid {
   width: 1170px;
