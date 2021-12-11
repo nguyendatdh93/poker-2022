@@ -1,6 +1,6 @@
 <template>
   <div id="dealer_button_custom" class="cards ani1">
-    <img src="/v2/images/deal-btn.png" style="width: 50px" alt=""/>
+    <img src="/v2/images/deal-btn.png" alt=""/>
   </div>
 </template>
 
@@ -38,11 +38,9 @@ export default {
 
 #dealer_button_custom {
   position: absolute;
-  width: 30PX;
-  height: 30PX;
-  overflow: hidden;
-  border-radius: 100PX;
-  border: 3px solid #16a34d;
+  width: 30px;
+  height: 30px;
+  overflow: visible;
   margin-left: -25px !important;
   margin-top: -30px !important;
 }
