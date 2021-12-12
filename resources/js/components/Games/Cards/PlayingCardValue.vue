@@ -42,7 +42,7 @@
         <path d="M43.53,46.22l-4.09-9h-19l-4.09,9H13.85l15-32.43h2.3l15,32.43ZM30,16.41,21.44,35h17Z" transform="translate(-8.19 -13.14)"/>
       </symbol>
     </svg>
-    <svg v-if="value" fill="currentColor" :class="suitColor">
+    <svg v-if="value" :fill="fillColor" fill="currentColor" :class="suitColor">
       <use :xlink:href="'#value-' + value" font-weight="bold"></use>
     </svg>
   </div>
@@ -62,8 +62,17 @@ export default {
   },
   computed: {
     suitColor () {
-      if (['C', 'S'].includes(this.suit)) return 'black--text'
-      return 'red--text'
+      if (this.suit) {
+        if (['C', 'S'].includes(this.suit)) return 'black--text'
+        return 'red--text'
+      }
+    },
+    fillColor() {
+      console.log(this.suit);
+      if (this.suit) {
+        if (['C', 'S'].includes(this.suit)) return 'black'
+        return 'red'
+      }
     }
   }
 }
