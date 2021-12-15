@@ -161,7 +161,11 @@ class GameService extends ParentGameService
         $players = GameRoomCache::getPlayers($params['room_id']);
         $foldPlayers = GameRoomCache::getFoldPlayers($params['room_id']);
         $playerId = $params['user_id'];
-        $currentIndex = array_search($playerId, $players);
+        $currentIndex = 0;
+        if ($players) {
+            $currentIndex = array_search($playerId, $players);
+        }
+
         $rotatePlayer = null;
         for ($i=count($players) - 1; $i>=0; $i--) {
             if (in_array($players[$i], $foldPlayers)) {
