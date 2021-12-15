@@ -462,13 +462,13 @@ body {
 	vertical-align: middle;
 	height: 100vh;
 }
-.grid_cards {
+.gricardss {
 	float: left;
 	width: 100%;
 	overflow: hidden;
 }
 
-.grid_cards .list {
+.gricardss .list {
 	height: 652px;
 	position: relative;
 	list-style-type: none;
@@ -1334,13 +1334,13 @@ polygon, circle {
 	vertical-align: middle;
 	height: 100vh;
 }
-.grid_cards {
+.gricardss {
 	float: left;
 	width: 100%;
 	overflow: hidden;
 }
 
-.grid_cards .list {
+.gricardss .list {
 	height: 652px;
 	position: relative;
 	list-style-type: none;
@@ -1744,36 +1744,36 @@ polygon, circle {
 	top: 471px;
 	transition: .3s all;
 }
-#dealer_button.d_card_1 {
+#dealer_button.cards_1 {
 	transition: .3s all;
 	left: 918px;
 	top: 340px;
 }
-#dealer_button.d_card_2 {
+#dealer_button.cards_2 {
 	left: 240px;
 	top: 471px;
 }
-#dealer_button.d_card_3 {
+#dealer_button.cards_3 {
 	left: 162px;
 	top: 335px;
 }
-#dealer_button.d_card_4 {
+#dealer_button.cards_4 {
 	left: 196px;
 	top: 153px;
 }
-#dealer_button.d_card_5 {
+#dealer_button.cards_5 {
 	left: 330px;
 	top: 130px;
 }
-#dealer_button.d_card_6 {
+#dealer_button.cards_6 {
 	left: 680px;
 	top: 130px;
 }
-#dealer_button.d_card_7 {
+#dealer_button.cards_7 {
 	left: 918px;
 	top: 155px;
 }
-#dealer_button.d_card_8 {
+#dealer_button.cards_8 {
 	left: 773px;
 	top: 477px;
 }
@@ -1785,37 +1785,41 @@ polygon, circle {
 	left: 476px;
 	top: 478px;
 }
-.two-players #dealer_button.d_card_1 {
+.two-players #dealer_button.cards_1 {
 	left: 476px;
 	top: 117px;
 }
-.three-players #dealer_button.d_card_0 {
+.r_value {
+	float: right;
+	margin-left:5px;
+}
+.three-players #dealer_button.cards_0 {
 	left: 472px;
 	top: 471px;
 	transition: .3s all;
 }
-.three-players #dealer_button.d_card_1 {
+.three-players #dealer_button.cards_1 {
 	left: 951px;
 	top: 230px;
 }
-.three-players #dealer_button.d_card_2 {
+.three-players #dealer_button.cards_2 {
 	left: 145px;
 	top: 230px;
 }
-.four-players #dealer_button.d_card_0 {
+.four-players #dealer_button.cards_0 {
 	left: 472px;
 	top: 471px;
 	transition: .3s all;
 }
-.four-players #dealer_button.d_card_1 {
+.four-players #dealer_button.cards_1 {
 	left: 951px;
 	top: 230px;
 }
-.four-players #dealer_button.d_card_2 {
+.four-players #dealer_button.cards_2 {
 	left: 150px;
 	top: 230px;
 }
-.four-players #dealer_button.d_card_3 {
+.four-players #dealer_button.cards_3 {
 	left: 477px;
 	top: 110px;
 }
@@ -1824,22 +1828,22 @@ polygon, circle {
 	top: 471px;
 	transition: .3s all;
 }
-.five-players #dealer_button.d_card_1 {
+.five-players #dealer_button.cards_1 {
 	transition: .3s all;
 	left: 150px !important;
 	top: 373px;
 }
-.five-players #dealer_button.d_card_2 {
+.five-players #dealer_button.cards_2 {
 	transition: .3s all;
 	top: 370px;
 	left: 980px !important;
 }
-.five-players #dealer_button.d_card_3 {
+.five-players #dealer_button.cards_3 {
 	transition: .3s all;
 	left: 960px;
 	top: 155px;
 }
-.five-players #dealer_button.d_card_4 {
+.five-players #dealer_button.cards_4 {
 	transition: .3s all;
 	left: 194px;
 	top: 165px;
@@ -1849,27 +1853,27 @@ polygon, circle {
 	top: 471px;
 	transition: .3s all;
 }
-.six-players #dealer_button.d_card_1 {
+.six-players #dealer_button.cards_1 {
 	transition: .3s all;
 	left: 150px !important;
 	top: 373px;
 }
-.six-players #dealer_button.d_card_2 {
+.six-players #dealer_button.cards_2 {
 	transition: .3s all;
 	top: 370px;
 	left: 980px !important;
 }
-.six-players #dealer_button.d_card_3 {
+.six-players #dealer_button.cards_3 {
 	transition: .3s all;
 	left: 960px;
 	top: 155px;
 }
-.six-players #dealer_button.d_card_4 {
+.six-players #dealer_button.cards_4 {
 	transition: .3s all;
 	left: 194px;
 	top: 165px;
 }
-.six-players #dealer_button.d_card_5 {
+.six-players #dealer_button.cards_5 {
 	transition: .3s all;
 	left: 480px;
 	top: 120px;
@@ -1880,32 +1884,32 @@ polygon, circle {
 	top: 471px;
 	transition: .3s all;
 }
-.seven-players #dealer_button.d_card_1 {
+.seven-players #dealer_button.cards_1 {
 	transition: .3s all;
 	left: 150px !important;
 	top: 373px;
 }
-.seven-players #dealer_button.d_card_2 {
+.seven-players #dealer_button.cards_2 {
 	transition: .3s all;
 	top: 370px;
 	left: 910px !important;
 }
-.seven-players #dealer_button.d_card_3 {
+.seven-players #dealer_button.cards_3 {
 	transition: .3s all;
 	left: 910px;
 	top: 155px;
 }
-.seven-players #dealer_button.d_card_4 {
+.seven-players #dealer_button.cards_4 {
 	transition: .3s all;
 	left: 194px;
 	top: 165px;
 }
-.seven-players #dealer_button.d_card_5 {
+.seven-players #dealer_button.cards_5 {
 	transition: .3s all;
 	left: 330px;
 	top: 130px;
 }
-.seven-players #dealer_button.d_card_6 {
+.seven-players #dealer_button.cards_6 {
 	transition: .3s all;
 	left: 680px;
 	top: 130px;
@@ -1917,37 +1921,37 @@ polygon, circle {
 	top: 471px;
 	transition: .3s all;
 }
-.eight-players #dealer_button.d_card_1 {
+.eight-players #dealer_button.cards_1 {
 	transition: .3s all;
 	top: 370px;
 	left: 910px;
 }
-.eight-players #dealer_button.d_card_2 {
+.eight-players #dealer_button.cards_2 {
 	transition: .3s all;
 	left: 199px;
 	top: 140px;
 }
-.eight-players #dealer_button.d_card_3 {
+.eight-players #dealer_button.cards_3 {
 	transition: .3s all;
 	left: 150px !important;
 	top: 373px;
 }
-.eight-players #dealer_button.d_card_4 {
+.eight-players #dealer_button.cards_4 {
 	transition: .3s all;
 	left: 194px;
 	top: 165px;
 }
-.eight-players #dealer_button.d_card_5 {
+.eight-players #dealer_button.cards_5 {
 	transition: .3s all;
 	left: 426px;
 	top: 128px;
 }
-.eight-players #dealer_button.d_card_6 {
+.eight-players #dealer_button.cards_6 {
 	transition: .3s all;
 	left: 711px;
 	top: 128px;
 }
-.eight-players #dealer_button.d_card_7 {
+.eight-players #dealer_button.cards_7 {
 	transition: .3s all;
 	left: 915px;
 	top: 154px;
