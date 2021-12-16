@@ -30,6 +30,7 @@ export default {
           }).listen('GameRoomPlayEvent', data => {
             let gameRoom = JSON.parse(data.game_room);
             this.$store.dispatch('game-room/setGameRoom', gameRoom);
+            this.$store.dispatch('game-room/setChips', data.chips);
             this.gamePlay = true;
             if (data.user_id == this.user.id) {
               this.updateUserAccountBalance(this.account.balance - data.bet);

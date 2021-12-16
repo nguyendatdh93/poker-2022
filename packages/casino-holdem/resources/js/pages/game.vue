@@ -56,15 +56,16 @@
                       <ul class="list">
                         <dealer-icon v-if="gameRoom && gameRoom.round" :room="room"></dealer-icon>
                         <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)} ` + (isDealer(opponent.user_id) ? `is-dealer` : ``)">
-                          <div class="text-card">
-                            <div class="left-img">
-                              <div class="img" style="border-radius: 15px">
-                                <img :src="opponent.user && opponent.user.avatar_url ? opponent.user.avatar_url : (opponent.user && opponent.user.gravatar_url ? opponent.user.gravatar_url : '')" alt="" style="width: 100%"/>
-                              </div>
+                          <div class="left-img">
+                            <div class="img" style="border-radius: 15px">
+                              <img :src="opponent.user && opponent.user.avatar_url ? opponent.user.avatar_url : (opponent.user && opponent.user.gravatar_url ? opponent.user.gravatar_url : '')" alt="" style="width: 100%"/>
                             </div>
+                          </div>
+                          <div class="text-card">
                             <h2>{{ isFoldPlayer(opponent.user_id) ? 'Fold' : getTextOverflow(opponent.name, 10) }}</h2>
                             <span v-if="opponent.user">{{ opponent.user.account.buy_in }}</span>
                           </div>
+                          <chip :opponent="opponent"></chip>
                           <count-down-bar
                               :opponent="opponent"
                               :room="room"
@@ -122,11 +123,12 @@ import HoldemCommunityCard from "../../../../../resources/js/components/Games/Ho
 import HoldemTableText from "../../../../../resources/js/components/Games/HoldemTableText";
 import DealerIcon from "../../../../../resources/js/components/Games/DealerIcon";
 import CountDownBar from "../../../../../resources/js/components/Games/CountDownBar";
+import Chip from "../../../../../resources/js/components/Games/Chip";
 
 export default {
   name: 'CasinoHoldem',
 
-  components: {GameRoom, PlayControls, Hand, Chat, Actions, PlayingCard, HoldemCommunityCard, HoldemTableText, DealerIcon, CountDownBar},
+  components: {GameRoom, PlayControls, Hand, Chat, Actions, PlayingCard, HoldemCommunityCard, HoldemTableText, DealerIcon, CountDownBar, Chip},
 
   mixins: [FormMixin, GameMixin, SoundMixin, GameRoomMixin],
 
@@ -480,7 +482,7 @@ export default {
 
 #player_actions {
   position: absolute;
-  bottom: -25%;
+  bottom: 0px;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -581,9 +583,5 @@ export default {
   display: table-cell;
   vertical-align: middle;
   height: 41vh;
-}
-
-.left-img {
-  margin-top: 1px !important;
 }
 </style>

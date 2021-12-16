@@ -21,6 +21,7 @@ use App\Models\AccountTransaction;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
 use App\Models\Game;
+use App\Models\GamePlayerChip;
 use App\Models\GameRoom;
 use App\Models\GameRoomCommunityCard;
 use App\Models\GameRoomPlayer;
@@ -349,11 +350,11 @@ class GameService extends ParentGameService
                 GameRoomCache::setPreviouslyBet($params['room_id'], $bet);
             }
 
-            broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $bet));
             $this->nextRound($params['room_id'], $params['user_id']);
             $this->sendNextPlayerActionMessage($params);
-            broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $bet));
+            $this->savePlayerChip($params['room_id'], $params['user_id'], $bet);
             DB::commit();
+            broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $bet));
         } catch (\Exception $e) {
             DB::rollBack();
             $message = $e->getMessage();
@@ -730,5 +731,15 @@ class GameService extends ParentGameService
         ]);
 
         broadcast(new ChatMessageSent($chatRoom, $chatMessage));
+    }
+
+    private function savePlayerChip($roomId, $userId, $chip)
+    {
+        GamePlayerChip::updateOrCreate([
+            'game_room_id' => $roomId,
+            'user_id' => $userId
+        ], [
+            'chip' => $chip
+        ]);
     }
 }

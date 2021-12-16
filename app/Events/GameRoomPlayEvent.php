@@ -7,6 +7,7 @@ use App\Helpers\Games\CardDeck;
 use App\Helpers\Games\Poker;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
+use App\Models\GamePlayerChip;
 use App\Models\GameRoom;
 use App\Models\GameRoomCommunityCard;
 use App\Models\GameRoomPlayer;
@@ -58,10 +59,12 @@ class GameRoomPlayEvent implements ShouldBroadcast
      */
     public function broadcastWith()
     {
+        $chips = GamePlayerChip::where('game_room_id', $this->roomId)->get(['user_id', 'chip']);
         return [
             'bet' => $this->bet,
             'user_id' => $this->userId,
-            'game_room' => json_encode(GameRoomCache::getGameRoomCache($this->roomId))
+            'game_room' => json_encode(GameRoomCache::getGameRoomCache($this->roomId)),
+            'chips' => $chips,
         ];
     }
 }

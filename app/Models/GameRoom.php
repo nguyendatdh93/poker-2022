@@ -111,6 +111,11 @@ class GameRoom extends Model
         return $query->where('status', self::STATUS_OPEN);
     }
 
+    public function playerChips()
+    {
+        return $this->hasMany(GamePlayerChip::class, 'game_room_id', 'id');
+    }
+
     public static function boot()
     {
         parent::boot();

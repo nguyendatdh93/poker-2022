@@ -8,6 +8,7 @@ use App\Helpers\Games\Poker;
 use App\Models\Account;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
+use App\Models\GamePlayerChip;
 use App\Models\GameRoom;
 use App\Models\GameRoomCommunityCard;
 use App\Models\GameRoomPlayer;
@@ -65,6 +66,7 @@ class GameRoomStartEvent implements ShouldBroadcast
             GameRoomCache::clearGameRoomCache($this->roomId);
         }
 
+        GamePlayerChip::where('game_room_id', $this->roomId)->delete();
         return $this->gameRoom->parameters->players_count == $this->players->count();
     }
 

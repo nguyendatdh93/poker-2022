@@ -2,7 +2,7 @@ import axios from 'axios'
 import { route } from '~/plugins/route'
 
 import {
-  GAME_ROOM_PLAYERS, GAME_ROOM_FOLD_PLAYERS, GAME_ROOM_PLAYERS_BET, GAME_ROOM_COMMUNITY_CARD, GAME_ROOM_ACTION, GAME_ROOM, GAME_ROOM_CHAT
+  GAME_ROOM_PLAYERS, GAME_ROOM_FOLD_PLAYERS, GAME_ROOM_PLAYERS_BET, GAME_ROOM_COMMUNITY_CARD, GAME_ROOM_ACTION, GAME_ROOM, GAME_ROOM_CHAT, GAME_ROOM_PLAYER_CHIPS
 } from '../mutation-types'
 
 // state
@@ -14,6 +14,7 @@ export const state = {
   action: [],
   gameRoom: [],
   chatDrawer: false,
+  chips: [],
 }
 
 // mutations
@@ -38,6 +39,9 @@ export const mutations = {
   },
   [GAME_ROOM_CHAT] (state, payload) {
     state.chatDrawer = payload;
+  },
+  [GAME_ROOM_PLAYER_CHIPS] (state, payload) {
+    state.chips = payload;
   },
 }
 
@@ -68,6 +72,10 @@ export const actions = {
   setCommunityCard({commit}, payload) {
     // execute the action
     commit(GAME_ROOM_COMMUNITY_CARD, payload);
+  },
+  setChips({commit}, payload) {
+    // execute the action
+    commit(GAME_ROOM_PLAYER_CHIPS, payload);
   },
   async fetchCommunityCard({commit}, payload) {
     await axios.post('/api/games/casino-holdem/community-card', payload)
