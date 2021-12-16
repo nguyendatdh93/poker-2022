@@ -11,92 +11,117 @@
       <span>{{ room.parameters.bet.small }}</span>
       <v-icon class="ml-2">mdi-account-multiple</v-icon>
       <span>{{ $t('{0}/{1}', [playersCount, room.parameters.players_count]) }}</span>
-      <v-spacer />
+      <v-spacer/>
       <v-btn icon small :disabled="forms.joinOrLeave.busy || playing" @click="leaveRoom">
         <v-icon>mdi-logout-variant</v-icon>
       </v-btn>
     </v-system-bar>
     <template v-else>
-      <v-container v-if="!room" fluid class="align-self-start">
-        <v-row align="center" justify="center">
-          <v-col cols="12" md="8">
-            <v-card>
-              <v-toolbar>
-                <v-toolbar-title>
-                  {{ $t('Join Game rooms') }}
-                </v-toolbar-title>
-              </v-toolbar>
-              <v-card-text>
-                <v-row>
-                  <v-col cols="12" class="pr-md-5">
-                    <template v-if="!room">
-                       
-                <v-form @submit.prevent="searchRoom">
-                  <v-select
-                    v-model="forms.create.games_limit_type"
-                    :items="games_limit_type_list"
-                    label="Select Game"
-                    auto-select-first
-                    outlined
-                  
-                  ></v-select>
+      <div class="inner_real" v-if="!room">
+        <div class="real_money">
+          <div id="title_name">
+            <div class="title_name"><h2>Real Money</h2></div>
+          </div>
+        </div>
+        <div class="cashgame">
+          <div class="top_arrow"></div>
+          <div id="cashgame">
+            <h2>Cash Game</h2>
+            <div class="tabs_data">
+              <ul>
+                <li class="active"><a href="#nlhold" id="nlhold-tab" @click="changeTab('nlhold-tab')">NL Hold'em</a></li>
+                <li><a href="#lmhold" id="lmhold-tab" @click="changeTab('lmhold-tab')">Limit Hold'em</a></li>
+              </ul>
+              <div class="tabs_content">
+                <div id="nlhold" class="active">
+                  <div class="top_text">
+                    <div class="lefttext">Stakes: $2/$5</div>
+                    <div class="righttxt">Buy-in: $500-$500</div>
+                  </div>
+                  <div class="slider_tab">
+                    <div class="range_slidr_in">
+                      <select id="cars" name="cars" v-model="forms.create.stakes">
+                        <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
+                        <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
+                        <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
+                        <option value="aud1Z/2Z (min 100Z - max 200Z)i">1Z/2Z (min 100Z - max 200Z)</option>
+                      </select>
+                    </div>
+                    <div class="top_text">
+                      <div class="lefttext">$2/$5</div>
+                      <div class="righttxt">$500/$1,000</div>
+                    </div>
+                  </div>
+                  <div class="btm_text">
+                    <h3>Seats per table</h3>
+                    <div class="numbr_table">
+                      <select v-model="forms.create.players_count">
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="play_btn">
+                    <button @click="searchRoom()">Play Now</button>
+                  </div>
+                </div>
 
-                  <v-select
-                    v-model="forms.create.stakes"
-                    :items="transformStakes()"
-                    label="Select stakes"
-                    outlined
-                    @change="setBuyInRange(forms.create.stakes)"
-                  ></v-select>
-                  <v-text-field
-                    v-model="forms.create.buy_in"
-                    :label="$t('Buy-In')"
-                    :rules="[
-                      validationRequired,
-                      v  =>  buyInMin <= Number(v) || 'buy in should greater than '+ buyInMin,
-                      v  =>  buyInMax >= Number(v) || 'buy in should less than '+ buyInMax
-                    ]"
-                    :error="forms.create.errors.has('buy_in')"
-                    :error-messages="forms.create.errors.get('buy_in')"
-                    outlined
-                    :disabled="forms.create.busy"
-                    @keydown="clearFormErrors($event, 'buy_in', forms.create)"
-                    @keyup="onBuyInChange(forms.create.buy_in)"
-                  />
-                   <v-text-field
-                    v-model="forms.create.players_count"
-                    :label="$t('Maximum players')"
-                    :rules="[
-                      validationRequired,
-                      v  => Number(v) > 1 || 'buy in should greater than'+ 1,
-                      v  => Number(v) < 10 || 'buy in should less than'+ 10
-                    ]"
-                    :error="forms.create.errors.has('players_count')"
-                    :error-messages="forms.create.errors.get('players_count')"
-                    outlined
-                    :disabled="forms.create.busy"
-                    @keydown="clearFormErrors($event, 'players_count', forms.create)"
-                  />
-           
-                        <v-btn type="submit" color="primary" :disabled="forms.joinOrLeave.busy" :loading="forms.joinOrLeave.busy">
-                          {{ $t('Join') }}
-                        </v-btn>
-                      </v-form>
-                    </template>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-      <block-preloader v-else />
+                <div id="lmhold">
+                  <div class="top_text">
+                    <div class="lefttext">Stakes: $2/$5</div>
+                    <div class="righttxt">Buy-in: $500-$500</div>
+                  </div>
+                  <div class="slider_tab">
+                    <div class="range_slidr_in">
+                      <select id="cars" name="cars" v-model="forms.create.stakes">
+                        <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
+                        <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
+                        <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
+                        <option value="aud1Z/2Z (min 100Z - max 200Z)i">1Z/2Z (min 100Z - max 200Z)</option>
+                      </select>
+                    </div>
+                    <div class="top_text">
+                      <div class="lefttext">$2/$5</div>
+                      <div class="righttxt">$500/$1,000</div>
+                    </div>
+                  </div>
+                  <div class="btm_text">
+                    <h3>Seats per table</h3>
+                    <div class="numbr_table">
+                      <select v-model="forms.create.players_count">
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="play_btn">
+                    <button @click="searchRoom()">Play Now</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <block-preloader v-else/>
     </template>
   </div>
 </template>
 
 <script>
-import { config } from '~/plugins/config'
+import {config} from '~/plugins/config'
 import axios from 'axios'
 import Form from 'vform'
 import FormMixin from '~/mixins/Form'
@@ -108,7 +133,7 @@ import UserLeftSound from '~/../audio/common/user-left.wav'
 import BlockPreloader from '~/components/BlockPreloader'
 
 export default {
-  components: { BlockPreloader, FormParameter },
+  components: {BlockPreloader, FormParameter},
 
   mixins: [FormMixin, SoundMixin],
 
@@ -119,7 +144,7 @@ export default {
     }
   },
 
-  data () {
+  data() {
     return {
       room: null,
       rooms: null,
@@ -130,10 +155,10 @@ export default {
           room_id: null
         }),
         create: new Form({
-          stakes: `${1}Z/${2}Z (min ${100}Z - max ${200}Z)`,
+          stakes: '',
           buy_in: 100,
           games_limit_type: "No Limit Holdem",
-          players_count:2,
+          players_count: 2,
         })
       },
       games_limit_type_list: ["No Limit Holdem", "Limit holdem"],
@@ -166,7 +191,7 @@ export default {
         ],
 
         low: [
-          { small: 10, big: 20, min: 500, max: 2500 },
+          {small: 10, big: 20, min: 500, max: 2500},
           {
             small: 25,
             big: 50,
@@ -187,7 +212,7 @@ export default {
             min: 2500,
             max: 10000,
           },
-          { small: 100, big: 200, min: 4000, max: 15000 },
+          {small: 100, big: 200, min: 4000, max: 15000},
           {
             small: 250,
             big: 500,
@@ -196,7 +221,7 @@ export default {
           },
         ],
         high: [
-          { small: 500, big: 1000, min: 50000, max: 100000 },
+          {small: 500, big: 1000, min: 50000, max: 100000},
           {
             small: 1000,
             big: 2000,
@@ -223,9 +248,9 @@ export default {
           },
         ],
       },
-     selectedStakes:[],
-     buyInMin:100,
-     buyInMax:1500000,
+      selectedStakes: [],
+      buyInMin: 100,
+      buyInMax: 1500000,
     }
   },
 
@@ -233,50 +258,50 @@ export default {
     ...mapState('broadcasting', ['echo']),
     ...mapState('auth', ['account', 'user']),
 
-    gamePackageId () {
+    gamePackageId() {
       return this.$route.params.game
     },
-    parameters () {
+    parameters() {
       return config(`${this.gamePackageId}.parameters`)
     },
-    playersCount () {
+    playersCount() {
       return this.players ? this.players.length : 0
     },
-    flatStakesList(){
+    flatStakesList() {
       const values = Object.values(this.allStakes);
       return values.flat();
     }
   },
 
   watch: {
-    room (room, roomBefore) {
+    room(room, roomBefore) {
       // join a room
       if (room && !roomBefore) {
         this.subscribe(room)
-      // leave a room
+        // leave a room
       } else if (!room && roomBefore) {
         this.unsubscribe(roomBefore)
         this.fetchRooms()
         this.$emit('exit')
       }
 
-      this.$emit('room', { room })
+      this.$emit('room', {room})
     },
-    game (game, gameBefore) {
+    game(game, gameBefore) {
       if (game && !gameBefore) {
-        this.$emit('game', { game })
+        this.$emit('game', {game})
       }
     },
-    playersCount (playersCount) {
+    playersCount(playersCount) {
       if (playersCount === parseInt(this.room.parameters.players_count, 10)) {
-        this.$emit('ready', { ready: true })
+        this.$emit('ready', {ready: true})
       } else {
-        this.$emit('ready', { ready: false })
+        this.$emit('ready', {ready: false})
       }
     }
   },
 
-  created () {
+  created() {
     // it's important to wait for next tick,
     // because the game component can be initialized from beforeRouteUpdate() hook,
     // when the route parameters are not het updated
@@ -289,11 +314,10 @@ export default {
       //   })
       // }
     })
-  this.selectedStakes = this.flatStakesList;
-
+    this.selectedStakes = this.flatStakesList;
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     // note that there is no access to this.$route (and hence gamePackageId computed property) in this hook
     this.unsubscribe(this.room)
     this.room = null
@@ -302,42 +326,48 @@ export default {
   },
 
   methods: {
-        ...mapActions({
+    ...mapActions({
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
     }),
-    transformStakes(){
-        return [...this.selectedStakes.map(stake=>`${stake.small}Z/${stake.big}Z (min ${stake.min}Z - max ${stake.max}Z)`)]
+    transformStakes() {
+      return [...this.selectedStakes.map(stake => `${stake.small}Z/${stake.big}Z (min ${stake.min}Z - max ${stake.max}Z)`)]
     },
-    setBuyInRange(selectedStake){
-        const firstHalf = selectedStake.split('(')[0];
-        const foundStake = this.selectedStakes.find(stake=>{
-           const combineSmallAndBigBlind = `${stake.small}Z/${stake.big}Z`;
-           if(firstHalf.trim()==combineSmallAndBigBlind){
-               return stake;
-           }
-        });
-        if(foundStake){
-            this.forms.create.bet = foundStake;
-        }
-
-          this.forms.create.buy_in = foundStake.min
+    changeTab(tabId) {
+      $('.tabs_data ul li').removeClass('active');
+      $("#" + tabId).parent().addClass('active');
+      $('.tabs_content > div').removeClass('active');
+      var idd = $("#" + tabId).attr('href');
+      $('.tabs_content').find(idd).addClass('active');
     },
-    onBuyInChange(buyIn){
-
-      if(buyIn > this.buyInMax === false || buyIn < this.buyInMin === false){
-        let matchedStake='';
-      [...this.selectedStakes].forEach(stake=>
-      {
-        if(stake.min <= buyIn && stake.max >=buyIn && !matchedStake){
-       matchedStake = `${stake.small}Z/${stake.big}Z (min ${stake.min}Z - max ${stake.max}Z)`;
+    setBuyInRange(selectedStake) {
+      const firstHalf = selectedStake.split('(')[0];
+      const foundStake = this.selectedStakes.find(stake => {
+        const combineSmallAndBigBlind = `${stake.small}Z/${stake.big}Z`;
+        if (firstHalf.trim() == combineSmallAndBigBlind) {
+          return stake;
         }
-      })
-      this.forms.create.stakes=matchedStake;
+      });
+      if (foundStake) {
+        this.forms.create.bet = foundStake;
+      }
+
+      this.forms.create.buy_in = foundStake.min
+    },
+    onBuyInChange(buyIn) {
+
+      if (buyIn > this.buyInMax === false || buyIn < this.buyInMin === false) {
+        let matchedStake = '';
+        [...this.selectedStakes].forEach(stake => {
+          if (stake.min <= buyIn && stake.max >= buyIn && !matchedStake) {
+            matchedStake = `${stake.small}Z/${stake.big}Z (min ${stake.min}Z - max ${stake.max}Z)`;
+          }
+        })
+        this.forms.create.stakes = matchedStake;
       }
     },
 
-    async fetchRooms () {
-      const { data } = await axios.get(`/api/games/${this.gamePackageId}/rooms`)
+    async fetchRooms() {
+      const {data} = await axios.get(`/api/games/${this.gamePackageId}/rooms`)
 
       if (data.room) {
         this.room = data.room
@@ -349,60 +379,60 @@ export default {
       }
 
     },
-    async searchRoom () {
-      const { data } = await this.forms.create.post(`/api/games/${this.gamePackageId}/rooms/search`)
+    async searchRoom() {
+      const {data} = await this.forms.create.post(`/api/games/${this.gamePackageId}/rooms/search`)
       if (data.success) {
         this.forms.joinOrLeave.room_id = data.room.id;
         this.updateUserAccountBalance(this.account.balance - this.forms.create.buy_in);
         await this.joinRoom();
-      }else{
-       this.$store.dispatch('message/' + (data.success ? 'success' : 'error'), { text: data.message })
+      } else {
+        this.$store.dispatch('message/' + (data.success ? 'success' : 'error'), {text: data.message})
       }
     },
-    async joinRoom () {
-      const { data } = await this.forms.joinOrLeave.post(`/api/games/${this.gamePackageId}/rooms/join`)
+    async joinRoom() {
+      const {data} = await this.forms.joinOrLeave.post(`/api/games/${this.gamePackageId}/rooms/join`)
 
       if (data.success) {
         this.room = data.room
         this.rooms = null // clear rooms list, so it needs to be fetched again when the player leaves the room
       }
     },
-    async leaveRoom () {
-      const { data } = await this.forms.joinOrLeave.post(`/api/games/${this.gamePackageId}/rooms/leave`)
+    async leaveRoom() {
+      const {data} = await this.forms.joinOrLeave.post(`/api/games/${this.gamePackageId}/rooms/leave`)
 
       if (data.success) {
         this.room = null
       }
     },
-    subscribe (room) {
+    subscribe(room) {
       if (!this.echo || !room) {
         return false
       }
 
       this.echo.join(`game.${room.id}`)
-      // currently joined players
-        .here(players => {
-          this.players = players
-          this.$emit('players', { players })
-        })
-        // new player joined
-        .joining(player => {
-          this.players.push(player)
-          this.$emit('player-joined', { player })
-          this.sound(UserJoinedSound)
-        })
-        // player left
-        .leaving(player => {
-          this.players.splice(this.players.findIndex(item => item.id === player.id), 1)
-          this.$emit('player-left', { player })
-          this.sound(UserLeftSound)
-        })
-      // MultiplayerGameStateChanged event
-      .listen('MultiplayerGameStateChanged', event => {
-        this.$emit('event', { event })
-      })
+          // currently joined players
+          .here(players => {
+            this.players = players
+            this.$emit('players', {players})
+          })
+          // new player joined
+          .joining(player => {
+            this.players.push(player)
+            this.$emit('player-joined', {player})
+            this.sound(UserJoinedSound)
+          })
+          // player left
+          .leaving(player => {
+            this.players.splice(this.players.findIndex(item => item.id === player.id), 1)
+            this.$emit('player-left', {player})
+            this.sound(UserLeftSound)
+          })
+          // MultiplayerGameStateChanged event
+          .listen('MultiplayerGameStateChanged', event => {
+            this.$emit('event', {event})
+          })
     },
-    unsubscribe (room) {
+    unsubscribe(room) {
       if (!this.echo || !room) {
         return false
       }
@@ -413,11 +443,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '~vuetify/src/styles/settings/_variables';
+@import '~vuetify/src/styles/settings/_variables';
 
-  @media #{map-get($display-breakpoints, 'md-and-up')} {
-    .border-left {
-      border-left: 1px solid grey;
-    }
+@media #{map-get($display-breakpoints, 'md-and-up')} {
+  .border-left {
+    border-left: 1px solid grey;
   }
+}
 </style>
