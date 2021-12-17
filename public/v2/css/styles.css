@@ -2789,8 +2789,22 @@ polygon, circle {
 	width: 100%;
 	background: #fff;
 	border-radius: 10px;
-	padding: 20px 20px 15px 20px;
+	padding: 0px;
 	margin-top: 10px;
+	position: relative;
+}
+.slider_tab::after {
+	content: '\f107';
+	font-family: FontAwesome;
+	color: #000;
+	position: absolute;
+	width: 10px;
+	right: 20px;
+	top: 10px;
+	font-size:20px;
+}
+.slider_tab select {
+	appearance: none !important;
 }
 #range_in {
 	width: 100%;
@@ -3004,4 +3018,18 @@ polygon, circle {
 }
 #dealer_button_custom::before {
 	display: none !important;
+}
+.router-link-active {
+	width: 200px;
+}
+.router-link-active img {
+	width: 100%;
+}
+.slider_tab select {
+	width: 100%;
+	background: none !important;
+	border: none !important;
+	padding: 12px 20px 15px 20px;
+	position: relative;
+	z-index: 9;
 }

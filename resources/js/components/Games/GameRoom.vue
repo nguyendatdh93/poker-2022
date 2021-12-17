@@ -39,30 +39,19 @@
                     <div class="righttxt">Buy-in: $500-$500</div>
                   </div>
                   <div class="slider_tab">
-                    <div class="range_slidr_in">
-                      <select id="cars" name="cars" v-model="forms.create.stakes">
-                        <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
-                        <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
-                        <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
-                        <option value="aud1Z/2Z (min 100Z - max 200Z)i">1Z/2Z (min 100Z - max 200Z)</option>
-                      </select>
-                    </div>
-                    <div class="top_text">
-                      <div class="lefttext">$2/$5</div>
-                      <div class="righttxt">$500/$1,000</div>
-                    </div>
+                    <select>
+                      <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
+                      <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
+                      <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
+                      <option value="aud1Z/2Z (min 100Z - max 200Z)i">1Z/2Z (min 100Z - max 200Z)</option>
+                    </select>
                   </div>
                   <div class="btm_text">
                     <h3>Seats per table</h3>
                     <div class="numbr_table">
                       <select v-model="forms.create.players_count">
                         <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
                         <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
                         <option value="9">9</option>
                       </select>
                     </div>
@@ -78,30 +67,19 @@
                     <div class="righttxt">Buy-in: $500-$500</div>
                   </div>
                   <div class="slider_tab">
-                    <div class="range_slidr_in">
-                      <select id="cars" name="cars" v-model="forms.create.stakes">
-                        <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
-                        <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
-                        <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
-                        <option value="aud1Z/2Z (min 100Z - max 200Z)i">1Z/2Z (min 100Z - max 200Z)</option>
-                      </select>
-                    </div>
-                    <div class="top_text">
-                      <div class="lefttext">$2/$5</div>
-                      <div class="righttxt">$500/$1,000</div>
-                    </div>
+                    <select>
+                      <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
+                      <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
+                      <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
+                      <option value="aud1Z/2Z (min 100Z - max 200Z)i">1Z/2Z (min 100Z - max 200Z)</option>
+                    </select>
                   </div>
                   <div class="btm_text">
                     <h3>Seats per table</h3>
                     <div class="numbr_table">
                       <select v-model="forms.create.players_count">
                         <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
                         <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
                         <option value="9">9</option>
                       </select>
                     </div>
