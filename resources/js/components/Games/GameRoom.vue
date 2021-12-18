@@ -59,13 +59,13 @@
                 </div>
 
                 <div id="lmhold">
-                  <div class="top_text">
-                    <div class="lefttext">Stakes: $2/$5</div>
-                    <div class="righttxt">Buy-in: $500-$500</div>
+                  <div class="top_text" v-if="stakeSelection.small">
+                    <div class="lefttext">Stakes: ${{ stakeSelection.small }}/${{ stakeSelection.big }}</div>
+                    <div class="righttxt">Buy-in: ${{ stakeSelection.min}}-${{ stakeSelection.max }}</div>
                   </div>
                   <div class="slider_tab">
                     <select v-model="stakeSelection">
-                      <option v-for="(stake, key) in allStakes" :key="key" :value="getStakeValue(stake)">{{ getStakeValue(stake) }}</option>
+                      <option v-for="(stake, key) in allStakes" :key="key" :value="stake">{{ getStakeValue(stake) }}</option>
                     </select>
                   </div>
                   <div class="btm_text">
@@ -122,13 +122,18 @@ export default {
       rooms: null,
       players: null,
       game: null,
-      stakeSelection: {},
+      stakeSelection: {
+        small: 1,
+        big: 2,
+        min: 100,
+        max: 200,
+      },
       forms: {
         joinOrLeave: new Form({
           room_id: null
         }),
         create: new Form({
-          stakes: '',
+          stakes: '1Z/2Z (min 100Z - max 200Z)',
           buy_in: 100,
           games_limit_type: "No Limit Holdem",
           players_count: 2,
