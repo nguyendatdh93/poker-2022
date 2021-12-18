@@ -1,5 +1,5 @@
 <template>
-  <div id="dealer_button_custom" class="cards ani1">
+  <div id="dealer_button_custom" class="d_card_0">
     <img src="/v2/images/deal-btn.png" alt=""/>
   </div>
 </template>
@@ -21,9 +21,8 @@ export default {
   methods: {
     distributeDealerIcon() {
       setTimeout(function () {
-        let dealerClass= $('.is-dealer')[0].classList.value;
         $('#dealer_button_custom').removeAttr('class');
-        $('#dealer_button_custom').addClass($('.is-dealer')[0].classList[0] + ' ' + $('.is-dealer')[0].classList[1]);
+        $('#dealer_button_custom').addClass($('.is-dealer')[0].classList[3]);
         $('#dealer_button_custom').css('transition', '.5s all');
       }, 2000);
     },

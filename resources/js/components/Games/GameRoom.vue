@@ -274,17 +274,8 @@ export default {
   },
 
   created() {
-    // it's important to wait for next tick,
-    // because the game component can be initialized from beforeRouteUpdate() hook,
-    // when the route parameters are not het updated
     this.$nextTick(() => {
       this.fetchRooms()
-
-      // if (this.parameters) {
-      //   this.parameters.forEach(parameter => {
-      //     this.forms.create.parameters[parameter.id] = parameter.default
-      //   })
-      // }
     })
     this.selectedStakes = this.flatStakesList;
   },
@@ -302,7 +293,6 @@ export default {
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
     }),
     getStakeValue(stake) {
-      console.log(stake);
       return stake.small + "Z/" + stake.big + "Z (min " + stake.min + "Z - max "+ stake.max + "Z)";
     },
     transformStakes() {

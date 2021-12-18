@@ -68,7 +68,6 @@ export default {
       }
     },
     fillColor() {
-      console.log(this.suit);
       if (this.suit) {
         if (['C', 'S'].includes(this.suit)) return 'black'
         return 'red'

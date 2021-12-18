@@ -55,7 +55,7 @@
                     <div id="innergrid">
                       <ul class="list">
                         <dealer-icon v-if="gameRoom && gameRoom.round" :room="room"></dealer-icon>
-                        <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)} ` + (isDealer(opponent.user_id) ? `is-dealer` : ``)">
+                        <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)} ` + (isDealer(opponent.user_id) ? `is-dealer d_card_${getPlayerPosition(players, opponent, i)}` : ``)">
                           <div class="left-img">
                             <div class="img" style="border-radius: 15px">
                               <img :src="opponent.user && opponent.user.avatar_url ? opponent.user.avatar_url : (opponent.user && opponent.user.gravatar_url ? opponent.user.gravatar_url : '')" alt="" style="width: 100%"/>

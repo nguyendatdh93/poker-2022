@@ -16,9 +16,11 @@ export default {
   },
   methods: {
     getChip() {
-      for (let i=0; i<= this.chips.length; i++) {
-        if (this.chips[i].user_id == this.opponent.user_id) {
-          return this.chips[i].chip;
+      if (this.chips) {
+        for (let i=0; i<= this.chips.length; i++) {
+          if (this.chips[i] && this.chips[i].user_id == this.opponent.user_id) {
+            return this.chips[i].chip;
+          }
         }
       }
 
