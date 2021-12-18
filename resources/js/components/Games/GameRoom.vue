@@ -34,16 +34,13 @@
               </ul>
               <div class="tabs_content">
                 <div id="nlhold" class="active">
-                  <div class="top_text">
-                    <div class="lefttext">Stakes: $2/$5</div>
-                    <div class="righttxt">Buy-in: $500-$500</div>
+                  <div class="top_text" v-if="stakeSelection.small">
+                    <div class="lefttext">Stakes: ${{ stakeSelection.small }}/${{ stakeSelection.big }}</div>
+                    <div class="righttxt">Buy-in: ${{ stakeSelection.min}}-${{ stakeSelection.max }}</div>
                   </div>
                   <div class="slider_tab">
-                    <select>
-                      <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
-                      <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
-                      <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
-                      <option value="aud1Z/2Z (min 100Z - max 200Z)i">1Z/2Z (min 100Z - max 200Z)</option>
+                    <select v-model="stakeSelection">
+                      <option v-for="(stake, key) in allStakes" :key="key" :value="stake">{{ getStakeValue(stake) }}</option>
                     </select>
                   </div>
                   <div class="btm_text">
@@ -67,11 +64,8 @@
                     <div class="righttxt">Buy-in: $500-$500</div>
                   </div>
                   <div class="slider_tab">
-                    <select>
-                      <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
-                      <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
-                      <option value="1Z/2Z (min 100Z - max 200Z)">1Z/2Z (min 100Z - max 200Z)</option>
-                      <option value="aud1Z/2Z (min 100Z - max 200Z)i">1Z/2Z (min 100Z - max 200Z)</option>
+                    <select v-model="stakeSelection">
+                      <option v-for="(stake, key) in allStakes" :key="key" :value="getStakeValue(stake)">{{ getStakeValue(stake) }}</option>
                     </select>
                   </div>
                   <div class="btm_text">
@@ -128,6 +122,7 @@ export default {
       rooms: null,
       players: null,
       game: null,
+      stakeSelection: {},
       forms: {
         joinOrLeave: new Form({
           room_id: null
@@ -140,8 +135,7 @@ export default {
         })
       },
       games_limit_type_list: ["No Limit Holdem", "Limit holdem"],
-      allStakes: {
-        micro: [
+      allStakes: [
           {
             small: 1,
             big: 2,
@@ -166,9 +160,6 @@ export default {
             min: 500,
             max: 1500,
           },
-        ],
-
-        low: [
           {small: 10, big: 20, min: 500, max: 2500},
           {
             small: 25,
@@ -182,8 +173,6 @@ export default {
             min: 1500,
             max: 6000,
           },
-        ],
-        medium: [
           {
             small: 50,
             big: 100,
@@ -197,8 +186,6 @@ export default {
             min: 10000,
             max: 20000,
           },
-        ],
-        high: [
           {small: 500, big: 1000, min: 50000, max: 100000},
           {
             small: 1000,
@@ -224,8 +211,7 @@ export default {
             min: 700000,
             max: 1500000,
           },
-        ],
-      },
+      ],
       selectedStakes: [],
       buyInMin: 100,
       buyInMax: 1500000,
@@ -276,6 +262,9 @@ export default {
       } else {
         this.$emit('ready', {ready: false})
       }
+    },
+    stakeSelection(stake) {
+      this.forms.create.stakes = this.getStakeValue(stake);
     }
   },
 
@@ -307,6 +296,10 @@ export default {
     ...mapActions({
       updateUserAccountBalance: 'auth/updateUserAccountBalance',
     }),
+    getStakeValue(stake) {
+      console.log(stake);
+      return stake.small + "Z/" + stake.big + "Z (min " + stake.min + "Z - max "+ stake.max + "Z)";
+    },
     transformStakes() {
       return [...this.selectedStakes.map(stake => `${stake.small}Z/${stake.big}Z (min ${stake.min}Z - max ${stake.max}Z)`)]
     },
