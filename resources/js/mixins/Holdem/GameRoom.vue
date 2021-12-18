@@ -61,13 +61,6 @@ export default {
         setTimeout(function () {
           self.startCountDown = true;
         }, 2000)
-      }).then(() => {
-          setTimeout(function () {
-            $('#dealer_button_custom').removeAttr('class');
-            $('#dealer_button_custom').addClass($('.is-dealer')[0].classList[3]);
-            // $('#dealer_button_custom').addClass($('.is-dealer')[0].classList[0] + ' ' + $('.is-dealer')[0].classList[1]);
-            $('#dealer_button_custom').css('transition', '.5s all');
-          }, 2000);
       });
     },
     updatePlayerHand(player, values) {
