@@ -1,5 +1,5 @@
 <template>
-  <div id="dealer_button_custom" class="d_card_0">
+  <div id="dealer_button_custom" class="cards ani0 d_card_0">
     <img src="/v2/images/deal-btn.png" style="width: 100%" alt=""/>
   </div>
 </template>
@@ -30,8 +30,8 @@ export default {
     distributeDealerIcon() {
       setTimeout(function () {
         $('#dealer_button_custom').removeAttr('class');
-        $('#dealer_button_custom').addClass($('.is-dealer')[0].classList[0] + ' ' + $('.is-dealer')[0].classList[1] + ' ' + $('.is-dealer')[0].classList[3]);
         $('#dealer_button_custom').css('transition', '1s all');
+        $('#dealer_button_custom').addClass($('.is-dealer')[0].classList[0] + ' ' + $('.is-dealer')[0].classList[1] + ' ' + $('.is-dealer')[0].classList[3]);
       }, 2000);
     },
   }
