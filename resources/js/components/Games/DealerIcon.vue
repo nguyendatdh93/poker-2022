@@ -9,25 +9,28 @@ import {mapState} from "vuex";
 
 export default {
   name: "DealerIcon",
-  props: ['room-prop'],
+  props: ['room-prop', 'dealer'],
   data() {
     return {
       room: null,
-    }
-  },
-  created() {
-    this.room = this.roomProp;
-  },
-  watch: {
-    room: function (val) {
-      this.distributeDealerIcon();
+      dealerID: null,
     }
   },
   computed: {
     ...mapState('broadcasting', ['echo']),
   },
+  created() {
+    this.room = this.roomProp;
+    this.distributeDealerIcon();
+  },
+  watch: {
+    dealer: function (val) {
+      this.distributeDealerIcon();
+    }
+  },
   methods: {
     distributeDealerIcon() {
+      console.log('distributeDealerIcon');
       setTimeout(function () {
         $('#dealer_button_custom').removeAttr('class');
         $('#dealer_button_custom').css('transition', '1s all');
