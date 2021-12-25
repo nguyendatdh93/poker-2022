@@ -739,7 +739,7 @@ class GameService extends ParentGameService
             'game_room_id' => $roomId,
             'user_id' => $userId
         ], [
-            'chip' => $chip
+            'chip' => DB::raw("chip + $chip")
         ]);
     }
 }
