@@ -3,5 +3,6 @@ storage/framework/cache/data/*
 storage/logs/
 storage/sessions/
 node_modules/
+vendor/
 .env
 /.env

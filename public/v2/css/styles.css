@@ -2829,7 +2829,7 @@ polygon, circle {
 .numbr_table select {
 	position: absolute;
 	left: 0;
-	width: 96%;
+	width: 100%;
 	height: 36px;
 	z-index: 9;
 	text-align: center;
