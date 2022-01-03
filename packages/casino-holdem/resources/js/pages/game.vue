@@ -55,7 +55,7 @@
                     <div id="innergrid">
                       <ul class="list">
                         <dealer-icon v-if="gameRoom && gameRoom.round" :room-prop="room" :dealer="gameRoom.dealer"></dealer-icon>
-                        <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)} ` + (isDealer(opponent.user_id) ? `is-dealer d_card_${getPlayerPosition(players, opponent, i)}` : ``)">
+                        <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)} ` +  (isDealer(opponent.user_id) ? `is-dealer d_card_${getPlayerPosition(players, opponent, i)}` : ``)" :id="(opponent.user_id == gameRoom.action_index && gameRoom.round <= 4 && startCountDown)?`player-chance`:`not-player`">
                           <div class="left-img">
                             <div class="img" style="border-radius: 15px">
                               <img :src="opponent.user && opponent.user.avatar_url ? opponent.user.avatar_url : (opponent.user && opponent.user.gravatar_url ? opponent.user.gravatar_url : '')" alt="" style="width: 100%"/>
@@ -583,5 +583,9 @@ export default {
   display: table-cell;
   vertical-align: middle;
   height: 41vh;
+}
+
+#player-chance:before{
+  background-image: linear-gradient(#e48130, #f0b44d, #f0b44d, #e48130);
 }
 </style>
