@@ -163,7 +163,7 @@ class GameService extends ParentGameService
         $foldPlayers = GameRoomCache::getFoldPlayers($params['room_id']);
         $playerId = $params['user_id'];
         $currentIndex = 0;
-        if ($players) {
+        if (is_array($players) && $players) {
             $currentIndex = array_search($playerId, $players);
         }
 
@@ -190,7 +190,10 @@ class GameService extends ParentGameService
         $players = GameRoomCache::getPlayers($params['room_id']);
         $foldPlayers = GameRoomCache::getFoldPlayers($params['room_id']);
         $playerId = $params['user_id'];
-        $currentIndex = array_search($playerId, $players);
+        if (is_array($players) && $players) {
+            $currentIndex = array_search($playerId, $players);
+        }
+
         $rotatePlayer = null;
         foreach ($players as $key => $player) {
             if (in_array($player, $foldPlayers)) {
@@ -201,7 +204,7 @@ class GameService extends ParentGameService
                 $rotatePlayer = $player;
             }
 
-            if ($currentIndex < $key) {
+            if ($currentIndex ?? 0 < $key) {
                 return $player;
             }
         }
@@ -684,7 +687,10 @@ class GameService extends ParentGameService
         $players = GameRoomCache::getPlayers($params['room_id']);
         $foldPlayers = GameRoomCache::getFoldPlayers($params['room_id']);
         $playerId = $params['user_id'];
-        $currentIndex = array_search($playerId, $players);
+        if (is_array($players) && $players) {
+            $currentIndex = array_search($playerId, $players);
+        }
+
         $rotatePlayer = null;
         foreach ($players as $key => $player) {
             if (in_array($player, $foldPlayers)) {
@@ -695,7 +701,7 @@ class GameService extends ParentGameService
                 $rotatePlayer = $player;
             }
 
-            if ($currentIndex < $key) {
+            if (($currentIndex ?? 0) < $key) {
                 return $player;
             }
         }
