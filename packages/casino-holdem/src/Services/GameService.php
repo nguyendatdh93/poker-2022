@@ -204,7 +204,7 @@ class GameService extends ParentGameService
                 $rotatePlayer = $player;
             }
 
-            if ($currentIndex ?? 0 < $key) {
+            if (($currentIndex ?? 0) < $key) {
                 return $player;
             }
         }
@@ -246,6 +246,7 @@ class GameService extends ParentGameService
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
+            var_dump($e->getTraceAsString());die;
         }
 
         return $this;
