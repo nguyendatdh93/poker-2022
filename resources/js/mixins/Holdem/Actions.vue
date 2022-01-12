@@ -135,6 +135,18 @@ export default {
     },
     changeSlider(event) {
       this.sliderBet = $(event.currentTarget).val()
+    },
+    collectChips(){
+        $(".c_cards").each(function (e) {   
+          setTimeout(function () {
+              $('.list').addClass('chips'); 
+              $('.winning-score').show('fade');
+              if(e==4){
+                $('.winning-score').show('fade');
+              } 
+              $(".c_cards").eq(e).addClass("ani" + e);
+            }, e * 2000);
+      });
     }
   }
 }

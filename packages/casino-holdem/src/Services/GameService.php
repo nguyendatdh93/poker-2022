@@ -608,7 +608,7 @@ class GameService extends ParentGameService
         GameRoomCache::setPlayersCards($roomId, $playersCards->keyBy('user_id'));
         $user = User::where('id', $winnerId)->first();
         $pot = GameRoomCache::getPot($roomId);
-        $this->sendChatMessage($roomId, $winnerId, "$user->name wins pot($pot) with high card king");
+        $this->sendChatMessage($roomId, $winnerId, "$user->name wins pot($pot) with high card king", "WinnerDeclare");
 
         // calculate winners amount and other players stake
         $winnersPercentage = 97.5; //todo- add this to env
@@ -654,7 +654,7 @@ class GameService extends ParentGameService
         }
 
         if ($round + 1 <= 4) {
-            $this->sendChatMessage($roomId, $playerId, 'Next to round '. GameRoomCache::getRound($roomId));
+            $this->sendChatMessage($roomId, $playerId, 'Next to round '. GameRoomCache::getRound($roomId), 'NextGameRound');
         } else {
             $this->handleWinnerCards($roomId);
             sleep(3);
@@ -665,7 +665,7 @@ class GameService extends ParentGameService
     private function moveToNextGame($roomId, $playerId)
     {
         // clear all current game
-        $this->sendChatMessage($roomId, $playerId, 'Continue to start new game');
+        $this->sendChatMessage($roomId, $playerId, 'Continue to start new game', 'StartGame');
         GameRoomCache::clearGameRoomCache($roomId);
         $players = $this->getRoomPlayers([
             'room_id' => $roomId
@@ -726,7 +726,7 @@ class GameService extends ParentGameService
         return $poker->getCommunityCards()->map->code->first();
     }
 
-    private function sendChatMessage($roomId, $userId, $message)
+    private function sendChatMessage($roomId, $userId, $message, $maintainMessage = '')
     {
         // store message
         $chatRoom = ChatRoom::where('room_id', $roomId)->first();
@@ -735,6 +735,7 @@ class GameService extends ParentGameService
             'user_id' => $userId,
             'message' => $message,
             'sys' => 1,
+            'maintaingame' => $maintainMessage
         ]);
 
         broadcast(new ChatMessageSent($chatRoom, $chatMessage));

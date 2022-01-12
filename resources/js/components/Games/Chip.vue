@@ -1,5 +1,5 @@
 <template>
-  <div :class="`poker_icon left chip-` + opponent.user_id" v-if="chips">
+  <div :class="`poker_icon chip-` + opponent.user_id +` `+setClassPossition()" v-if="chips">
     <img src="/v2/images/pokr-icon.png" alt="">
     <span>{{ getChip() }}</span>
   </div>
@@ -10,7 +10,7 @@ import {mapState} from "vuex";
 
 export default {
   name: "Chip",
-  props: ['opponent'],
+  props: ['opponent','numberofplayers','playerpositon'],
   computed: {
     ...mapState('game-room', ['chips']),
   },
@@ -25,6 +25,12 @@ export default {
       }
 
       return 0;
+    },
+    setClassPossition(){
+        if(this.numberofplayers == 'two')
+        {
+              return 'bottom';
+        }
     }
   }
 }

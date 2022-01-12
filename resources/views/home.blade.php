@@ -33,6 +33,8 @@
             @if(!$user)
               <div class="header-btn button-border"><a href="/login">Login</a></div>
               <div class="header-btn"><a href="/register">Join</a></div>
+            @else
+              <div class="header-btn"><a href="/logout">Logout</a></div>
             @endif
           </div>
         </div>

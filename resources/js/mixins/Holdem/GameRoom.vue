@@ -23,6 +23,7 @@ export default {
               return window.location.href = '/';
             }
 
+
             this.$store.dispatch('game-room/setPlayers', JSON.parse(data.players))
           }).listen('GameRoomStartEvent', data => {
             this.$store.dispatch('game-room/setGameRoom', data.game_room);
@@ -31,6 +32,12 @@ export default {
             let gameRoom = JSON.parse(data.game_room);
             this.$store.dispatch('game-room/setGameRoom', gameRoom);
             this.$store.dispatch('game-room/setChips', data.chips);
+            if(data.hasOwnProperty('bet'))
+            {
+              $("#playerId_"+data.user_id+" .poker_icon").css('opacity',1);
+              $("#playerId_"+data.user_id+" .poker_icon span").html(data.bet);
+            }
+
             this.gamePlay = true;
             if (data.user_id == this.user.id) {
               this.updateUserAccountBalance(this.account.balance - data.bet);

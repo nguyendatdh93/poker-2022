@@ -1,6 +1,5 @@
 <?php
 use Illuminate\Support\Facades\Artisan;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,4 +21,6 @@ Route::get('/migrate', function(){
     echo "migrated";
 });
 Route::get('/', [PageController::class, 'home'])->middleware('referrer');
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('/{path}', [PageController::class, 'index'])->where('path', '.*')->middleware('referrer');
+
