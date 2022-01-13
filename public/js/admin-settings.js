@@ -321,6 +321,10 @@ var map = {
 		"./packages/multiplayer-blackjack/resources/js/pages/admin/settings.vue",
 		"vendor/vuetify",
 		"packages/multiplayer-blackjack-resources-js-pages-admin-settings"
+	],
+	"./payments/resources/js/pages/admin/settings": [
+		"./packages/payments/resources/js/pages/admin/settings.vue",
+		"packages/payments-resources-js-pages-admin-settings"
 	]
 };
 function webpackAsyncContext(req) {

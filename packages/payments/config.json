@@ -16,7 +16,10 @@
         "DepositMethodSeeder": "database/seeders",
         "WithdrawalMethodSeeder": "database/seeders"
     },
+    "system_requirements": [
+        "PHP GMP extension"
+    ],
     "purchase_url": "https://bit.ly/stake-payments-add-on",
-    "min_app_version": "1.9.0",
+    "min_app_version": "1.13.2",
     "hash": "5af32b42bb9f2e6090d1cfad39a4a41d"
 }
