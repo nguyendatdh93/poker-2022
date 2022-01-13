@@ -2,7 +2,7 @@ import axios from 'axios'
 import { route } from '~/plugins/route'
 
 import {
-  GAME_ROOM_PLAYERS, GAME_ROOM_FOLD_PLAYERS, GAME_ROOM_PLAYERS_BET, GAME_ROOM_COMMUNITY_CARD, GAME_ROOM_ACTION, GAME_ROOM, GAME_ROOM_CHAT, GAME_ROOM_PLAYER_CHIPS
+  GAME_ROOM_PLAYERS, GAME_ROOM_FOLD_PLAYERS, GAME_ROOM_PLAYERS_BET, GAME_ROOM_COMMUNITY_CARD, GAME_ROOM_ACTION, GAME_ROOM, GAME_ROOM_CHAT, GAME_ROOM_PLAYER_CHIPS, GAME_ROOM_COLLECT_POTS
 } from '../mutation-types'
 
 // state
@@ -15,6 +15,7 @@ export const state = {
   gameRoom: [],
   chatDrawer: false,
   chips: [],
+  collectpot: 0
 }
 
 // mutations
@@ -42,6 +43,9 @@ export const mutations = {
   },
   [GAME_ROOM_PLAYER_CHIPS] (state, payload) {
     state.chips = payload;
+  },
+  [GAME_ROOM_COLLECT_POTS] (state, payload) {
+    state.collectpot = payload;
   },
 }
 

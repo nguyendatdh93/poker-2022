@@ -48,7 +48,7 @@ class ChatMessageSent implements ShouldBroadcast
     public function broadcastWith()
     {
         return array_merge(
-            $this->message->only('message', 'sys', 'created_at', 'created_ago'),
+            $this->message->only('message','maintaingame', 'sys', 'created_at', 'created_ago'),
             ['user' => $this->message->user->only('id', 'name', 'avatar_url')],
             [
                 'recipients' => $this->message->recipients

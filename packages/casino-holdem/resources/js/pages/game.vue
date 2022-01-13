@@ -17,7 +17,7 @@
           <div class="imgg" style="max-width: 1045px;margin: auto;">
             <div id="imgg-pp">
               <div id="imgg">
-                <img src="/v2/images/table.png" alt="" style="margin: auto;">
+                <img src="/v2/images/table.png" alt="" style="margin: auto;width: 100%;">
               </div>
             </div>
           </div>
@@ -55,7 +55,7 @@
                     <div id="innergrid">
                       <ul class="list">
                         <dealer-icon v-if="gameRoom && gameRoom.round" :room-prop="room" :dealer="gameRoom.dealer"></dealer-icon>
-                        <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)} ` +  (isDealer(opponent.user_id) ? `is-dealer d_card_${getPlayerPosition(players, opponent, i)}` : ``)" :id="(opponent.user_id == gameRoom.action_index && gameRoom.round <= 4 && startCountDown)?`player-chance`:`not-player`">
+                        <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)} ` + (isDealer(opponent.user_id) ? `is-dealer d_card_${getPlayerPosition(players, opponent, i)}` : ``) + ` ` + ((opponent.user_id == gameRoom.action_index && gameRoom.round <= 4 && startCountDown)?`player-chance`:`not-player`)" :id="`playerId_`+opponent.user_id">
                           <div class="left-img">
                             <div class="img" style="border-radius: 15px">
                               <img :src="opponent.user && opponent.user.avatar_url ? opponent.user.avatar_url : (opponent.user && opponent.user.gravatar_url ? opponent.user.gravatar_url : '')" alt="" style="width: 100%"/>
@@ -65,7 +65,7 @@
                             <h2>{{ isFoldPlayer(opponent.user_id) ? 'Fold' : getTextOverflow(opponent.name, 10) }}</h2>
                             <span v-if="opponent.user">{{ opponent.user.account.buy_in }}</span>
                           </div>
-                          <chip :opponent="opponent"></chip>
+                          <chip :opponent="opponent" :playerpositon="getPlayerPosition(players, opponent, i)" :numberofplayers="getNumberPlayers()"></chip>
                           <count-down-bar
                               :opponent="opponent"
                               :room="room"
@@ -213,10 +213,10 @@ export default {
       this.bonusBet = this.defaultBonusBet;
 
       setTimeout(function () {
-        jQuery('.cards').each(function () {
-          var barr = jQuery(this).find('#progress_bar').attr('data-max');
+        $('.cards').each(function () {
+          var barr = $(this).find('#progress_bar').attr('data-max');
           if (barr != undefined) {
-            jQuery(this).find('#progress_bar').width(barr + '%');
+            $(this).find('#progress_bar').width(barr + '%');
           }
         });
       }, 2000);
@@ -391,6 +391,7 @@ export default {
       }
     },
     onEvent(event) {
+      console.log(event.action);
       if (event.action !== 'cancel') {
         // loop through player hands
         Object.keys(event.gameable.hands).forEach(userId => {
@@ -418,7 +419,7 @@ export default {
       // if game is completed
       if (event.game.is_completed) {
         this.playing = false
-
+          console.log('player win');
         // push
         if (this.winnersCount > 1) {
           this.sound(pushSound)
@@ -427,6 +428,7 @@ export default {
         } else if (this.player.win > 0) {
           this.sound(winSound)
           this.updateUserAccountBalance(this.account.balance + this.player.win)
+         
           // player loses
         } else {
           this.sound(loseSound)
@@ -450,7 +452,8 @@ export default {
       }
 
       return text;
-    }
+    },
+    
   }
 }
 </script>
@@ -585,7 +588,7 @@ export default {
   height: 41vh;
 }
 
-#player-chance:before{
+.player-chance:before{
   background-image: linear-gradient(#e48130, #f0b44d, #f0b44d, #e48130);
 }
 </style>

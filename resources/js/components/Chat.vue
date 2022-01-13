@@ -81,6 +81,7 @@
                     </user-profile-modal>
                   </template>
                   {{ msg.message }}
+                   
                 </p>
               </v-list-item-content>
             </v-list-item>
@@ -240,10 +241,12 @@ export default {
 
       this.messages = data
 
+
       this.scrollToBottom()
     },
 
     addMessage (message) {
+      this.checkMessage(message);
       this.messages.push(message)
       this.scrollToBottom()
 
@@ -338,6 +341,62 @@ export default {
         // https://stackoverflow.com/a/270628/2767324
         this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
       })
+    },
+    checkMessage(message){
+      if(message.maintaingame == 'NextGameRound')
+      {
+        this.$store.commit('game-room/GAME_ROOM_COLLECT_POTS', 1);
+        $('.list').addClass('chips'); 
+      }
+      else if(message.maintaingame == 'StartGame')
+      {
+        $('.poker_icon').css('opacity',0);
+        this.$store.commit('game-room/GAME_ROOM_COLLECT_POTS', 0);
+          for(var index = 0; index < this.usersCount; index++)
+          {
+            if($(".winning-score").hasClass('winner'+index))
+            {
+              $(".winning-score").removeClass('winner'+index);
+            }
+          }
+      }
+      else if(message.maintaingame == 'WinnerDeclare')
+      {
+        if(this.usersCount == 2)
+        {
+          if($("#playerId_"+message.user.id).hasClass('ani0'))
+          {
+            $(".winning-score").addClass('winner0');
+          }
+          else
+          {
+            $(".winning-score").addClass('winner1');
+          }
+          setTimeout(function() {
+              $('.winning-score').css('opacity',0);
+          },800);
+        }
+      }
+      else
+      {
+        if($(".list").hasClass("chips"))
+        {
+           setTimeout(function() {
+            $('.poker_icon').css('opacity',0);
+              $('.list').removeClass('chips'); 
+           },500);
+        }
+      }
+
+
+     
+    },
+    wait(ms){
+       var start = new Date().getTime();
+       var end = start;
+       while(end < start + ms) {
+         end = new Date().getTime();
+      }
     }
   }
 }
