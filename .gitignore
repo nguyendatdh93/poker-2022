@@ -6,3 +6,7 @@ node_modules/
 vendor/
 .env
 /.env
+/public/js
+/package-lock.json
+/vendor
+/public/mix-manifest.json

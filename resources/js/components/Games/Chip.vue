@@ -31,6 +31,10 @@ export default {
         {
               return 'bottom';
         }
+        else
+        {
+          return 'right';
+        }
     }
   }
 }
