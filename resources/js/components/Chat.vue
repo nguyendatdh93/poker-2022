@@ -362,20 +362,17 @@ export default {
       }
       else if(message.maintaingame == 'WinnerDeclare')
       {
-        if(this.usersCount == 2)
-        {
-          if($("#playerId_"+message.user.id).hasClass('ani0'))
+         for(var index = 0; index < this.usersCount; index++)
           {
-            $(".winning-score").addClass('winner0');
+             if($("#playerId_"+message.user.id).hasClass('player-sit-positon'+index))
+             {
+              $(".winning-score").addClass('position'+index);
+             }
           }
-          else
-          {
-            $(".winning-score").addClass('winner1');
-          }
+           
           setTimeout(function() {
               $('.winning-score').css('opacity',0);
           },800);
-        }
       }
       else
       {

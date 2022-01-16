@@ -717,74 +717,12 @@ body {
 }
 
 
-.six-players .card.ani1 {
-	left: 500px;
-	top: 30px;
-}
-.six-players .cards.ani1 {
-	left: 0px !important;
-	top: 344px;
-}
-
-.six-players .card.ani3 {
-	left: 490px;
-	top: 375px;
-}
-.six-players .cards.ani3 {
-	left: 980px;
-	top: 175px;
-}
-
-.six-players .cards.ani1 {
-	left: -50px !important;
-	top: 390px;
-}
-.six-players .card.ani1 {
-	left: -7px;
-	top: -3px;
-}
-.six-players .cards.ani2 {
-	top: 390px;
-	left: 1000px !important;
-}
 .six-players .poker_icon.top {
 	top: 40px;
 	position: absolute;
 	text-align: center;
 	width: auto;
 	left: -37%;
-}
-.six-players .card.ani4 {
-	left: -520px;
-	top: 160px;
-}
-.six-players .card.ani2 {
-	left: 480px;
-	top: 159px;
-}
-.six-players .cards.ani0 {
-	left: 500px;
-	top: 495px;
-}
-.six-players .cards.ani0 .poker_icon.top {
-	left: 32%;
-	top: -43px;
-}
-.six-players .card.ani0 {
-	left: -7px;
-	top: 478px;
-}
-.six-players .card.ani1 {
-	left: -550px;
-	top: 374px;
-}
-.six-players .cards.ani5 {
-	left: 500px;
-	top: 22px;
-}
-.six-players .card.ani5 {
-	left: 0px;
-	top: 8px;
 }
 .seven-players  .cards.ani2 {
 	left: 938px;
@@ -1576,37 +1514,6 @@ polygon, circle {
 	top: 374px;
 }
 
-
-.six-players .card.ani1 {
-	left: 500px;
-	top: 30px;
-}
-.six-players .cards.ani1 {
-	left: 0px !important;
-	top: 344px;
-}
-
-.six-players .card.ani3 {
-	left: 490px;
-	top: 375px;
-}
-.six-players .cards.ani3 {
-	left: 980px;
-	top: 175px;
-}
-
-.six-players .cards.ani1 {
-	left: -50px !important;
-	top: 390px;
-}
-.six-players .card.ani1 {
-	left: -7px;
-	top: -3px;
-}
-.six-players .cards.ani2 {
-	top: 390px;
-	left: 1000px !important;
-}
 .six-players .poker_icon.top {
 	top: 40px;
 	position: absolute;
@@ -1614,38 +1521,15 @@ polygon, circle {
 	width: auto;
 	left: -37%;
 }
-.six-players .card.ani4 {
-	left: -520px;
-	top: 160px;
-}
-.six-players .card.ani2 {
-	left: 480px;
-	top: 159px;
-}
-.six-players .cards.ani0 {
-	left: 500px;
-	top: 495px;
-}
+
 .six-players .cards.ani0 .poker_icon.top {
 	left: 2%;
 	top: -33px;
 }
-.six-players .card.ani0 {
-	left: -7px;
-	top: 478px;
-}
-.six-players .card.ani1 {
-	left: -550px;
-	top: 374px;
-}
-.six-players .cards.ani5 {
-	left: 500px;
-	top: 22px;
-}
-.six-players .card.ani5 {
-	left: 0px;
-	top: 8px;
-}
+
+
+
+
 .poker_icon.right {
 	left: 227px;
 	top: -64px;
@@ -3118,38 +3002,10 @@ polygon, circle {
 	opacity: 0;
 }
 
-.two-players .cards.ani0 .poker_icon.bottom {
-	left: 32%;
-	top: 5vh;
-	opacity: 0;
-}
-
-.two-players .cards.ani1 .poker_icon.bottom {
-	top: 5vh;
-	left: 32%;
-	opacity: 0;
-}
-
-.two-players .list.chips .cards.ani0 .poker_icon.bottom {
-	top: -55vh;
-	left: 32%;
-	opacity: 1;
-}
-.two-players .list.chips .cards.ani1 .poker_icon.bottom {
-	top: 36vh;
-	left: 32%;
-	opacity: 1;
-}
 
 .winning-score { transition:.8s all; }
 
-.two-players .winning-score.winner0{
-	top: 215px;
-}
 
-.two-players .winning-score.winner1{
-	top: -250px;
-}
 
 /*.result-iframe-wrap.two-players .list.chips .poker_icon.left {
 	top: 340px;
@@ -3160,8 +3016,8 @@ polygon, circle {
 }*/
 .winning-score {
 	position: absolute;
-	left: 198px;
-	top: 14px;
+	left: 41%;
+  top: 6%;
 	color: #fff;
 	font-size: 19px;
 	z-index: -1;
@@ -3183,67 +3039,297 @@ polygon, circle {
 .winning-score img { width:21px; }
 
 
-.nine-players .list.chips .cards.ani0 .poker_icon.top {
-	top: -134px;
-	left: 61px;
-}
-.nine-players .list.chips .cards.ani1 .poker_icon.top {
-	top: 20px;
-	left: -445px;
-}
-.nine-players .list.chips .cards.ani7 .poker_icon.bottom {
-	top: 149px;
-	left: -464px;
-}
-.nine-players .list.chips .cards.ani6 .poker_icon.left {
-	right: 184px;
-	top: 323px;
-}
-.nine-players .list.chips .cards.ani5 .poker_icon.left {
-	right: -228px;
-	top: 323px;
-}
-.nine-players .list.chips .cards.ani3 .poker_icon.right {
-	left: 672px;
-	top: -70px;
-}
-.nine-players .list.chips .cards.ani2 .poker_icon.top {
-	top: -134px;
-	width: 100px;
-	left: 353px;
-}
-.nine-players .list.chips .cards.ani4 .poker_icon.top {
-	top: -134px;
-	left: -279px;
-}
-.nine-players .list.chips .cards.ani8 .poker_icon.top {
-	top: -134px;
-	left: -279px;
-}
-.six-players .list.chips .cards.ani5 .poker_icon.left {
-	left: 51px;
-	top: 329px;
-}
-.six-players .list.chips .cards.ani4 .poker_icon.right {
-	left: 658px;
-	top: 149px;
-}
-.six-players .list.chips .cards.ani3 .poker_icon.bottom {
-	top: 149px;
-	left: -513px;
-}
-.six-players .list.chips .cards.ani0 .poker_icon.top {
-	top: -138px;
-	left: 70px;
-}
-.six-players .list.chips .cards.ani1 .poker_icon.right {
-	left: 699px;
-	top: -104px;
-}
-.six-players .list.chips .cards.ani2 .poker_icon.bottom {
-	top: -104px;
-	left: -537px;
-}
 .list.winning-player .cards.winner .poker_icon {
 	opacity: 1 !important;
+}
+
+/*two player*/
+.two-players .cards.player-sit-positon0 {
+	left: 500px;
+	top: 495px;
+}
+.two-players .cards.player-sit-positon1{
+	left: 500px;
+	top: 22px;
+}
+.two-players .cards.player-sit-positon0 .poker_icon {
+	left: 37%;
+	top: 40px;
+}
+.two-players .cards.player-sit-positon1 .poker_icon {
+	left: 37%;
+	top: 35px;
+}
+
+.two-players .list.chips .player-sit-positon0 .poker_icon {
+	left: 37%;
+	top: -210px;
+}
+.two-players .list.chips .player-sit-positon1 .poker_icon{
+	left: 37%;
+	top: 255px;
+}
+.two-players  .winning-score.position0 {
+	left: 40%;
+  top: 190%;
+}
+.two-players  .winning-score.position1{
+  left: 40%; 
+  top: -315%;
+}
+
+/*six-players*/
+.six-players .cards.player-sit-positon0 {
+	left: 500px;
+	top: 495px;
+}
+.six-players .cards.player-sit-positon1 {
+	left: -50px;
+	top: 390px;
+}
+.six-players .cards.player-sit-positon2{
+	left: -16px;
+	top: 175px;
+}
+.six-players .cards.player-sit-positon3{
+	left: 500px;
+	top: 22px;
+}
+.six-players .cards.player-sit-positon4{
+	left: 980px;
+	top: 175px;
+}
+.six-players .cards.player-sit-positon5 {
+	left: 1000px;
+	top: 390px;
+}
+
+.six-players .cards.player-sit-positon0 .poker_icon {
+	left: 37%;
+	top: 40px;
+}
+.six-players .cards.player-sit-positon1 .poker_icon {
+	left: 110%;
+	top: -50px;
+}
+.six-players .cards.player-sit-positon2 .poker_icon{
+	left: 110%;
+	top: -50px;
+}
+.six-players .cards.player-sit-positon3 .poker_icon{
+	left: 37%;
+	top: 35px;
+}
+.six-players .cards.player-sit-positon4 .poker_icon{
+	left: -26%;
+	top: -110px;
+}
+.six-players .cards.player-sit-positon5 .poker_icon {
+	left: -26%;
+	top: -110px;
+}
+
+.six-players .list.chips .player-sit-positon0 .poker_icon {
+	left: 37%;
+	top: -210px;
+}
+.six-players .list.chips .player-sit-positon1 .poker_icon {
+	 left: 336%;
+   top: -178px;
+}
+.six-players .list.chips .player-sit-positon2 .poker_icon{
+	left: 317%;
+  top: 75px;
+}
+.six-players .list.chips .player-sit-positon3 .poker_icon{
+  left: 28%;
+	top: 255px;
+}
+.six-players .list.chips .player-sit-positon4 .poker_icon{
+	left: -241%;
+    top: 75px;
+}
+.six-players .list.chips .player-sit-positon5 .poker_icon {
+	top: -177px;
+  left: -252%;
+}
+
+.six-players  .winning-score.position0 {
+	left: 37%;
+  top: 190%;
+}
+.six-players  .winning-score.position1 {
+	left: -70%;
+  top: 100%;
+}
+.six-players  .winning-score.position2{
+	left: -70%;
+  top: -150%;
+}
+.six-players  .winning-score.position3{
+  left: 40%; 
+  top: -315%;
+}
+.six-players  .winning-score.position4{
+	left: 140%;
+  top: -157%;
+}
+.six-players  .winning-score.position5 {
+	left: 140%;
+  top: 80%;
+}
+
+/*nine-players*/
+.nine-players .cards.player-sit-positon0 {
+	left: 508px;
+	top: 492px;
+}
+.nine-players .cards.player-sit-positon1 {
+	left: 260px;
+	top: 492px;
+}
+.nine-players .cards.player-sit-positon2{
+	left: -28px;
+	top: 361px;
+}
+.nine-players .cards.player-sit-positon3{
+	left: -16px;
+	top: 175px;
+}
+.nine-players .cards.player-sit-positon4{
+	left: 350px;
+	top: 27px;
+}
+.nine-players .cards.player-sit-positon5 {
+	left: 700px;
+	top: 27px;
+}
+.nine-players .cards.player-sit-positon6 {
+	left: 938px;
+	top: 175px;
+}
+.nine-players .cards.player-sit-positon7 {
+	left: 938px;
+	top: 361px;
+}
+.nine-players .cards.player-sit-positon8 {
+	left: 797px;
+	top: 492px;
+}
+
+
+.nine-players .cards.player-sit-positon0 .poker_icon {
+	left: 37%;
+  top: 120%;
+}
+.nine-players .cards.player-sit-positon1 .poker_icon {
+	left: 37%;
+  top: -30%;
+}
+.nine-players .cards.player-sit-positon2 .poker_icon{
+	left: 100%;
+  top: -46%;
+}
+.nine-players .cards.player-sit-positon3 .poker_icon{
+	left: 100%;
+  top: -46%;
+}
+.nine-players .cards.player-sit-positon4 .poker_icon{
+	left: 25%;
+  top: 35%;
+}
+.nine-players .cards.player-sit-positon5 .poker_icon {
+	left: 25%;
+  top: 35%;
+}
+.nine-players .cards.player-sit-positon6 .poker_icon {
+	left: -74%;
+  top: -46%;
+}
+.nine-players .cards.player-sit-positon7 .poker_icon {
+	left: -66%;
+ 	top: 38%;
+}
+.nine-players .cards.player-sit-positon8 .poker_icon {
+	left: -30%;
+  top: -100%;
+}
+
+.nine-players .list.chips .player-sit-positon0 .poker_icon {
+	left: 37%;
+  top: -159%;
+}
+.nine-players .list.chips .player-sit-positon1 .poker_icon {
+	left: 176%;
+  top: -158%;
+}
+.nine-players .list.chips .player-sit-positon2 .poker_icon{
+	left: 329%;
+  top: -105%;
+}
+.nine-players .list.chips .player-sit-positon3 .poker_icon{
+  left: 322%;
+  top: 90%;
+}
+.nine-players .list.chips .player-sit-positon4 .poker_icon{
+	left: 117%;
+  top: 241%;
+}
+.nine-players .list.chips .player-sit-positon5 .poker_icon {
+	left: -80%;
+  top: 240%;
+}
+.nine-players .list.chips .player-sit-positon6 .poker_icon {
+	left: -213%;
+  top: 85%;
+}
+.nine-players .list.chips .player-sit-positon7 .poker_icon {
+	left: -205%;
+  top: -25%;
+}
+.nine-players .list.chips .player-sit-positon8 .poker_icon {
+	left: -135%;
+  top: -240%;
+}
+
+
+
+.nine-players  .winning-score.position0 {
+	left: 40%;
+  top: 200%;
+}
+.nine-players  .winning-score.position1 {
+	left: -10%;
+  top: 200%;
+}
+.nine-players  .winning-score.position2{
+	left: -70%;
+  top: 55%;
+}
+.nine-players  .winning-score.position3{
+  left: -70%;
+  top: -160%;
+}
+.nine-players  .winning-score.position4{
+	left: 10%;
+  top: -330%;
+}
+.nine-players  .winning-score.position5 {
+	left: 80%;
+  top: -330%;
+}
+
+.nine-players  .winning-score.position6 {
+	left: 130%;
+  top: -170%;
+}
+
+.nine-players  .winning-score.position7 {
+	left: 130%;
+  top: 50%;
+}
+
+.nine-players  .winning-score.position8 {
+	left: 100%;
+  top: 200%;
 }

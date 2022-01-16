@@ -55,7 +55,7 @@
                     <div id="innergrid">
                       <ul class="list">
                         <dealer-icon v-if="gameRoom && gameRoom.round" :room-prop="room" :dealer="gameRoom.dealer"></dealer-icon>
-                        <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)} ` + (isDealer(opponent.user_id) ? `is-dealer d_card_${getPlayerPosition(players, opponent, i)}` : ``) + ` ` + ((opponent.user_id == gameRoom.action_index && gameRoom.round <= 4 && startCountDown)?`player-chance`:`not-player`)" :id="`playerId_`+opponent.user_id">
+                        <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)} ` + (isDealer(opponent.user_id) ? `is-dealer d_card_${getPlayerPosition(players, opponent, i)}` : ``) + ` ` + ((opponent.user_id == gameRoom.action_index && gameRoom.round <= 4 && startCountDown)?`player-chance`:`not-player`)+` `+`player-sit-positon`+getPlayersittingPosition(opponent.user_id, i)" :id="`playerId_`+opponent.user_id">
                           <div class="left-img">
                             <div class="img" style="border-radius: 15px">
                               <img :src="opponent.user && opponent.user.avatar_url ? opponent.user.avatar_url : (opponent.user && opponent.user.gravatar_url ? opponent.user.gravatar_url : '')" alt="" style="width: 100%"/>
@@ -155,6 +155,8 @@ export default {
       intervalId: null,
       primaryUserIndex: false,
       showActionButton: false,
+      currentUserCame: false,
+      playerUsedPosition: []
     }
   },
   computed: {
@@ -453,7 +455,45 @@ export default {
 
       return text;
     },
-    
+    getPlayersittingPosition(loginPlayerId, playerIndex){
+      let returnIndex = 0;
+      let playerFindIndex = this.playerUsedPosition.findIndex(playerPosition => playerPosition.id == loginPlayerId);
+      if(playerFindIndex == -1)
+      {
+              this.playerUsedPosition.push(loginPlayerId);
+              let currentUserCame = false;
+            
+              if(loginPlayerId == this.user.id)
+              {
+                this.currentUserCame = true;
+              }
+              if(this.currentUserCame)
+              {
+                for (var index = 1; index <  this.playersCount; index++) {
+                  if($(".player-sit-positon"+index).length == 0)
+                  {
+                    returnIndex = index;
+                    break;
+                  }
+                }
+              }
+              else
+              {
+
+                returnIndex =  this.playersCount - (this.players.length - (playerIndex+1));
+              }
+
+              if(loginPlayerId == this.user.id)
+              {
+                playerFindIndex
+                returnIndex = 0;
+              }
+              this.playerUsedPosition.push({'id': loginPlayerId, 'position': returnIndex });
+      }
+      let playerNewIndex = this.playerUsedPosition.findIndex(playerPosition => playerPosition.id == loginPlayerId);
+      return this.playerUsedPosition[playerNewIndex].position;
+    }
+
   }
 }
 </script>
