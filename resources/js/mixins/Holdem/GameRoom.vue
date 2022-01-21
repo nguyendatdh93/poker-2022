@@ -10,6 +10,7 @@ export default {
     return {
       gamePlay: false,
       startCountDown: false,
+      countContinue: true,
     }
   },
   computed: {
@@ -35,9 +36,9 @@ export default {
             {
               this.roomPot[potIndex].collectpot = 0;
               this.roomPot[potIndex].round = 1;
+              this.countContinue = false;
             }
-             this.$store.commit('game-room/GAME_ROOM_POTS', this.roomPot);
-            console.log("new game start");
+            this.$store.commit('game-room/GAME_ROOM_POTS', this.roomPot);
             setTimeout(function(){
               $('.poker_icon').css('opacity',0);
             }, 500);
@@ -47,28 +48,33 @@ export default {
             let gameRoom = JSON.parse(data.game_room);
             this.$store.dispatch('game-room/setGameRoom', gameRoom);
             this.$store.dispatch('game-room/setChips', data.chips);
-            console.log('game-room', gameRoom)
-            console.log("round" , gameRoom.round);
-            console.log('bet count', data.bet);
-            if(data.hasOwnProperty('bet'))
+            if(this.countContinue)
             {
-              let totalCountPot = parseInt(this.countpot) + parseInt(data.bet);
-              let potIndex = this.roomPot.findIndex(rooms => rooms.roomid == this.players[0].game_room_id);
-              if(potIndex == -1){
-                this.roomPot.push({'roomid': this.players[0].game_room_id, 'collectpot': totalCountPot, 'round': 1});
-              }
-              else
+              if(data.hasOwnProperty('bet'))
               {
-                this.roomPot[potIndex].collectpot = this.roomPot[potIndex].collectpot + totalCountPot;
-                if(this.roomPot[potIndex].round != gameRoom.round)
-                {
-                  this.$store.commit('game-room/GAME_ROOM_COLLECT_POTS', 1);
-                  this.roomPot[potIndex].round = gameRoom.round
+                let totalCountPot = parseInt(this.countpot) + parseInt(data.bet);
+                let potIndex = this.roomPot.findIndex(rooms => rooms.roomid == this.players[0].game_room_id);
+                if(potIndex == -1){
+                  this.roomPot.push({'roomid': this.players[0].game_room_id, 'collectpot': totalCountPot, 'round': 1});
                 }
+                else
+                {
+                  this.roomPot[potIndex].collectpot = this.roomPot[potIndex].collectpot + totalCountPot;
+                  if(this.roomPot[potIndex].round != gameRoom.round)
+                  {
+                    this.$store.commit('game-room/GAME_ROOM_COLLECT_POTS', 1);
+                    this.roomPot[potIndex].round = gameRoom.round
+                  }
+                }
+                this.$store.commit('game-room/GAME_ROOM_POTS', this.roomPot);
+                $("#playerId_"+data.user_id+" .poker_icon").css('opacity',1);
+                $("#playerId_"+data.user_id+" .poker_icon span").html(data.bet);
               }
-              this.$store.commit('game-room/GAME_ROOM_POTS', this.roomPot);
-              $("#playerId_"+data.user_id+" .poker_icon").css('opacity',1);
-              $("#playerId_"+data.user_id+" .poker_icon span").html(data.bet);
+            }
+
+            if(!this.countContinue)
+            {
+              this.countContinue = true;
             }
 
             this.gamePlay = true;

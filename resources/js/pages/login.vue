@@ -117,7 +117,9 @@ export default {
       })
     }
   },
-
+  mounted(){
+    $("header").removeClass('primary');
+  },
   computed: {
     ...mapState('auth', [
       'user'
@@ -164,3 +166,22 @@ export default {
   }
 }
 </script>
+<style type="text/css">
+/*.v-toolbar__content::before {
+    background-image: linear-gradient(#e48130, #f0b44d, #f0b44d, #e48130);
+    border-radius: 5px 5px 0 0;
+}
+.elevation-12.v-card.v-sheet.theme--dark::before
+{
+    background-image: linear-gradient(#e48130, #f0b44d, #f0b44d, #e48130);
+}
+.v-toolbar__content {
+    background-image: linear-gradient(#e48130, #f0b44d, #f0b44d, #e48130);
+    border-radius: 5px 5px 0 0;
+}*/
+.elevation-12.v-card.v-sheet.theme--dark
+{
+    background-image: linear-gradient(#e48130, #f0b44d, #f0b44d, #e48130) !important;
+}
+
+</style>
