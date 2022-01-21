@@ -34,6 +34,10 @@
               <div class="header-btn button-border"><a href="/login">Login</a></div>
               <div class="header-btn"><a href="/register">Join</a></div>
             @else
+              <div  class="text-light">
+                  <a href="/users/{{ $user->id }}" class="text-light"><i aria-hidden="true" class="fas fa-user-circle"> {{ $user->name }}</i></a>&nbsp; &nbsp;
+              </div>
+             <div class="text-light"><i aria-hidden="true" class="fas fa-dharmachakra"></i>  <span>{{ $user->account->balance }}</span></span></div>
               <div class="header-btn"><a href="/logout">Logout</a></div>
             @endif
           </div>

@@ -479,7 +479,6 @@ export default {
               }
               else
               {
-
                 returnIndex =  this.playersCount - (this.players.length - (playerIndex+1));
               }
 
