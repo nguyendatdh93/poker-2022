@@ -30,7 +30,6 @@ export default {
   },
   methods: {
     distributeDealerIcon() {
-      console.log('distributeDealerIcon');
       setTimeout(function () {
         $('#dealer_button_custom').removeAttr('class');
         $('#dealer_button_custom').css('transition', '1s all');

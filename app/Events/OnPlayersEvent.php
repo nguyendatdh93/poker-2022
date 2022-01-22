@@ -55,7 +55,6 @@ class OnPlayersEvent implements ShouldBroadcast
             'room_id' => $this->roomId,
             'players' => $this->players,
             'left_player_id' => $this->leftPlayerId,
-            'game_room' => GameRoomCache::getGameRoomCache($this->roomId)
         ];
     }
 }
