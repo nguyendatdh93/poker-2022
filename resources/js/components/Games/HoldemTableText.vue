@@ -26,18 +26,22 @@ export default {
   name: "HoldemTableText",
    data() {
     return {
-      gameDisplayPot: 5,
+      gameDisplayPot: 0,
     }
   },
   computed: {
-    ...mapState('game-room', ['gameRoom','collectpot']),
+    ...mapState('game-room', ['players','gameRoom','collectpot','roomPot']),
   },
    methods: {
     getDisplayPot(){
       if(this.collectpot == 1)
       {
+        let potIndex = this.roomPot.findIndex(rooms => rooms.roomid == this.players[0].game_room_id);
+        if(potIndex > -1)
+        {
+            this.gameDisplayPot = parseInt(this.roomPot[potIndex].collectpot);
+        }
         this.$store.commit('game-room/GAME_ROOM_COLLECT_POTS', 2);
-        this.gameDisplayPot = parseInt(this.gameRoom.pot);
       }
       else if (this.collectpot == 0) {
         this.gameDisplayPot = 0;

@@ -345,8 +345,9 @@ export default {
     checkMessage(message){
       if(message.maintaingame == 'NextGameRound')
       {
-        this.$store.commit('game-room/GAME_ROOM_COLLECT_POTS', 1);
         $('.list').addClass('chips'); 
+        $('.poker_icon').css('opacity',0);
+        
       }
       else if(message.maintaingame == 'StartGame')
       {
@@ -362,6 +363,7 @@ export default {
       }
       else if(message.maintaingame == 'WinnerDeclare')
       {
+         $('.poker_icon').css('opacity',0);
          for(var index = 0; index < this.usersCount; index++)
           {
              if($("#playerId_"+message.user.id).hasClass('player-sit-positon'+index))
@@ -379,7 +381,7 @@ export default {
         if($(".list").hasClass("chips"))
         {
            setTimeout(function() {
-            $('.poker_icon').css('opacity',0);
+              $('.poker_icon').css('opacity',0);
               $('.list').removeClass('chips'); 
            },500);
         }
