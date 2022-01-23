@@ -113,19 +113,12 @@ class GameRoomCache
      */
     public static function getPlayers($roomId)
     {
-        return Cache::tags(["room:$roomId"])->get("players:$roomId");
+        return GameRoomPlayer::where('game_room_id', $roomId)->get()->pluck('user_id');
     }
 
     public static function removePlayer($roomId, $playerId)
     {
-        $playerIds = self::getPlayers($roomId);
-        foreach ($playerIds ?? [] as $key => $id) {
-            if ($id == $playerId) {
-                unset($playerIds[$key]);
-            }
-        }
-
-        self::setPlayers($roomId, array_values($playerIds));
+        return GameRoomPlayer::where('user_id', $playerId)->where('game_room_id', $roomId)->delete();
     }
 
     /**

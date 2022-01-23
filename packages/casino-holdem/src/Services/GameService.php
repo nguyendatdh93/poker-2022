@@ -540,7 +540,7 @@ class GameService extends ParentGameService
         // cut the deck (provably fair)
         $deck->cut($provablyFairGame->shift_value % 52);
         $poker = new Poker($deck);
-        $poker->addPlayers(count($players))->deal(2, 3)->play();;
+        $poker->addPlayers(count($players))->deal(2, 3)->play();
         foreach ($players as $key => $player) {
             if (Auth::id() == $player['id']) {
                 $cards = $poker->getPlayer($key+1)->getPocketCards()->map->code;
