@@ -67,12 +67,22 @@ class GameRoomStartEvent implements ShouldBroadcast
         }
 
         GamePlayerChip::where('game_room_id', $this->roomId)->delete();
-        if ( $this->gameRoom->parameters->players_count == 2) {
-            return $this->gameRoom->parameters->players_count == $this->players->count();
+        if (GameRoomCache::getRound($this->roomId) < 4 && GameRoomCache::getRound($this->roomId) >= 1) {
+            return false;
+        }
+
+        if ($this->gameRoom->parameters->players_count == 2) {
+            $shouldStart = $this->gameRoom->parameters->players_count == $this->players->count();
         } elseif ( $this->gameRoom->parameters->players_count == 6) {
-            return $this->gameRoom->parameters->players_count - $this->players->count() <= 3;
+            $shouldStart = $this->gameRoom->parameters->players_count - $this->players->count() <= 3;
         } elseif ($this->gameRoom->parameters->players_count == 9) {
-            return $this->gameRoom->parameters->players_count - $this->players->count() <= 2;
+            $shouldStart = $this->gameRoom->parameters->players_count - $this->players->count() <= 2;
+        }
+
+        if ($shouldStart ?? false) {
+            return true;
+        } else {
+            GameRoomCache::setRound($this->roomId, 0);
         }
     }
 
@@ -87,6 +97,10 @@ class GameRoomStartEvent implements ShouldBroadcast
         ChatMessage::where('room_id', $this->roomId)->delete();
         $this->initPlayersBet();
         $this->gameRoom->players_bet = $this->gameRoom->playersBet()->get()->keyBy('user_id');
+        GameRoomPlayer::where('game_room_id', $this->roomId)->update([
+            'is_playing' => 1,
+        ]);
+
         return [
             'room_id' => $this->roomId,
             'players' => $this->players,

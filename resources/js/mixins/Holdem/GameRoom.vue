@@ -27,22 +27,21 @@ export default {
 
             this.$store.dispatch('game-room/setPlayers', JSON.parse(data.players))
           }).listen('GameRoomStartEvent', data => {
-
             let potIndex = this.roomPot.findIndex(rooms => rooms.roomid == this.players[0].game_room_id);
             if(potIndex == -1){
               this.roomPot.push({'roomid': this.players[0].game_room_id, 'collectpot': 0, 'round': 1});
-            }
-            else
-            {
+            } else {
               this.roomPot[potIndex].collectpot = 0;
               this.roomPot[potIndex].round = 1;
               this.countContinue = false;
             }
+
             this.$store.commit('game-room/GAME_ROOM_POTS', this.roomPot);
             setTimeout(function(){
               $('.poker_icon').css('opacity',0);
             }, 500);
             this.$store.dispatch('game-room/setGameRoom', data.game_room);
+           this.$store.dispatch('game-room/players', data.players);
             this.distributeCards();
           }).listen('GameRoomPlayEvent', data => {
             let gameRoom = JSON.parse(data.game_room);
@@ -153,6 +152,13 @@ export default {
         return currentPlayerPosition - currentUserPosition;
       } else {
         return players.length - currentUserPosition + currentPlayerPosition;
+      }
+    },
+    waitForStarting() {
+      for (let i = 1; i <= this.players.length; i++) {
+        if (this.players[i].user_id == this.user.id && this.players[i].is_playing == 0) {
+          return true;
+        }
       }
     }
   }

@@ -105,7 +105,10 @@ class GameRoomCache
      */
     public static function getPlayers($roomId)
     {
-        return GameRoomPlayer::where('game_room_id', $roomId)->get()->pluck('user_id');
+        return GameRoomPlayer::where('game_room_id', $roomId)
+            ->where('is_playing', 1)
+            ->get()
+            ->pluck('user_id');
     }
 
     public static function removePlayer($roomId, $playerId)
