@@ -67,7 +67,13 @@ class GameRoomStartEvent implements ShouldBroadcast
         }
 
         GamePlayerChip::where('game_room_id', $this->roomId)->delete();
-        return $this->gameRoom->parameters->players_count == $this->players->count();
+        if ( $this->gameRoom->parameters->players_count == 2) {
+            return $this->gameRoom->parameters->players_count == $this->players->count();
+        } elseif ( $this->gameRoom->parameters->players_count == 6) {
+            return $this->gameRoom->parameters->players_count - $this->players->count() <= 3;
+        } elseif ($this->gameRoom->parameters->players_count == 9) {
+            return $this->gameRoom->parameters->players_count - $this->players->count() <= 2;
+        }
     }
 
     /**
@@ -138,8 +144,6 @@ class GameRoomStartEvent implements ShouldBroadcast
         }
 
         GameRoomCache::setRound($this->roomId,  1);
-
-        GameRoomCache::setPlayers($this->roomId, $this->players->pluck('user_id')->toArray());
 
         GameRoomCache::setActionIndex($this->roomId, $this->players->count() <= ($bigBlindIndex + 1) ? $this->players[0]->user_id : $this->players[$bigBlindIndex + 1]->user_id);
         GameRoomCache::setPlayerCanCheck($this->roomId, $this->players->count() <= ($bigBlindIndex + 1)  ? $this->players[0]->user_id : $this->players[$bigBlindIndex + 1]->user_id);

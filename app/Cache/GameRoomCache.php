@@ -101,14 +101,6 @@ class GameRoomCache
     }
 
     /**
-     * @param mixed $dealer
-     */
-    public static function setPlayers($roomId, $playerIds): void
-    {
-        Cache::tags(["room:$roomId"])->put("players:$roomId", $playerIds);
-    }
-
-    /**
      * @param mixed $round
      */
     public static function getPlayers($roomId)
