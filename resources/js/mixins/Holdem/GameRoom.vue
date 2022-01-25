@@ -155,8 +155,8 @@ export default {
       }
     },
     waitForStarting() {
-      for (let i = 1; i <= this.players.length; i++) {
-        if (this.players[i].user_id == this.user.id && this.players[i].is_playing == 0) {
+      for (let i = 0; i < this.players.length; i++) {
+        if (this.players[i].user_id == this.user.id && this.players[i].is_playing == 0 && this.gameRoom.action_index) {
           return true;
         }
       }

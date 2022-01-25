@@ -92,7 +92,7 @@
           :provably-fair-game="provablyFairGame"
           :user="user">
       </actions>
-      <p class="d5-flex justify-center flex-wrap mt-10" v-if="waitForStarting"  style="color: red" >please wait until ongoing game ends</p>
+      <p class="d5-flex justify-center flex-wrap mt-10" v-if="waitForStarting()"  style="color: red" >please wait until ongoing game ends1</p>
     </template>
     <chat v-if="room" :room-id="room.id" class="chat"/>
   </div>
