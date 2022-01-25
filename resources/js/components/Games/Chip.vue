@@ -1,5 +1,5 @@
 <template>
-  <div :class="`poker_icon chip-` + opponent.user_id +` `+setClassPossition()" v-if="chips">
+  <div :class="`poker_icon chip-` + opponent.user_id" v-if="chips">
     <img src="/v2/images/pokr-icon.png" alt="">
     <span>{{ getChip() }}</span>
   </div>
@@ -26,16 +26,6 @@ export default {
 
       return 0;
     },
-    setClassPossition(){
-        if(this.numberofplayers == 'two')
-        {
-              return 'bottom';
-        }
-        else
-        {
-          return 'right';
-        }
-    }
   }
 }
 </script>
