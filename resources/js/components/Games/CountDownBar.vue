@@ -1,6 +1,6 @@
 <template>
   <div class="progress_bar">
-    <countdown v-if="opponent.user_id == gameRoom.action_index && gameRoom.round <= 4 && start" :left-time="300000"
+    <countdown v-if="opponent.user_id == gameRoom.action_index && gameRoom.round <= 4 && start" :left-time="30000"
                @start="startCountDown"
                @finish="finishCountdown">
       <template slot="process" slot-scope="{ timeObj }">
