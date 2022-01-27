@@ -74,7 +74,7 @@ class GameRoomStartEvent implements ShouldBroadcast
         if ($this->gameRoom->parameters->players_count == 2) {
             $shouldStart = $this->gameRoom->parameters->players_count == $this->players->count();
         } elseif ( $this->gameRoom->parameters->players_count == 6) {
-            $shouldStart = $this->gameRoom->parameters->players_count - $this->players->count() <= 4;
+            $shouldStart = $this->gameRoom->parameters->players_count - $this->players->count() <= 3;
         } elseif ($this->gameRoom->parameters->players_count == 9) {
             $shouldStart = $this->gameRoom->parameters->players_count - $this->players->count() <= 2;
         }
