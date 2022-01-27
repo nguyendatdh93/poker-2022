@@ -67,9 +67,9 @@ class GameRoomStartEvent implements ShouldBroadcast
         }
 
         GamePlayerChip::where('game_room_id', $this->roomId)->delete();
-//        if (GameRoomCache::getRound($this->roomId) < 4 && GameRoomCache::getRound($this->roomId) >= 1) {
-//            return false;
-//        }
+        if (GameRoomCache::getActionIndex($this->roomId)) {
+            return false;
+        }
 
         if ($this->gameRoom->parameters->players_count == 2) {
             $shouldStart = $this->gameRoom->parameters->players_count == $this->players->count();
