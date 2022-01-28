@@ -92,7 +92,7 @@
           :provably-fair-game="provablyFairGame"
           :user="user">
       </actions>
-      <p class="d5-flex justify-center flex-wrap mt-10" v-if="waitForStarting()"  style="color: red" >please wait until ongoing game ends1</p>
+      <p id="waitingplayermessage" class="d5-flex justify-center flex-wrap mt-10" v-if="waitForStarting()"  style="color: red" >please wait until ongoing game ends1</p>
     </template>
     <chat v-if="room" :room-id="room.id" class="chat"/>
   </div>
@@ -630,5 +630,17 @@ export default {
 
 .player-chance:before{
   background-image: linear-gradient(#e48130, #f0b44d, #f0b44d, #e48130);
+}
+
+#waitingplayermessage{
+    color: #f60707;
+    position: absolute;
+    left: 5vh;
+    top: 1vh;
+    padding: 10px;
+    box-shadow: inset 0px 0px 30px #e15e1d !important;
+    background: #d8aa3a !important;
+    border-radius: 15px;
+    font-weight: bold;
 }
 </style>

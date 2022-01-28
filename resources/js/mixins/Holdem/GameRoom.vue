@@ -41,7 +41,7 @@ export default {
               $('.poker_icon').css('opacity',0);
             }, 500);
             this.$store.dispatch('game-room/setGameRoom', data.game_room);
-           this.$store.dispatch('game-room/players', data.players);
+           this.$store.dispatch('game-room/setPlayers', data.players);
             this.distributeCards();
           }).listen('GameRoomPlayEvent', data => {
             let gameRoom = JSON.parse(data.game_room);

@@ -4,6 +4,7 @@
         v-if="room"
         color="primary"
         height="35"
+        class="playerhandlebar"
     >
       <v-icon>mdi-map-marker</v-icon>
       <span>{{ room.name }}</span>
@@ -415,5 +416,10 @@ export default {
   .border-left {
     border-left: 1px solid grey;
   }
+}
+
+.playerhandlebar{
+  box-shadow: inset 0px 0px 30px #e15e1d !important;
+  background: #d8aa3a !important;
 }
 </style>

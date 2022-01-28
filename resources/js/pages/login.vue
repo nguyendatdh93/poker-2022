@@ -181,7 +181,8 @@ export default {
 }*/
 .elevation-12.v-card.v-sheet.theme--dark
 {
-    background-image: linear-gradient(#e48130, #f0b44d, #f0b44d, #e48130) !important;
+    box-shadow: inset 0px 0px 30px #e15e1d !important;
+    background: #d8aa3a !important;
 }
 
 </style>
