@@ -182,6 +182,9 @@ export default {
  created () {
     this.form.referral_code = this.hasCookie
   },
+   mounted(){
+    $("header").removeClass('primary');
+  },
   methods: {
     async register () {
       // Register the user
@@ -214,3 +217,10 @@ export default {
   }
 }
 </script>
+<style type="text/css">
+.elevation-12.v-card.v-sheet.theme--dark
+{
+    box-shadow: inset 0px 0px 30px #e15e1d !important;
+    background: #d8aa3a !important;
+}
+</style>
