@@ -23,10 +23,10 @@
           <div class="range_slideer" v-if="provablyFairGame.hash && !gameRoom.fold_players[user.id] && players">
             <div class="range">{{ sliderBet }}</div>
             <div class="range_slidr">
-              <button id="minus" @click="sliderBet = sliderBet-1" :disabled="sliderBet == getMinSlider()">-</button>
+              <button id="minus" @click="sliderBet = parseInt(sliderBet-1)" :disabled="sliderBet == getMinSlider()">-</button>
               <input id="range" type="range" :min="getMinSlider()" :max="getMaxSlider()" @change="changeSlider"
                      step="10" :value="sliderBet">
-              <button id="plus" @click="sliderBet = sliderBet+1" :disabled="sliderBet == getMaxSlider()">+</button>
+              <button id="plus" @click="sliderBet = parseInt(sliderBet+1)" :disabled="sliderBet == getMaxSlider()">+</button>
             </div>
           </div>
         </div>
