@@ -3087,6 +3087,18 @@ polygon, circle {
 
 
 /*three-players*/
+.three-players .card.positioncard0{
+	top: 73%;
+  left: 5%;
+}
+.three-players .card.positioncard1{
+	top: 25%;
+  left: -530%;
+}
+.three-players .card.positioncard2{
+	top: 25%;
+  left: 410%;
+}
 .three-players .cards.player-sit-positon0 {
 	left: 500px;
 	top: 495px;
@@ -3096,19 +3108,19 @@ polygon, circle {
 	top: 175px;
 }
 .three-players .cards.player-sit-positon2{
-	left: -16px;
+	left: 900% !important;
 	top: 175px;
 }
 .three-players .cards.player-sit-positon0 .poker_icon {
-	left: 27%;
-	top: 40%;
+	left: 5%;
+	top: 110%;
 }
 .three-players .cards.player-sit-positon1 .poker_icon {
-	left: 100%;
+	left: 110%;
 	top: -35%;
 }
 .three-players .cards.player-sit-positon2 .poker_icon {
-	left: -75%;
+	left: -60%;
 	top: -45%;
 }
 .three-players .list.chips .player-sit-positon0 .poker_icon {
@@ -3139,6 +3151,22 @@ polygon, circle {
 
 
 /*four-players*/
+.four-players .card.positioncard0{
+	top: 73%;
+  left: 5%;
+}
+.four-players .card.positioncard1{
+	top: 39%;
+  left: -530%;
+}
+.four-players .card.positioncard2{
+	top: 1%;
+  left: 20%;
+}
+.four-players .card.positioncard3{
+  top: 39%;
+	left: 450%;
+}
 .four-players .cards.player-sit-positon0 {
 	left: 500px;
 	top: 495px;
@@ -3152,7 +3180,7 @@ polygon, circle {
 	top: 13px;
 }
 .four-players .cards.player-sit-positon3{
-	left: 1035px;
+	left: 1035px !important;
 	top: 260px;
 }
 .four-players .cards.player-sit-positon0 .poker_icon {
@@ -3208,6 +3236,26 @@ polygon, circle {
 
 
 /*five-players*/
+.five-players .card.positioncard0{
+	top: 73%;
+  left: 5%;
+}
+.five-players .card.positioncard1{
+	top: 59%;
+  left: -500%;
+}
+.five-players .card.positioncard2{
+	top: 26%;
+  left: -500%;
+}
+.five-players .card.positioncard3{
+  top: 26%;
+	left: 400%;
+}
+.five-players .card.positioncard4{
+	top: 59%;
+  left: 400%;
+}
 .five-players .cards.player-sit-positon0 {
 	left: 500px;
 	top: 495px;
@@ -3221,7 +3269,7 @@ polygon, circle {
 	top: 175px;
 }
 .five-players .cards.player-sit-positon3{
-	left: 980px;
+	left: 980px !important;
 	top: 175px;
 }
 .five-players .cards.player-sit-positon4 {
@@ -3420,7 +3468,34 @@ polygon, circle {
 }
 
 /*Seven-players*/
-
+.seven-players .card.positioncard0{
+	top: 73%;
+  left: 5%;
+}
+.seven-players .card.positioncard1{
+	 top: 60%;
+   left: -500%;
+}
+.seven-players .card.positioncard2{
+	top: 27%;
+  left: -500%;
+}
+.seven-players .card.positioncard3{
+  top: 4%;
+	left: -175%;
+}
+.seven-players .card.positioncard4{
+	top: 4%;
+  left: 150%;
+}
+.seven-players .card.positioncard5{
+	top: 27%;
+  left: 400%;
+}
+.seven-players .card.positioncard6{
+	top: 60%;
+  left: 400%;
+}
 .seven-players .cards.player-sit-positon0 {
 	left: 500px;
 	top: 495px;
@@ -3541,7 +3616,38 @@ polygon, circle {
 
 
 /*Eight-players*/
-
+.eight-players .card.positioncard0{
+	top: 73%;
+  left: 5%;
+}
+.eight-players .card.positioncard1{
+	 top: 60%;
+   left: -500%;
+}
+.eight-players .card.positioncard2{
+	top: 27%;
+  left: -500%;
+}
+.eight-players .card.positioncard3{
+  top: 4%;
+	left: -355%;
+}
+.eight-players .card.positioncard4{
+	top: 4%;
+  left: -75%;
+}
+.eight-players .card.positioncard5{
+	top: 4%;
+  left: 200%;
+}
+.eight-players .card.positioncard6{
+	top: 27%;
+  left: 400%;
+}
+.eight-players .card.positioncard7{
+	top: 60%;
+  left: 400%;
+}
 .eight-players .cards.player-sit-positon0 {
 	left: 500px;
 	top: 495px;
