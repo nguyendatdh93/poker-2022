@@ -3044,6 +3044,14 @@ polygon, circle {
 }
 
 /*two player*/
+.two-players .card.positioncard0{
+	top: 73%;
+  left: 5%;
+}
+.two-players .card.positioncard1{
+  top: 5%;
+	left: 5%;
+}
 .two-players .cards.player-sit-positon0 {
 	left: 500px;
 	top: 495px;
@@ -3285,6 +3293,30 @@ polygon, circle {
 
 
 /*six-players*/
+.six-players .card.positioncard0{
+	top: 73%;
+  left: 5%;
+}
+.six-players .card.positioncard1{
+	top: 61%;
+  left: -500%;
+}
+.six-players .card.positioncard2{
+	top: 28%;
+  left: -500%;
+}
+.six-players .card.positioncard3{
+  top: 5%;
+	left: 5%;
+}
+.six-players .card.positioncard4{
+	top: 28%;
+  left: 400%;
+}
+.six-players .card.positioncard5{
+	top: 61%;
+  left: 400%;
+}
 .six-players .cards.player-sit-positon0 {
 	left: 500px;
 	top: 495px;
@@ -3646,6 +3678,42 @@ polygon, circle {
 }
 
 /*nine-players*/
+.nine-players .card.positioncard0{
+	top: 73%;
+  left: 5%;
+}
+.nine-players .card.positioncard1{
+	top: 77%;
+  left: -250%;
+}
+.nine-players .card.positioncard2{
+	top: 56%;
+  left: -500%;
+}
+.nine-players .card.positioncard3{
+  top: 28%;
+	left: -500%;
+}
+.nine-players .card.positioncard4{
+	top: 5%;
+  left: -150%;
+}
+.nine-players .card.positioncard5{
+	top: 5%;
+  left: 150%;
+}
+.nine-players .card.positioncard6{
+	top: 28%;
+  left: 400%;
+}
+.nine-players .card.positioncard7{
+	top: 56%;
+  left: 400%;
+}
+.nine-players .card.positioncard8{
+	top: 77%;
+  left: 225%;
+}
 .nine-players .cards.player-sit-positon0 {
 	left: 500px;
 	top: 495px;
@@ -3801,4 +3869,12 @@ polygon, circle {
 	left: 100%;
   top: 200%;
   display: flex;
+}
+
+#result-iframe-wrap .card.sameposition{
+	left: 0%;
+	top: -500%;
+}
+.card{
+	 transition:.8s all; 
 }

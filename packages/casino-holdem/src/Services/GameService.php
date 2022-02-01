@@ -140,9 +140,15 @@ class GameService extends ParentGameService
         }
 
         // if there is only one player in room. It should be check winner
+        $finalfoldPlayers = [];
         $foldPlayers = GameRoomCache::getFoldPlayers($params['room_id']);
+        foreach($foldPlayers as $key => $playersId)
+        {
+            $finalfoldPlayers[] = (int) $playersId;
+        }
         $players = GameRoomCache::getPlayers($params['room_id']);
-        $leftPlayers = array_diff($players, $foldPlayers);
+        // dd($players->toArray(), $finalfoldPlayers);
+        $leftPlayers = array_diff($players->toArray(), $finalfoldPlayers);
         if (count($leftPlayers) == 1) {
             $this->handleWinnerCards($params['room_id'], reset($leftPlayers));
             sleep(3);

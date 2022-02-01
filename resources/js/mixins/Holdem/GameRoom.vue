@@ -18,6 +18,11 @@ export default {
   },
   watch: {
     room(room) {
+
+      console.log('room' , room);
+      if(room != null)
+      {
+
       this.echo.join(`game.${room.id}`)
           .listen('OnPlayersEvent', data => {
             if (data.left_player_id == this.user.id) {
@@ -84,6 +89,7 @@ export default {
               this.gameCompleted();
             }
           });
+      }
     },
   },
   methods: {
@@ -94,12 +100,13 @@ export default {
       let self = this;
       return new Promise(function (resolve, reject) {
         setTimeout(function () {
-          $(".card").each(function (e) {
+          $(".card").removeClass('sameposition');
+         /* $(".card").each(function (e) {
             setTimeout(function () {
               let position = self.getPlayerPosition(self.players, self.players[e], e);
               $(".card").eq(e).addClass("ani" + (position));
             }, e * 200);
-          });
+          });*/
           resolve();
         }, 2000)
       }).then(() => {
