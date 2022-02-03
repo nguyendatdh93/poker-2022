@@ -2947,7 +2947,40 @@ polygon, circle {
 
 
 
-/* New CSS *///
+/* New CSS */
+.text-dark{
+	color: #000 !important;
+}
+.text-white{
+	color: #fff !important;
+}
+.v-input__slot fieldset
+{
+	background: #fff;
+	color: #000;
+	border-color: #000 !important;
+}
+.v-text-field .v-label{
+	color: #000  !important;
+}
+.v-input__slot label
+{
+	color: #000 !important;
+}
+.v-input__slot .theme--dark
+{
+	color: #000 !important;
+}
+.v-input__control .theme--dark
+{
+	color: #000 !important;
+}
+
+.v-toolbar__title{
+	color: #000;
+}
+
+
 
 .front.elevation-2 {
 	background: #fff !important;
@@ -2965,7 +2998,7 @@ polygon, circle {
 	display: none !important;
 }
 .router-link-active {
-	width: 200px;
+	width: 50px;
 }
 .router-link-active img {
 	width: 100%;

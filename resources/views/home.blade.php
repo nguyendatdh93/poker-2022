@@ -37,7 +37,7 @@
               <div  class="text-light">
                   <a href="/users/{{ $user->id }}" class="text-light"><i aria-hidden="true" class="fas fa-user-circle"> {{ $user->name }}</i></a>&nbsp; &nbsp;
               </div>
-             <div class="text-light"> <img src="{{ asset('v2/images/pokr-icon.png') }}"     style="width: 18%"  /> <span>{{ $user->account->balance }}</span></span></div>
+              <div class="text-light"> <img src="{{ asset('v2/images/pokr-icon.png') }}"     style="width: 25%"  /> <span>{{ number_format($user->account->balance, 2, '.', '') }}</span></span></div>
               <div class="header-btn"><a href="/logout">Logout</a></div>  {{-- <i aria-hidden="true" class="fas fa-dharmachakra"></i> --}}
             @endif
           </div>

@@ -118,7 +118,7 @@
                   </v-btn>
                 </v-col>
                 <v-col class="text-center text-md-right">
-                  <router-link :to="{ name: 'login' }">
+                  <router-link :to="{ name: 'login' }" class="text-dark">
                     {{ $t('Already signed up?') }}
                   </router-link>
                 </v-col>
@@ -218,6 +218,10 @@ export default {
 }
 </script>
 <style type="text/css">
+.theme--dark.v-btn.v-btn--disabled.v-btn--has-bg {
+    background: #232323 !important;
+    color: #fff !important;
+}
 .elevation-12.v-card.v-sheet.theme--dark
 {
     box-shadow: inset 0px 0px 30px #e15e1d !important;

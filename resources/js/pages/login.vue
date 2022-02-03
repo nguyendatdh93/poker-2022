@@ -64,15 +64,15 @@
 
               <v-row align="center">
                 <v-col class="text-center text-md-left">
-                  <v-btn type="submit" color="primary" :disabled="!formIsValid || form.busy || (!!recaptchaPublicKey && !form.recaptcha)" :loading="form.busy">
+                  <v-btn type="submit"  :disabled="!formIsValid || form.busy || (!!recaptchaPublicKey && !form.recaptcha)" :loading="form.busy">
                     {{ $t('Log in') }}
                   </v-btn>
                 </v-col>
                 <v-col class="d-flex flex-column text-center text-md-right">
-                  <router-link :to="{ name: 'register' }">
+                  <router-link :to="{ name: 'register' }" class="text-dark">
                     {{ $t('Not signed up?') }}
                   </router-link>
-                  <router-link :to="{ name: 'password.email' }">
+                  <router-link :to="{ name: 'password.email' }" class="text-dark">
                     {{ $t('Forgot password?') }}
                   </router-link>
                 </v-col>
@@ -118,6 +118,7 @@ export default {
     }
   },
   mounted(){
+    $("#v-main").trigger('click');
     $("header").removeClass('primary');
   },
   computed: {
@@ -167,18 +168,10 @@ export default {
 }
 </script>
 <style type="text/css">
-/*.v-toolbar__content::before {
-    background-image: linear-gradient(#e48130, #f0b44d, #f0b44d, #e48130);
-    border-radius: 5px 5px 0 0;
+.theme--dark.v-btn.v-btn--disabled.v-btn--has-bg {
+    background: #232323 !important;
+    color: #fff !important;
 }
-.elevation-12.v-card.v-sheet.theme--dark::before
-{
-    background-image: linear-gradient(#e48130, #f0b44d, #f0b44d, #e48130);
-}
-.v-toolbar__content {
-    background-image: linear-gradient(#e48130, #f0b44d, #f0b44d, #e48130);
-    border-radius: 5px 5px 0 0;
-}*/
 .elevation-12.v-card.v-sheet.theme--dark
 {
     box-shadow: inset 0px 0px 30px #e15e1d !important;
