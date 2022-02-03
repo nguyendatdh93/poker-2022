@@ -2792,7 +2792,8 @@ polygon, circle {
 	text-align: center;
 	float: left;
 	padding-top: 3px;
-}.numbr_table select option { color:#131313; }
+}
+.numbr_table select option { color:#131313; }
 .numbr_table {
 	position: relative;
 	width: 100%;
@@ -2998,7 +2999,7 @@ polygon, circle {
 	display: none !important;
 }
 .router-link-active {
-	width: 50px;
+	width: 200px;
 }
 .router-link-active img {
 	width: 100%;
@@ -3012,6 +3013,12 @@ polygon, circle {
 	z-index: 9;
 }
 
+
+
+option:hover {
+   background-color: #000 !important;
+   color: #fff !important;
+}
 
 .tourna {
 	height: 481px;

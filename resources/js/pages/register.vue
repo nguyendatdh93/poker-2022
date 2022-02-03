@@ -222,6 +222,10 @@ export default {
     background: #232323 !important;
     color: #fff !important;
 }
+.theme--dark.v-btn.v-btn--has-bg {
+    background: #232323 !important;
+    color: #fff !important;
+}
 .elevation-12.v-card.v-sheet.theme--dark
 {
     box-shadow: inset 0px 0px 30px #e15e1d !important;
