@@ -2968,6 +2968,10 @@ polygon, circle {
 {
 	color: #000 !important;
 }
+.v-input__slot input
+{
+	color: #000 !important;
+}
 .v-input__slot .theme--dark
 {
 	color: #000 !important;
@@ -3014,11 +3018,6 @@ polygon, circle {
 }
 
 
-
-option:hover {
-   background-color: #000 !important;
-   color: #fff !important;
-}
 
 .tourna {
 	height: 481px;
@@ -3084,6 +3083,14 @@ option:hover {
 }
 
 /*two player*/
+.two-players .dealerbtn0{
+	left: 440 !important%;
+  top: 75% !important;
+}
+.two-players .dealerbtn1{
+  left: 440% !important;
+  top: 22% !important;
+}
 .two-players .card.positioncard0{
 	top: 73%;
   left: 5%;
@@ -3381,6 +3388,31 @@ option:hover {
 
 
 /*six-players*/
+.six-players .dealerbtn0{
+	top: 75% !important;
+  left: 450% !important;
+}
+.six-players .dealerbtn1{
+	top: 65% !important;
+  left: 185% !important;
+}
+.six-players .dealerbtn2{
+	top: 30% !important;
+  left: 185% !important;
+}
+.six-players .dealerbtn3{
+  top: 23% !important;
+	left: 450% !important;
+}
+.six-players .dealerbtn4{
+	top: 30% !important;
+  left: 850% !important;
+}
+.six-players .dealerbtn5{
+	top: 65% !important;
+  left: 850% !important;
+}
+
 .six-players .card.positioncard0{
 	top: 73%;
   left: 5%;
@@ -3824,13 +3856,50 @@ option:hover {
 }
 
 /*nine-players*/
+.nine-players .dealerbtn0{
+	top: 75% !important;
+  left: 460% !important;
+}
+.nine-players .dealerbtn1{
+	top: 72% !important;
+  left: 260% !important;
+}
+.nine-players .dealerbtn2{
+	top: 60% !important;
+  left: 185% !important;
+}
+.nine-players .dealerbtn3{
+  top: 30% !important;
+	left: 185% !important;
+}
+.nine-players .dealerbtn4{
+	top: 25% !important;
+  left: 300% !important;
+}
+.nine-players .dealerbtn5{
+	top: 25% !important;
+  left: 650% !important;
+}
+.nine-players .dealerbtn6{
+	top: 30% !important;
+  left: 850% !important;
+}
+.nine-players .dealerbtn7{
+	top: 60% !important;
+  left: 850% !important;
+}
+.nine-players .dealerbtn8{
+	top: 75% !important;
+  left: 730% !important;
+}
+
 .nine-players .card.positioncard0{
 	top: 73%;
   left: 5%;
 }
 .nine-players .card.positioncard1{
 	top: 77%;
-  left: -250%;
+  left: -220%;
 }
 .nine-players .card.positioncard2{
 	top: 56%;
@@ -3899,11 +3968,11 @@ option:hover {
 
 
 .nine-players .cards.player-sit-positon0 .poker_icon {
-	left: 27%;
-  top: 30%;
+	left: 10%;
+  top: -110%;
 }
 .nine-players .cards.player-sit-positon1 .poker_icon {
-	left: 27%;
+	left: 3%;
   top: -110%;
 }
 .nine-players .cards.player-sit-positon2 .poker_icon{
@@ -3923,11 +3992,11 @@ option:hover {
   top: 35%;
 }
 .nine-players .cards.player-sit-positon6 .poker_icon {
-	left: -75%;
+	left: -60%;
   top: -46%;
 }
 .nine-players .cards.player-sit-positon7 .poker_icon {
-	left: -75%;
+	left: -60%;
  	top: -40%;
 }
 .nine-players .cards.player-sit-positon8 .poker_icon {
