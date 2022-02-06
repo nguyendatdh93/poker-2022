@@ -149,6 +149,7 @@ class GameService extends ParentGameService
         $players = GameRoomCache::getPlayers($params['room_id']);
         // dd($players->toArray(), $finalfoldPlayers);
         $leftPlayers = array_diff($players->toArray(), $finalfoldPlayers);
+        broadcast(new FoldEvent($params['room_id'], $params['user_id']));
         if (count($leftPlayers) == 1) {
             $this->handleWinnerCards($params['room_id'], reset($leftPlayers));
             sleep(3);
@@ -252,7 +253,7 @@ class GameService extends ParentGameService
             DB::beginTransaction();
             $this->setPlayerCanCheck($params['room_id']);
             $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
-            $this->handleBetAction($params, $previouslyBet);
+            $this->handleBetAction($params, $previouslyBet, 'Call');
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -273,7 +274,7 @@ class GameService extends ParentGameService
         try {
             DB::beginTransaction();
             GameRoomCache::setPlayerCanCheck($params['room_id'], $this->getNextPlayerCanCheck($params));
-            $this->handleBetAction($params, 0);
+            $this->handleBetAction($params, 0, 'Check');
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -296,7 +297,7 @@ class GameService extends ParentGameService
 //            $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
 //            $bet = $previouslyBet * 2;
             $bet = $params['bet'];
-            $this->handleBetAction($params, $bet);
+            $this->handleBetAction($params, $bet, 'Raise');
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -318,7 +319,7 @@ class GameService extends ParentGameService
             $this->setPlayerCanCheck($params['room_id']);
             $previouslyBet = GameRoomCache::getPreviouslyBet($params['room_id']);
             $bet = $previouslyBet;
-            $this->handleBetAction($params, $bet);
+            $this->handleBetAction($params, $bet, 'Bet');
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -327,7 +328,7 @@ class GameService extends ParentGameService
         return $this;
     }
 
-    private function handleBetAction($params, $bet)
+    private function handleBetAction($params, $bet, $actionmessage = '')
     {
         try {
             DB::beginTransaction();
@@ -368,7 +369,7 @@ class GameService extends ParentGameService
             $this->sendNextPlayerActionMessage($params);
             $this->savePlayerChip($params['room_id'], $params['user_id'], $bet);
             DB::commit();
-            broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $bet));
+            broadcast(new GameRoomPlayEvent($params['room_id'], $params['user_id'], $bet, $actionmessage));
         } catch (\Exception $e) {
             DB::rollBack();
             $message = $e->getMessage();

@@ -48,10 +48,13 @@ export default {
             this.$store.dispatch('game-room/setGameRoom', data.game_room);
            this.$store.dispatch('game-room/setPlayers', data.players);
             this.distributeCards();
+          }).listen('FoldEvent', data => {
+            this.displayCallMessage(data.user_id,'Fold');
           }).listen('GameRoomPlayEvent', data => {
             let gameRoom = JSON.parse(data.game_room);
             this.$store.dispatch('game-room/setGameRoom', gameRoom);
             this.$store.dispatch('game-room/setChips', data.chips);
+            this.displayCallMessage(data.user_id, data.actionMessage);
             if(this.countContinue)
             {
               if(data.hasOwnProperty('bet'))
@@ -167,7 +170,16 @@ export default {
           return true;
         }
       }
-    }
+    },
+    displayCallMessage(userid, message)
+    {
+      let objElemnt = $("#playerId_"+userid+" .text-card h2");
+      let username = objElemnt.html();
+      objElemnt.html(message);
+      setTimeout(function(){
+        objElemnt.html(username)
+      }, 800);
+    },
   }
 }
 </script>

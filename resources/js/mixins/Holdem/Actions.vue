@@ -62,6 +62,7 @@ export default {
   },
   methods: {
     async onFold() {
+      // this.displayCallMessage(this.user.id,'Fold');
       await axios.post('/api/games/casino-holdem/fold', {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
@@ -70,6 +71,7 @@ export default {
       });
     },
     onCall() {
+      // this.displayCallMessage(this.user.id,'Call');
       axios.post('/api/games/casino-holdem/call', {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
@@ -78,6 +80,7 @@ export default {
       });
     },
     onRaise() {
+      // this.displayCallMessage(this.user.id,'Raise');
       axios.post('/api/games/casino-holdem/raise', {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
@@ -87,6 +90,7 @@ export default {
       });
     },
     onCheck() {
+      // this.displayCallMessage(this.user.id,'Check');
       axios.post('/api/games/casino-holdem/check', {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
@@ -95,6 +99,7 @@ export default {
       });
     },
     onBet() {
+      // this.displayCallMessage(this.user.id,'Bet');
       axios.post('/api/games/casino-holdem/bet', {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
@@ -136,7 +141,15 @@ export default {
     changeSlider(event) {
       this.sliderBet = $(event.currentTarget).val()
     },
-    
+    displayCallMessage(userid, message)
+    {
+      let objElemnt = $("#playerId_"+userid+" .text-card h2");
+      let username = objElemnt.html();
+      objElemnt.html(message);
+      setTimeout(function(){
+        objElemnt.html(username)
+      }, 500);
+    }
   }
 }
 </script>
