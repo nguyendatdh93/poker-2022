@@ -36,7 +36,7 @@ class GameRoomPlayEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($roomId, $userId, $bet, $actionmessage)
+    public function __construct($roomId, $userId, $bet, $actionmessage = '')
     {
         $this->roomId = $roomId;
         $this->bet = $bet;
