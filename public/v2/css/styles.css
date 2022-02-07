@@ -3108,12 +3108,12 @@ polygon, circle {
 	top: 22px;
 }
 .two-players .cards.player-sit-positon0 .poker_icon {
-	left: 27%;
-	top: 40px;
+	left: 3%;
+	top: -110%;
 }
 .two-players .cards.player-sit-positon1 .poker_icon {
 	left: 27%;
-	top: 35px;
+	top: 30%;
 }
 .two-players .list.chips .player-sit-positon0 .poker_icon {
 	left: 27%;
