@@ -63,6 +63,7 @@ export default {
   methods: {
     async onFold() {
       // this.displayCallMessage(this.user.id,'Fold');
+      this.setShowAction();
       await axios.post('/api/games/casino-holdem/fold', {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
@@ -72,6 +73,7 @@ export default {
     },
     onCall() {
       // this.displayCallMessage(this.user.id,'Call');
+      this.setShowAction();
       axios.post('/api/games/casino-holdem/call', {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
@@ -81,6 +83,7 @@ export default {
     },
     onRaise() {
       // this.displayCallMessage(this.user.id,'Raise');
+      this.setShowAction();
       axios.post('/api/games/casino-holdem/raise', {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
@@ -91,6 +94,7 @@ export default {
     },
     onCheck() {
       // this.displayCallMessage(this.user.id,'Check');
+      this.setShowAction();
       axios.post('/api/games/casino-holdem/check', {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
@@ -100,6 +104,7 @@ export default {
     },
     onBet() {
       // this.displayCallMessage(this.user.id,'Bet');
+      this.setShowAction();
       axios.post('/api/games/casino-holdem/bet', {
         hash: this.provablyFairGame.hash,
         room_id: this.room.id,
@@ -140,6 +145,9 @@ export default {
     },
     changeSlider(event) {
       this.sliderBet = $(event.currentTarget).val()
+    },
+    setShowAction(){
+      this.$emit('setShowAction', false);
     },
     displayCallMessage(userid, message)
     {

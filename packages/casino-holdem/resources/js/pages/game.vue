@@ -90,7 +90,7 @@
           v-if="room && gameRoom && gameRoom.players && gameRoom.round <= 4 && user.id == gameRoom.action_index && showActionButton"
           :room="room"
           :provably-fair-game="provablyFairGame"
-          :user="user">
+          :user="user" @setShowAction="setShowAction">
       </actions>
       <p id="waitingplayermessage" class="d5-flex justify-center flex-wrap mt-10" v-if="waitForStarting()"  style="color: red" >please wait until ongoing game ends1</p>
     </template>
@@ -455,6 +455,10 @@ export default {
       }
 
       return text;
+    },
+    setShowAction(status)
+    {
+      this.showActionButton = false;
     },
     getPlayersittingPosition(loginPlayerId, playerIndex){
       let returnIndex = 0;
