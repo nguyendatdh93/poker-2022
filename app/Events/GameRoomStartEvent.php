@@ -151,7 +151,7 @@ class GameRoomStartEvent implements ShouldBroadcast
             if ($smallBlindIndex > 0) {
                 $dealerIndex = $smallBlindIndex - 1;
             } else {
-                $dealerIndex = $this->players->count() - 1;
+                $dealerIndex =0;
             }
 
             GameRoomCache::setDealer($this->roomId, $this->players[$dealerIndex]->user_id);
