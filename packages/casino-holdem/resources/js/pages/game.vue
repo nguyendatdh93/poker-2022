@@ -10,6 +10,7 @@
         @player-left="onPlayerLeft($event.player)"
         @ready="ready = $event.ready"
         @exit="onExit"
+        @gameover="setShowActionBtn"
     />
     <template v-if="room">
       <div :class="`result-iframe-wrap `+ getNumberPlayers() +`-players`">
@@ -90,7 +91,7 @@
           v-if="room && gameRoom && gameRoom.players && gameRoom.round <= 4 && user.id == gameRoom.action_index && showActionButton"
           :room="room"
           :provably-fair-game="provablyFairGame"
-          :user="user" @setShowAction="setShowAction">
+          :user="user" @setShowAction="setShowActionBtn">
       </actions>
       <p id="waitingplayermessage" class="d5-flex justify-center flex-wrap mt-10" v-if="waitForStarting()"  style="color: red" >please wait until ongoing game ends1</p>
     </template>
@@ -456,7 +457,7 @@ export default {
 
       return text;
     },
-    setShowAction(status)
+    setShowActionBtn(status)
     {
       this.showActionButton = false;
     },

@@ -19,7 +19,6 @@ export default {
   watch: {
     room(room) {
 
-      console.log('room' , room);
       if(room != null)
       {
 
@@ -32,6 +31,7 @@ export default {
 
             this.$store.dispatch('game-room/setPlayers', JSON.parse(data.players))
           }).listen('GameRoomStartEvent', data => {
+            this.$emit('gameover', false);
             let potIndex = this.roomPot.findIndex(rooms => rooms.roomid == this.players[0].game_room_id);
             if(potIndex == -1){
               this.roomPot.push({'roomid': this.players[0].game_room_id, 'collectpot': 0, 'round': 1});
