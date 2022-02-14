@@ -29,17 +29,19 @@ class GameRoomPlayEvent implements ShouldBroadcast
     public $roomId;
     public $gameRoom;
     public $userId;
+    public $actionMessage;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($roomId, $userId, $bet)
+    public function __construct($roomId, $userId, $bet, $actionmessage = '')
     {
         $this->roomId = $roomId;
         $this->bet = $bet;
         $this->userId = $userId;
+        $this->actionMessage = $actionmessage;
     }
 
     /**
@@ -65,6 +67,7 @@ class GameRoomPlayEvent implements ShouldBroadcast
             'user_id' => $this->userId,
             'game_room' => json_encode(GameRoomCache::getGameRoomCache($this->roomId)),
             'chips' => $chips,
+            'actionMessage' => $this->actionMessage,
         ];
     }
 }

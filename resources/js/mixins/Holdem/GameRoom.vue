@@ -18,6 +18,10 @@ export default {
   },
   watch: {
     room(room) {
+
+      if(room != null)
+      {
+
       this.echo.join(`game.${room.id}`)
           .listen('OnPlayersEvent', data => {
             if (data.left_player_id == this.user.id) {
@@ -27,6 +31,7 @@ export default {
 
             this.$store.dispatch('game-room/setPlayers', JSON.parse(data.players))
           }).listen('GameRoomStartEvent', data => {
+            this.$emit('gameover', false);
             let potIndex = this.roomPot.findIndex(rooms => rooms.roomid == this.players[0].game_room_id);
             if(potIndex == -1){
               this.roomPot.push({'roomid': this.players[0].game_room_id, 'collectpot': 0, 'round': 1});
@@ -43,10 +48,13 @@ export default {
             this.$store.dispatch('game-room/setGameRoom', data.game_room);
            this.$store.dispatch('game-room/setPlayers', data.players);
             this.distributeCards();
+          }).listen('FoldEvent', data => {
+            this.displayCallMessage(data.user_id,'Fold');
           }).listen('GameRoomPlayEvent', data => {
             let gameRoom = JSON.parse(data.game_room);
             this.$store.dispatch('game-room/setGameRoom', gameRoom);
             this.$store.dispatch('game-room/setChips', data.chips);
+            this.displayCallMessage(data.user_id, data.actionMessage);
             if(this.countContinue)
             {
               if(data.hasOwnProperty('bet'))
@@ -84,6 +92,7 @@ export default {
               this.gameCompleted();
             }
           });
+      }
     },
   },
   methods: {
@@ -94,12 +103,13 @@ export default {
       let self = this;
       return new Promise(function (resolve, reject) {
         setTimeout(function () {
-          $(".card").each(function (e) {
+          $(".card").removeClass('sameposition');
+         /* $(".card").each(function (e) {
             setTimeout(function () {
               let position = self.getPlayerPosition(self.players, self.players[e], e);
               $(".card").eq(e).addClass("ani" + (position));
             }, e * 200);
-          });
+          });*/
           resolve();
         }, 2000)
       }).then(() => {
@@ -160,7 +170,16 @@ export default {
           return true;
         }
       }
-    }
+    },
+    displayCallMessage(userid, message)
+    {
+      let objElemnt = $("#playerId_"+userid+" .text-card h2");
+      let username = objElemnt.html();
+      objElemnt.html(message);
+      setTimeout(function(){
+        objElemnt.html(username)
+      }, 800);
+    },
   }
 }
 </script>

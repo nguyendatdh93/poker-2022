@@ -98,6 +98,9 @@ export default {
       return config('app.logo')
     }
   },
+    mounted(){
+    $("header").removeClass('primary');
+  },
 
   created () {
     this.form.email = this.$route.query.email
@@ -117,3 +120,19 @@ export default {
   }
 }
 </script>
+<style type="text/css">
+.theme--dark.v-btn.v-btn--disabled.v-btn--has-bg {
+    background: #232323 !important;
+    color: #fff !important;
+}
+.theme--dark.v-btn.v-btn--has-bg {
+    background: #232323 !important;
+    color: #fff !important;
+}
+.elevation-12.v-card.v-sheet.theme--dark
+{
+    box-shadow: inset 0px 0px 30px #e15e1d !important;
+    background: #d8aa3a !important;
+}
+
+</style>

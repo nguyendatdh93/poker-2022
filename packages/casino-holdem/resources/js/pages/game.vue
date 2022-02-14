@@ -10,6 +10,7 @@
         @player-left="onPlayerLeft($event.player)"
         @ready="ready = $event.ready"
         @exit="onExit"
+        @gameover="setShowActionBtn"
     />
     <template v-if="room">
       <div :class="`result-iframe-wrap `+ getNumberPlayers() +`-players`">
@@ -31,7 +32,7 @@
                     <div id="innergrid">
                       <div class="cnter_cards">
                         <ul class="list">
-                          <li :class="`card`" v-for="(opponent, i) in players" :key="i">
+                          <li :class="`card sameposition`+ ` positioncard`+ getPlayersittingPosition(opponent.user_id, i)" v-for="(opponent, i) in players" :key="i">
                             <hand
                                 v-if="opponent.cards"
                                 :cards="opponent.user_id == user.id ? opponent.cards : getCards(opponent.user_id)"
@@ -54,7 +55,7 @@
                   <div id="grid">
                     <div id="innergrid">
                       <ul class="list">
-                        <dealer-icon v-if="gameRoom && gameRoom.round" :room-prop="room" :dealer="gameRoom.dealer"></dealer-icon>
+                        <dealer-icon v-if="gameRoom && gameRoom.round" :room-prop="room" :dealer="gameRoom.dealer" ></dealer-icon>
                         <li v-for="(opponent, i) in players" :key="i" :class="`cards ani${getPlayerPosition(players, opponent, i)} ` + (isDealer(opponent.user_id) ? `is-dealer d_card_${getPlayerPosition(players, opponent, i)}` : ``) + ` ` + ((opponent.user_id == gameRoom.action_index && gameRoom.round <= 4 && startCountDown)?`player-chance`:`not-player`)+` `+`player-sit-positon`+getPlayersittingPosition(opponent.user_id, i)" :id="`playerId_`+opponent.user_id">
                           <div class="left-img">
                             <div class="img" style="border-radius: 15px">
@@ -90,7 +91,7 @@
           v-if="room && gameRoom && gameRoom.players && gameRoom.round <= 4 && user.id == gameRoom.action_index && showActionButton"
           :room="room"
           :provably-fair-game="provablyFairGame"
-          :user="user">
+          :user="user" @setShowAction="setShowActionBtn">
       </actions>
       <p id="waitingplayermessage" class="d5-flex justify-center flex-wrap mt-10" v-if="waitForStarting()"  style="color: red" >please wait until ongoing game ends1</p>
     </template>
@@ -455,6 +456,10 @@ export default {
       }
 
       return text;
+    },
+    setShowActionBtn(status)
+    {
+      this.showActionButton = false;
     },
     getPlayersittingPosition(loginPlayerId, playerIndex){
       let returnIndex = 0;

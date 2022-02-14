@@ -112,7 +112,7 @@ class GameRoomStartEvent implements ShouldBroadcast
     {
         $previousSmallBlindIndex = GameRoomCache::getPreviousSmallBlindIndex($this->roomId);
         $smallBlindIndex = $previousSmallBlindIndex === null ? ($this->players->count() == 2 ? 0 : 1) : $this->rotate($previousSmallBlindIndex);
-        $bigBlindIndex = $previousSmallBlindIndex === null ? ($this->players->count() == 2 ? 1 : 2) : $this->rotate($smallBlindIndex);
+        $bigBlindIndex = $previousSmallBlindIndex === null ? ($this->players->count() == 2 ? 1 : 0) : $this->rotate($smallBlindIndex);
         $this->setGameRoomCache($smallBlindIndex, $bigBlindIndex);
 
         $deck = new CardDeck(explode(',', $this->provablyFairGame->secret));
@@ -151,7 +151,7 @@ class GameRoomStartEvent implements ShouldBroadcast
             if ($smallBlindIndex > 0) {
                 $dealerIndex = $smallBlindIndex - 1;
             } else {
-                $dealerIndex = $this->players->count() - 1;
+                $dealerIndex =0;
             }
 
             GameRoomCache::setDealer($this->roomId, $this->players[$dealerIndex]->user_id);

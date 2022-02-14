@@ -2792,7 +2792,8 @@ polygon, circle {
 	text-align: center;
 	float: left;
 	padding-top: 3px;
-}.numbr_table select option { color:#131313; }
+}
+.numbr_table select option { color:#131313; }
 .numbr_table {
 	position: relative;
 	width: 100%;
@@ -2947,7 +2948,44 @@ polygon, circle {
 
 
 
-/* New CSS *///
+/* New CSS */
+.text-dark{
+	color: #000 !important;
+}
+.text-white{
+	color: #fff !important;
+}
+.v-input__slot fieldset
+{
+	background: #fff;
+	color: #000;
+	border-color: #000 !important;
+}
+.v-text-field .v-label{
+	color: #000  !important;
+}
+.v-input__slot label
+{
+	color: #000 !important;
+}
+.v-input__slot input
+{
+	color: #000 !important;
+}
+.v-input__slot .theme--dark
+{
+	color: #000 !important;
+}
+.v-input__control .theme--dark
+{
+	color: #000 !important;
+}
+
+.v-toolbar__title{
+	color: #000;
+}
+
+
 
 .front.elevation-2 {
 	background: #fff !important;
@@ -2978,6 +3016,7 @@ polygon, circle {
 	position: relative;
 	z-index: 9;
 }
+
 
 
 .tourna {
@@ -3044,6 +3083,22 @@ polygon, circle {
 }
 
 /*two player*/
+.two-players .dealerbtn0{
+	left: 440 !important%;
+  top: 75% !important;
+}
+.two-players .dealerbtn1{
+  left: 440% !important;
+  top: 22% !important;
+}
+.two-players .card.positioncard0{
+	top: 73%;
+  left: 5%;
+}
+.two-players .card.positioncard1{
+  top: 5%;
+	left: 5%;
+}
 .two-players .cards.player-sit-positon0 {
 	left: 500px;
 	top: 495px;
@@ -3053,12 +3108,12 @@ polygon, circle {
 	top: 22px;
 }
 .two-players .cards.player-sit-positon0 .poker_icon {
-	left: 27%;
-	top: 40px;
+	left: 3%;
+	top: -110%;
 }
 .two-players .cards.player-sit-positon1 .poker_icon {
 	left: 27%;
-	top: 35px;
+	top: 30%;
 }
 .two-players .list.chips .player-sit-positon0 .poker_icon {
 	left: 27%;
@@ -3079,6 +3134,18 @@ polygon, circle {
 
 
 /*three-players*/
+.three-players .card.positioncard0{
+	top: 73%;
+  left: 5%;
+}
+.three-players .card.positioncard1{
+	top: 25%;
+  left: -530%;
+}
+.three-players .card.positioncard2{
+	top: 25%;
+  left: 410%;
+}
 .three-players .cards.player-sit-positon0 {
 	left: 500px;
 	top: 495px;
@@ -3088,19 +3155,19 @@ polygon, circle {
 	top: 175px;
 }
 .three-players .cards.player-sit-positon2{
-	left: -16px;
+	left: 900% !important;
 	top: 175px;
 }
 .three-players .cards.player-sit-positon0 .poker_icon {
-	left: 27%;
-	top: 40%;
+	left: 5%;
+	top: 110%;
 }
 .three-players .cards.player-sit-positon1 .poker_icon {
-	left: 100%;
+	left: 110%;
 	top: -35%;
 }
 .three-players .cards.player-sit-positon2 .poker_icon {
-	left: -75%;
+	left: -60%;
 	top: -45%;
 }
 .three-players .list.chips .player-sit-positon0 .poker_icon {
@@ -3131,6 +3198,22 @@ polygon, circle {
 
 
 /*four-players*/
+.four-players .card.positioncard0{
+	top: 73%;
+  left: 5%;
+}
+.four-players .card.positioncard1{
+	top: 39%;
+  left: -530%;
+}
+.four-players .card.positioncard2{
+	top: 1%;
+  left: 20%;
+}
+.four-players .card.positioncard3{
+  top: 39%;
+	left: 450%;
+}
 .four-players .cards.player-sit-positon0 {
 	left: 500px;
 	top: 495px;
@@ -3144,7 +3227,7 @@ polygon, circle {
 	top: 13px;
 }
 .four-players .cards.player-sit-positon3{
-	left: 1035px;
+	left: 1035px !important;
 	top: 260px;
 }
 .four-players .cards.player-sit-positon0 .poker_icon {
@@ -3200,6 +3283,26 @@ polygon, circle {
 
 
 /*five-players*/
+.five-players .card.positioncard0{
+	top: 73%;
+  left: 5%;
+}
+.five-players .card.positioncard1{
+	top: 59%;
+  left: -500%;
+}
+.five-players .card.positioncard2{
+	top: 26%;
+  left: -500%;
+}
+.five-players .card.positioncard3{
+  top: 26%;
+	left: 400%;
+}
+.five-players .card.positioncard4{
+	top: 59%;
+  left: 400%;
+}
 .five-players .cards.player-sit-positon0 {
 	left: 500px;
 	top: 495px;
@@ -3213,7 +3316,7 @@ polygon, circle {
 	top: 175px;
 }
 .five-players .cards.player-sit-positon3{
-	left: 980px;
+	left: 980px !important;
 	top: 175px;
 }
 .five-players .cards.player-sit-positon4 {
@@ -3285,6 +3388,55 @@ polygon, circle {
 
 
 /*six-players*/
+.six-players .dealerbtn0{
+	top: 75% !important;
+  left: 450% !important;
+}
+.six-players .dealerbtn1{
+	top: 65% !important;
+  left: 185% !important;
+}
+.six-players .dealerbtn2{
+	top: 30% !important;
+  left: 185% !important;
+}
+.six-players .dealerbtn3{
+  top: 23% !important;
+	left: 450% !important;
+}
+.six-players .dealerbtn4{
+	top: 30% !important;
+  left: 850% !important;
+}
+.six-players .dealerbtn5{
+	top: 65% !important;
+  left: 850% !important;
+}
+
+.six-players .card.positioncard0{
+	top: 73%;
+  left: 5%;
+}
+.six-players .card.positioncard1{
+	top: 61%;
+  left: -500%;
+}
+.six-players .card.positioncard2{
+	top: 28%;
+  left: -500%;
+}
+.six-players .card.positioncard3{
+  top: 5%;
+	left: 5%;
+}
+.six-players .card.positioncard4{
+	top: 28%;
+  left: 400%;
+}
+.six-players .card.positioncard5{
+	top: 61%;
+  left: 400%;
+}
 .six-players .cards.player-sit-positon0 {
 	left: 500px;
 	top: 495px;
@@ -3388,7 +3540,34 @@ polygon, circle {
 }
 
 /*Seven-players*/
-
+.seven-players .card.positioncard0{
+	top: 73%;
+  left: 5%;
+}
+.seven-players .card.positioncard1{
+	 top: 60%;
+   left: -500%;
+}
+.seven-players .card.positioncard2{
+	top: 27%;
+  left: -500%;
+}
+.seven-players .card.positioncard3{
+  top: 4%;
+	left: -175%;
+}
+.seven-players .card.positioncard4{
+	top: 4%;
+  left: 150%;
+}
+.seven-players .card.positioncard5{
+	top: 27%;
+  left: 400%;
+}
+.seven-players .card.positioncard6{
+	top: 60%;
+  left: 400%;
+}
 .seven-players .cards.player-sit-positon0 {
 	left: 500px;
 	top: 495px;
@@ -3509,7 +3688,38 @@ polygon, circle {
 
 
 /*Eight-players*/
-
+.eight-players .card.positioncard0{
+	top: 73%;
+  left: 5%;
+}
+.eight-players .card.positioncard1{
+	 top: 60%;
+   left: -500%;
+}
+.eight-players .card.positioncard2{
+	top: 27%;
+  left: -500%;
+}
+.eight-players .card.positioncard3{
+  top: 4%;
+	left: -355%;
+}
+.eight-players .card.positioncard4{
+	top: 4%;
+  left: -75%;
+}
+.eight-players .card.positioncard5{
+	top: 4%;
+  left: 200%;
+}
+.eight-players .card.positioncard6{
+	top: 27%;
+  left: 400%;
+}
+.eight-players .card.positioncard7{
+	top: 60%;
+  left: 400%;
+}
 .eight-players .cards.player-sit-positon0 {
 	left: 500px;
 	top: 495px;
@@ -3646,6 +3856,79 @@ polygon, circle {
 }
 
 /*nine-players*/
+.nine-players .dealerbtn0{
+	top: 75% !important;
+  left: 460% !important;
+}
+.nine-players .dealerbtn1{
+	top: 72% !important;
+  left: 260% !important;
+}
+.nine-players .dealerbtn2{
+	top: 60% !important;
+  left: 185% !important;
+}
+.nine-players .dealerbtn3{
+  top: 30% !important;
+	left: 185% !important;
+}
+.nine-players .dealerbtn4{
+	top: 25% !important;
+  left: 300% !important;
+}
+.nine-players .dealerbtn5{
+	top: 25% !important;
+  left: 650% !important;
+}
+.nine-players .dealerbtn6{
+	top: 30% !important;
+  left: 850% !important;
+}
+.nine-players .dealerbtn7{
+	top: 60% !important;
+  left: 850% !important;
+}
+.nine-players .dealerbtn8{
+	top: 75% !important;
+  left: 730% !important;
+}
+
+.nine-players .card.positioncard0{
+	top: 73%;
+  left: 5%;
+}
+.nine-players .card.positioncard1{
+	top: 77%;
+  left: -220%;
+}
+.nine-players .card.positioncard2{
+	top: 56%;
+  left: -500%;
+}
+.nine-players .card.positioncard3{
+  top: 28%;
+	left: -500%;
+}
+.nine-players .card.positioncard4{
+	top: 5%;
+  left: -150%;
+}
+.nine-players .card.positioncard5{
+	top: 5%;
+  left: 150%;
+}
+.nine-players .card.positioncard6{
+	top: 28%;
+  left: 400%;
+}
+.nine-players .card.positioncard7{
+	top: 56%;
+  left: 400%;
+}
+.nine-players .card.positioncard8{
+	top: 77%;
+  left: 225%;
+}
 .nine-players .cards.player-sit-positon0 {
 	left: 500px;
 	top: 495px;
@@ -3685,11 +3968,11 @@ polygon, circle {
 
 
 .nine-players .cards.player-sit-positon0 .poker_icon {
-	left: 27%;
-  top: 30%;
+	left: 10%;
+  top: -110%;
 }
 .nine-players .cards.player-sit-positon1 .poker_icon {
-	left: 27%;
+	left: 3%;
   top: -110%;
 }
 .nine-players .cards.player-sit-positon2 .poker_icon{
@@ -3709,11 +3992,11 @@ polygon, circle {
   top: 35%;
 }
 .nine-players .cards.player-sit-positon6 .poker_icon {
-	left: -75%;
+	left: -60%;
   top: -46%;
 }
 .nine-players .cards.player-sit-positon7 .poker_icon {
-	left: -75%;
+	left: -60%;
  	top: -40%;
 }
 .nine-players .cards.player-sit-positon8 .poker_icon {
@@ -3801,4 +4084,12 @@ polygon, circle {
 	left: 100%;
   top: 200%;
   display: flex;
+}
+
+#result-iframe-wrap .card.sameposition{
+	left: 0%;
+	top: -500%;
+}
+.card{
+	 transition:.8s all; 
 }

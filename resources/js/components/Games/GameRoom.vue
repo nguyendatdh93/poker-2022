@@ -54,8 +54,8 @@
                       </select>
                     </div>
                   </div>
-                  <div class="play_btn">
-                    <button @click="searchRoom()">Play Now</button>
+                  <div class="play_btn" id="gameStartBtn">
+                    <button @click="searchRoom()" :disabled="disabledGameStartBtn">Play Now</button>
                   </div>
                 </div>
 
@@ -79,8 +79,8 @@
                       </select>
                     </div>
                   </div>
-                  <div class="play_btn">
-                    <button @click="searchRoom()">Play Now</button>
+                  <div class="play_btn" id="gameStartBtn">
+                    <button @click="searchRoom()" :disabled="disabledGameStartBtn">Play Now</button>
                   </div>
                 </div>
               </div>
@@ -119,6 +119,7 @@ export default {
 
   data() {
     return {
+      disabledGameStartBtn: false,
       room: null,
       rooms: null,
       players: null,
@@ -334,6 +335,7 @@ export default {
     },
 
     async fetchRooms() {
+      this.disabledGameStartBtn = false;
       const {data} = await axios.get(`/api/games/${this.gamePackageId}/rooms`)
 
       if (data.room) {
@@ -347,12 +349,16 @@ export default {
 
     },
     async searchRoom() {
+        $("#gameStartBtn").css('opacity','0.5');
+        this.disabledGameStartBtn = true;
       const {data} = await this.forms.create.post(`/api/games/${this.gamePackageId}/rooms/search`)
       if (data.success) {
         this.forms.joinOrLeave.room_id = data.room.id;
         this.updateUserAccountBalance(this.account.balance - this.forms.create.buy_in);
         await this.joinRoom();
       } else {
+        $("#gameStartBtn").css('opacity','0');
+        this.disabledGameStartBtn = false;
         this.$store.dispatch('message/' + (data.success ? 'success' : 'error'), {text: data.message})
       }
     },

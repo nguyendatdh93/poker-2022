@@ -9,7 +9,7 @@ import {mapState} from "vuex";
 
 export default {
   name: "DealerIcon",
-  props: ['room-prop', 'dealer'],
+  props: ['room-prop', 'dealer', 'playerpositon'],
   data() {
     return {
       room: null,
