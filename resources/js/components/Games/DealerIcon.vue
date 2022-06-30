@@ -33,6 +33,7 @@ export default {
       setTimeout(function () {
         $('#dealer_button_custom').removeAttr('class');
         $('#dealer_button_custom').css('transition', '1s all');
+        console.log($('.is-dealer')[0].classList[0] + ' ' + $('.is-dealer')[0].classList[1] + ' ' + $('.is-dealer')[0].classList[3]);
         $('#dealer_button_custom').addClass($('.is-dealer')[0].classList[0] + ' ' + $('.is-dealer')[0].classList[1] + ' ' + $('.is-dealer')[0].classList[3]);
       }, 2000);
     },

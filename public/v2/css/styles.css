@@ -3457,6 +3457,12 @@ polygon, circle {
 	left: 980px;
 	top: 175px;
 }
+
+.six-players #dealer_button_custom.d_card_1 {
+	left: 980px;
+	top: 175px;
+}
+
 .six-players .cards.player-sit-positon5 {
 	left: 980px;
 	top: 390px;
